@@ -168,32 +168,58 @@ layout: null
             100% { transform: rotate(360deg); }
         }
 
-        /* --- MAIN SITE INTERIOR --- */
+        /* --- MAIN HUB CARD LAYOUT --- */
         main {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 20px;
             color: #333;
             background: #ffffff;
             min-height: 100vh;
             box-sizing: border-box;
         }
         
-        main h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; margin-top: 0;}
-        main h2 { margin-top: 2rem; border-bottom: 1px solid #e1e4e6; padding-bottom: 0.2em; }
-        main h2 a { color: #1e3a8a; text-decoration: none; }
-        main h2 a:hover { color: #2563eb; text-decoration: underline; }
-        main ul { list-style-type: none; padding: 0; }
-        main li { 
-            background: #f6f8fa; 
-            margin-bottom: 10px; 
-            padding: 15px; 
-            border-radius: 6px;
-            border: 1px solid #e1e4e6;
+        main h1 { text-align: center; font-size: 2.2rem; color: #0f172a; margin-top: 0; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #64748b; margin-bottom: 40px; font-size: 1.1rem; }
+        
+        /* Grid setup for category portal tiles */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0;
         }
-        main li a { color: #0366d6; text-decoration: none; font-weight: bold; font-size: 1.1em; }
-        main li a:hover { text-decoration: underline; }
-        .meta { color: #586069; font-size: 0.85em; margin-top: 5px; }
+
+        .category-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.25s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            background: #0f172a;
+            border-color: #0f172a;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
+        }
+
+        .category-card a {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.4rem;
+            display: block;
+            width: 100%;
+            height: 100%;
+            transition: color 0.2s ease;
+        }
+
+        .category-card:hover a {
+            color: #3b82f6;
+        }
     </style>
 </head>
 <body>
@@ -214,44 +240,16 @@ layout: null
 
     <main>
         <h1>Class Resource Directory</h1>
-        <p>Select a categorized space station folder below to browse dedicated course assets.</p>
+        <div class="subtitle">Select a space station category to access course materials.</div>
 
-        {% if site.classes.size > 0 %}
-          {% assign raw_categories = "" %}
-          {% for item in site.classes %}
-            {% if item.category %}
-              {% assign raw_categories = raw_categories | append: item.category | append: "," %}
-            {% else %}
-              {% assign raw_categories = raw_categories | append: "Uncategorized" | append: "," %}
-            {% endif %}
-          {% endfor %}
-
-          {% assign unique_categories = raw_categories | split: "," | uniq | sort %}
-
-          {% for cat in unique_categories %}
-            {% if cat != "" %}
-              <h2><a href="{{ '/' | relative_url }}{{ cat | downcase }}/">{{ cat }} Resources &rarr;</a></h2>
-              <ul>
-                {% if cat == "Uncategorized" %}
-                  {% assign cat_items = site.classes | where_exp:"item", "item.category == nil" | sort: "title" %}
-                {% else %}
-                  {% assign cat_items = site.classes | where: "category", cat | sort: "title" %}
-                {% endif %}
-
-                {% for item in cat_items %}
-                  <li>
-                    <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
-                    {% if item.description %}
-                      <div class="meta">{{ item.description }}</div>
-                    {% endif %}
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          {% endfor %}
-        {% else %}
-          <p>No class sites dropped here yet. Add files to the _classes folder!</p>
-        {% endif %}
+        <div class="category-grid">
+            <div class="category-card"><a href="{{ '/y9/' | relative_url }}">Year 9 &rarr;</a></div>
+            <div class="category-card"><a href="{{ '/y10/' | relative_url }}">Year 10 &rarr;</a></div>
+            <div class="category-card"><a href="{{ '/y11/' | relative_url }}">Year 11 &rarr;</a></div>
+            <div class="category-card"><a href="{{ '/y12/' | relative_url }}">Year 12 &rarr;</a></div>
+            <div class="category-card"><a href="{{ '/y13/' | relative_url }}">Year 13 &rarr;</a></div>
+            <div class="category-card"><a href="{{ '/general/' | relative_url }}">General &rarr;</a></div>
+        </div>
     </main>
 
     <script>
