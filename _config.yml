@@ -1,0 +1,9 @@
+# Site Settings
+title: liniver.com Class Resources
+description: Single-page websites and resources for my classes.
+
+# Tell Jekyll to process your collection and output standalone URLs
+collections:
+  classes:
+    output: true
+    permalink: /classes/:name
