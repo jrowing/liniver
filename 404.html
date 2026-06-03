@@ -1,0 +1,183 @@
+---
+permalink: /404.html
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404: Lost in Space | Liniver</title>
+    <style>
+        :root {
+            --space-bg: #030712;
+            --text-light: #f9fafb;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--space-bg);
+            background: radial-gradient(circle at center, #0b1528 0%, var(--space-bg) 80%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* --- 404 TEXT STYLING --- */
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            margin: 0;
+            line-height: 1;
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        p {
+            color: #9ca3af;
+            font-size: 1.1rem;
+            max-width: 450px;
+            margin-bottom: 3rem;
+            padding: 0 20px;
+        }
+
+        /* --- LOST ALIEN ANIMATION (PURE HTML5/CSS) --- */
+        .space-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .alien-ship {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            left: 60px;
+            top: 70px;
+            animation: floatAlien 6s ease-in-out infinite, rotateAlien 12s linear infinite;
+        }
+
+        /* Ufo Glass Dome */
+        .dome {
+            width: 34px;
+            height: 25px;
+            background: rgba(147, 197, 253, 0.7);
+            border-radius: 50% 50% 0 0;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            border: 2px solid #60a5fa;
+        }
+
+        /* Little Alien Head Inside */
+        .dome::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #22c55e;
+            border-radius: 50%;
+            bottom: 2px;
+            left: 8px;
+        }
+
+        /* UFO Saucer Base */
+        .saucer {
+            width: 80px;
+            height: 24px;
+            background: linear-gradient(to bottom, #94a3b8, #475569);
+            border-radius: 50%;
+            position: relative;
+            top: -10px;
+            z-index: 3;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* UFO Lights */
+        .saucer::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #fde047;
+            border-radius: 50%;
+            top: 9px;
+            left: 16px;
+            box-shadow: 18px 0 #fde047, 36px 0 #fde047;
+            animation: blinkLights 1.5s infinite step-start;
+        }
+
+        /* --- ANIMATION TIMELINES --- */
+        @keyframes floatAlien {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-25px) translateX(15px); }
+        }
+
+        @keyframes rotateAlien {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-8deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes blinkLights {
+            50% { opacity: 0.3; }
+        }
+
+        /* --- BUTTON STYLING --- */
+        .home-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background: white;
+            color: var(--space-bg);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="space-container">
+        <div class="alien-ship">
+            <div class="dome"></div>
+            <div class="saucer"></div>
+        </div>
+    </div>
+
+    <div class="error-code">404</div>
+    <h1>Lost in Deep Space</h1>
+    <p>The cosmic coordinates you entered brought you to an uncharted quadrant. There's nothing out here but drifting stardust.</p>
+
+    <a href="{{ '/' | relative_url }}" class="home-btn">Return to Base Station</a>
+
+</body>
+</html>
