@@ -1,0 +1,220 @@
+---
+title: "Mastering Metacognition"
+description: "An introduction to thinking about thinking and learning how to study effectively."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Metacognition: Thinking About Thinking</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text: #1f2937;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--background);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .intro-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        /* Interactive Quiz Styles */
+        .quiz-container {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background: #ecfdf5;
+            color: #065f46;
+            font-weight: bold;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mastering Metacognition</h1>
+        <p>The Secret Weapon of High-Achieving Students</p>
+    </header>
+
+    <main>
+        <div class="intro-box">
+            <strong>What is Metacognition?</strong> Put simply, it is <em>thinking about thinking</em>. It is the ability to examine how you process information, recognize when you understand a concept, and identify when you are completely lost.
+        </div>
+
+        <h2>The Metacognitive Cycle</h2>
+        <p>Learning isn't just about reading text; it's a cyclic process of managing your own mind. Effective learners constantly move through these three critical stages:</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>1. Planning</h3>
+                <p>Before jumping into a task, ask yourself: <em>What is my goal? What strategies should I use? Have I handled a problem like this before?</em></p>
+            </div>
+            <div class="card">
+                <h3>2. Monitoring</h3>
+                <p>While working, pause and assess: <em>Am I actually understanding this? Is my current approach working, or am I just spinning my wheels?</em></p>
+            </div>
+            <div class="card">
+                <h3>3. Evaluating</h3>
+                <p>After finishing, look back: <em>What went well? What threw me off? How will I adjust my study plan for the next assignment?</em></p>
+            </div>
+        </div>
+
+        <h2>Why It Matters in This Class</h2>
+        <p>When you encounter complex tasks (like debugging code, structuring design elements, or learning logic pathways), hitting a wall is guaranteed. Students with strong metacognitive skills don't panic when they get stuck—they treat confusion as data. They pivot, try new strategies, and systematically work through the breakdown.</p>
+
+        <div class="quiz-container">
+            <h3>Interactive Check: Are you practicing metacognition?</h3>
+            <p>Imagine you just scored poorly on a tough quiz. Which internal response represents a <strong>metacognitive approach</strong> to learning?</p>
+            
+            <div class="quiz-option" onclick="checkAnswer(this, false)">
+                A) "I guess I am just bad at this subject. I'll try to memorize more definitions right before the next test."
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, true)">
+                B) "My study strategy failed. I need to look at the questions I missed, identify the pattern in my mistakes, and change how I take notes."
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, false)">
+                C) "The test questions were unfair. I understood everything perfectly when I read the slides last night."
+            </div>
+
+            <div id="quiz-feedback" class="feedback"></div>
+        </div>
+
+        <h2>Three Strategies to Start Using Today</h2>
+        <ul>
+            <li><strong>The Feynman Technique:</strong> Try to explain a difficult concept in plain language to a child (or an empty room). The exact moment you stutter or look at your notes is where your true understanding gaps live.</li>
+            <li><strong>Wrapper Check-Ins:</strong> Dedicate 5 minutes before and after every assignment to intentionally write down what you think will be hard, and what actually ended up being hard.</li>
+            <li><strong>Intentionally Interrogate Errors:</strong> Never look at a graded mistake and say "Oh, silly error." Write out *why* the wrong path looked right to you in the moment.</li>
+        </ul>
+    </main>
+
+    <footer>
+        <p>Class Resource Hub &bull; liniver.com</p>
+    </footer>
+
+    <script>
+        function checkAnswer(element, isCorrect) {
+            // Reset options
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('correct'));
+            
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.style.display = 'block';
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedback.innerHTML = "🎯 Correct! This is metacognition in action. Instead of blaming external factors or fixed traits, you analyzed your strategy, identified structural flaws, and planned a process adaptation.";
+                feedback.style.color = "#065f46";
+            } else {
+                feedback.innerHTML = "❌ Not quite. This thought pattern attributes learning outcomes to fixed intelligence or passive memorization rather than evaluating and adjusting your active cognitive process. Try a different answer!";
+                feedback.style.color = "#b91c1c";
+            }
+        }
+    </script>
+</body>
+</html>
