@@ -24,14 +24,16 @@ layout: null
     <h1>General Space Station</h1>
     <ul>
       {% assign general_items = site.classes | where: "category", "General" | sort: "title" %}
-      {% for item in general_items %}
-        <li>
-          <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
-          {% if item.description %}<div class="meta">{{ item.description }}</div>{% endif %}
-        </li>
-      {% empty %}
+      {% if general_items.size > 0 %}
+        {% for item in general_items %}
+          <li>
+            <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
+            {% if item.description %}<div class="meta">{{ item.description }}</div>{% endif %}
+          </li>
+        {% endfor %}
+      {% else %}
         <li class="empty">No general materials assigned yet.</li>
-      {% endfor %}
+      {% endif %}
     </ul>
 </body>
 </html>

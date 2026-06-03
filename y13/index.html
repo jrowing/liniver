@@ -24,14 +24,16 @@ layout: null
     <h1>Year 13 Space Station</h1>
     <ul>
       {% assign y13_items = site.classes | where: "category", "Y13" | sort: "title" %}
-      {% for item in y13_items %}
-        <li>
-          <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
-          {% if item.description %}<div class="meta">{{ item.description }}</div>{% endif %}
-        </li>
-      {% empty %}
+      {% if y13_items.size > 0 %}
+        {% for item in y13_items %}
+          <li>
+            <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
+            {% if item.description %}<div class="meta">{{ item.description }}</div>{% endif %}
+          </li>
+        {% endfor %}
+      {% else %}
         <li class="empty">No materials assigned to Year 13 yet.</li>
-      {% endfor %}
+      {% endif %}
     </ul>
 </body>
 </html>
