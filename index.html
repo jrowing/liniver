@@ -36,25 +36,46 @@ layout: null
     <h1>Class Resource Directory</h1>
     <p>Select a lesson or website from the categorized index below.</p>
 
-    {% assign categories = "Y9,Y10,Y11,Y12,Y13,General" | split: "," %}
-
-    {% for cat in categories %}
-      {% assign cat_items = site.classes | where: "category", cat | sort: "title" %}
+    {% if site.classes.size > 0 %}
       
-      {% if cat_items.size > 0 %}
-        <h2>{{ cat }} Resources</h2>
-        <ul>
-          {% for item in cat_items %}
-            <li>
-              <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
-              {% if item.description %}
-                <div class="meta">{{ item.description }}</div>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endfor %}
+      {% assign raw_categories = "" %}
+      {% for item in site.classes %}
+        {% if item.category %}
+          {% assign raw_categories = raw_categories | append: item.category | append: "," %}
+        {% else %}
+          {% assign raw_categories = raw_categories | append: "Uncategorized" | append: "," %}
+        {% endif %}
+      {% endfor %}
+
+      {% assign unique_categories = raw_categories | split: "," | uniq | sort %}
+
+      {% for cat in unique_categories %}
+        {% if cat != "" %}
+          
+          <h2>{{ cat }} Resources</h2>
+          <ul>
+            {% if cat == "Uncategorized" %}
+              {% assign cat_items = site.classes | where_exp:"item", "item.category == nil" | sort: "title" %}
+            {% else %}
+              {% assign cat_items = site.classes | where: "category", cat | sort: "title" %}
+            {% endif %}
+
+            {% for item in cat_items %}
+              <li>
+                <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
+                {% if item.description %}
+                  <div class="meta">{{ item.description }}</div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+
+        {% endif %}
+      {% endfor %}
+
+    {% else %}
+      <p>No class sites dropped here yet. Add files to the _classes folder!</p>
+    {% endif %}
 
 </body>
 </html>
