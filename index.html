@@ -6,76 +6,258 @@ layout: null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Resources | liniver.com</title>
+    <title>Liniver | Welcome to the Universe</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-            color: #333;
+        :root {
+            --space-bg: #030712;
+            --text-light: #f9fafb;
         }
-        h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; }
-        h2 { color: #1e3a8a; margin-top: 2rem; border-bottom: 1px solid #e1e4e6; padding-bottom: 0.2em; }
-        ul { list-style-type: none; padding: 0; }
-        li { 
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: var(--space-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-light);
+        }
+
+        /* --- SPLASH SCREEN SYSTEM --- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0b1528 0%, var(--space-bg) 80%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+        }
+
+        #splash-screen.dismissed {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ffffff, #60a5fa, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .splash-subtitle {
+            font-size: 1.1rem;
+            color: #9ca3af;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .enter-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .enter-btn:hover {
+            background: white;
+            color: var(--space-bg);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            border-color: white;
+        }
+
+        /* --- CSS HTML5 SOLAR SYSTEM MODEL --- */
+        .universe-model {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sun {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #fde047 0%, #ca8a04 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 40px #eab308;
+            position: absolute;
+        }
+
+        /* Orbit Lines */
+        .orbit {
+            position: absolute;
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Planet Properties & Animations */
+        .orbit.inner  { width: 120px; height: 120px; animation: spin 6s linear infinite; }
+        .orbit.middle { width: 220px; height: 220px; animation: spin 12s linear infinite; }
+        .orbit.outer  { width: 320px; height: 320px; animation: spin 20s linear infinite; }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        /* Inner Planet (Cyan) */
+        .orbit.inner .planet {
+            top: 10px;
+            width: 14px;
+            height: 14px;
+            background: #22d3ee;
+            box-shadow: 0 0 10px #06b6d4;
+        }
+
+        /* Middle Planet (Blue) */
+        .orbit.middle .planet {
+            top: 20px;
+            width: 22px;
+            height: 22px;
+            background: #3b82f6;
+            box-shadow: 0 0 12px #2563eb;
+        }
+
+        /* Outer Planet with Ring */
+        .orbit.outer .planet {
+            top: 30px;
+            width: 26px;
+            height: 26px;
+            background: #f97316;
+            box-shadow: 0 0 15px #ea580c;
+        }
+        /* Ring element for Outer Planet */
+        .orbit.outer .planet::after {
+            content: '';
+            position: absolute;
+            width: 38px;
+            height: 8px;
+            border: 2px solid rgba(249, 115, 22, 0.5);
+            border-radius: 50%;
+            left: -8px;
+            top: 7px;
+            transform: rotate(-15deg);
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- MAIN SITE INTERIOR --- */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #333;
+            background: #ffffff;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        
+        main h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; margin-top: 0;}
+        main h2 { margin-top: 2rem; border-bottom: 1px solid #e1e4e6; padding-bottom: 0.2em; }
+        main h2 a { color: #1e3a8a; text-decoration: none; }
+        main h2 a:hover { color: #2563eb; text-decoration: underline; }
+        main ul { list-style-type: none; padding: 0; }
+        main li { 
             background: #f6f8fa; 
             margin-bottom: 10px; 
             padding: 15px; 
             border-radius: 6px;
             border: 1px solid #e1e4e6;
         }
-        a { color: #0366d6; text-decoration: none; font-weight: bold; font-size: 1.1em; }
-        a:hover { text-decoration: underline; }
+        main li a { color: #0366d6; text-decoration: none; font-weight: bold; font-size: 1.1em; }
+        main li a:hover { text-decoration: underline; }
         .meta { color: #586069; font-size: 0.85em; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <h1>Class Resource Directory</h1>
-    <p>Select a lesson or website from the categorized index below.</p>
+    <div id="splash-screen">
+        <div class="splash-title">Liniver</div>
+        <div class="splash-subtitle">Explore the Learning Universe</div>
 
-    {% if site.classes.size > 0 %}
-      
-      {% assign raw_categories = "" %}
-      {% for item in site.classes %}
-        {% if item.category %}
-          {% assign raw_categories = raw_categories | append: item.category | append: "," %}
-        {% else %}
-          {% assign raw_categories = raw_categories | append: "Uncategorized" | append: "," %}
-        {% endif %}
-      {% endfor %}
+        <div class="universe-model">
+            <div class="sun"></div>
+            <div class="orbit inner"><div class="planet"></div></div>
+            <div class="orbit middle"><div class="planet"></div></div>
+            <div class="orbit outer"><div class="planet"></div></div>
+        </div>
 
-      {% assign unique_categories = raw_categories | split: "," | uniq | sort %}
+        <button class="enter-btn" onclick="dismissSplash()">Enter Dashboard</button>
+    </div>
 
-      {% for cat in unique_categories %}
-        {% if cat != "" %}
-          
-          <h2>{{ cat }} Resources</h2>
-          <ul>
-            {% if cat == "Uncategorized" %}
-              {% assign cat_items = site.classes | where_exp:"item", "item.category == nil" | sort: "title" %}
+    <main>
+        <h1>Class Resource Directory</h1>
+        <p>Select a categorized space station folder below to browse dedicated course assets.</p>
+
+        {% if site.classes.size > 0 %}
+          {% assign raw_categories = "" %}
+          {% for item in site.classes %}
+            {% if item.category %}
+              {% assign raw_categories = raw_categories | append: item.category | append: "," %}
             {% else %}
-              {% assign cat_items = site.classes | where: "category", cat | sort: "title" %}
+              {% assign raw_categories = raw_categories | append: "Uncategorized" | append: "," %}
             {% endif %}
+          {% endfor %}
 
-            {% for item in cat_items %}
-              <li>
-                <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
-                {% if item.description %}
-                  <div class="meta">{{ item.description }}</div>
+          {% assign unique_categories = raw_categories | split: "," | uniq | sort %}
+
+          {% for cat in unique_categories %}
+            {% if cat != "" %}
+              <h2><a href="{{ '/' | relative_url }}{{ cat | downcase }}/">{{ cat }} Resources &rarr;</a></h2>
+              <ul>
+                {% if cat == "Uncategorized" %}
+                  {% assign cat_items = site.classes | where_exp:"item", "item.category == nil" | sort: "title" %}
+                {% else %}
+                  {% assign cat_items = site.classes | where: "category", cat | sort: "title" %}
                 {% endif %}
-              </li>
-            {% endfor %}
-          </ul>
 
+                {% for item in cat_items %}
+                  <li>
+                    <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
+                    {% if item.description %}
+                      <div class="meta">{{ item.description }}</div>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <p>No class sites dropped here yet. Add files to the _classes folder!</p>
         {% endif %}
-      {% endfor %}
+    </main>
 
-    {% else %}
-      <p>No class sites dropped here yet. Add files to the _classes folder!</p>
-    {% endif %}
-
+    <script>
+        function dismissSplash() {
+            document.getElementById('splash-screen').classList.add('dismissed');
+        }
+    </script>
 </body>
 </html>

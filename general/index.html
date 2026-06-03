@@ -1,0 +1,37 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Resources | Liniver</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #030712; color: #f9fafb; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
+        .back { display: inline-block; margin-bottom: 20px; color: #60a5fa; text-decoration: none; font-weight: 500; }
+        h1 { border-bottom: 2px solid #1e293b; padding-bottom: 0.3em; color: #ffffff; }
+        ul { list-style: none; padding: 0; }
+        li { background: #0f172a; margin-bottom: 12px; padding: 20px; border-radius: 8px; border: 1px solid #1e293b; }
+        li a { color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 1.2rem; display: inline-block; }
+        li a:hover { text-decoration: underline; color: #60a5fa; }
+        .meta { color: #9ca3af; font-size: 0.9em; margin-top: 6px; }
+        .empty { color: #6b7280; font-style: italic; }
+    </style>
+</head>
+<body>
+    <a class="back" href="{{ '/' | relative_url }}">&larr; Back to Universe</a>
+    <h1>General Space Station</h1>
+    <ul>
+      {% assign general_items = site.classes | where: "category", "General" | sort: "title" %}
+      {% for item in general_items %}
+        <li>
+          <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
+          {% if item.description %}<div class="meta">{{ item.description }}</div>{% endif %}
+        </li>
+      {% empty %}
+        <li class="empty">No general materials assigned yet.</li>
+      {% endfor %}
+    </ul>
+</body>
+</html>
