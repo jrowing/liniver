@@ -1,19 +1,60 @@
 ---
 layout: null
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Resources | liniver.com</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { color: #1e3a8a; margin-top: 2rem; border-bottom: 1px solid #e1e4e6; padding-bottom: 0.2em; }
+        ul { list-style-type: none; padding: 0; }
+        li { 
+            background: #f6f8fa; 
+            margin-bottom: 10px; 
+            padding: 15px; 
+            border-radius: 6px;
+            border: 1px solid #e1e4e6;
+        }
+        a { color: #0366d6; text-decoration: none; font-weight: bold; font-size: 1.1em; }
+        a:hover { text-decoration: underline; }
+        .meta { color: #586069; font-size: 0.85em; margin-top: 5px; }
+    </style>
+</head>
+<body>
 
-<ul>
-      {% if site.classes.size > 0 %}
-        {% assign sorted_classes = site.classes | sort: 'title' %}
-        {% for item in sorted_classes %}
-          <li>
-            <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
-            {% if item.description %}
-              <div class="meta">{{ item.description }}</div>
-            {% endif %}
-          </li>
-        {% endfor %}
-      {% else %}
-        <li><em>No class sites dropped here yet. Add files to the _classes folder!</em></li>
+    <h1>Class Resource Directory</h1>
+    <p>Select a lesson or website from the categorized index below.</p>
+
+    {% assign categories = "Y9,Y10,Y11,Y12,Y13,General" | split: "," %}
+
+    {% for cat in categories %}
+      {% assign cat_items = site.classes | where: "category", cat | sort: "title" %}
+      
+      {% if cat_items.size > 0 %}
+        <h2>{{ cat }} Resources</h2>
+        <ul>
+          {% for item in cat_items %}
+            <li>
+              <a href="{{ item.url | relative_url }}">{{ item.title | default: item.slug }}</a>
+              {% if item.description %}
+                <div class="meta">{{ item.description }}</div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
       {% endif %}
-    </ul>
+    {% endfor %}
+
+</body>
+</html>
