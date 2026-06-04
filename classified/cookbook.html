@@ -11,6 +11,7 @@
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-color: #333333;
+            --border-color: #e9ecef;
         }
 
         * {
@@ -30,7 +31,7 @@
 
         header {
             background-color: var(--card-bg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             padding: 1.5rem;
             text-align: center;
             position: sticky;
@@ -62,7 +63,7 @@
         }
 
         .search-box {
-            padding: 0.6rem 1rem;
+            padding: 0.6rem 1.2rem;
             border: 2px solid #ddd;
             border-radius: 25px;
             width: 300px;
@@ -97,25 +98,28 @@
             width: 100%;
             padding: 0 1rem 3rem 1rem;
             display: grid;
-            grid-template-columns: 350px 1fr;
+            grid-template-columns: 380px 1fr;
             gap: 2rem;
             flex: 1;
         }
 
+        /* Polished Table of Contents Panel */
         .toc-panel {
             background: var(--card-bg);
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            max-height: 75vh;
+            max-height: 78vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .toc-panel h2 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
             color: var(--primary-color);
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 0.5rem;
         }
 
@@ -123,25 +127,70 @@
             list-style: none;
         }
 
+        /* Group headings for breaking up text entries visually */
+        .toc-section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888;
+            margin: 1.2rem 0 0.5rem 0;
+            font-weight: 700;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 3px;
+        }
+        .toc-section-title:first-child {
+            margin-top: 0;
+        }
+
+        /* Classic Dot-Leader Alignment Mechanics */
         .toc-item {
-            padding: 0.6rem 0.8rem;
+            padding: 0.5rem 0.5rem;
             border-radius: 6px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background-color 0.2s, color 0.2s;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
             font-size: 0.95rem;
+            color: #444;
         }
 
         .toc-item:hover {
-            background-color: #f0f4f8;
+            background-color: #f8f9fa;
             color: var(--accent-color);
         }
 
-        .toc-item .page-num {
-            color: #888;
-            font-size: 0.85rem;
+        .toc-name {
+            order: 1;
+            background: white;
+            padding-right: 5px;
+            white-space: nowrap;
+        }
+        
+        .toc-item:hover .toc-name {
+            background: transparent;
+        }
+
+        /* Dotted leader connector layer */
+        .toc-leader {
+            order: 2;
+            flex-grow: 1;
+            border-bottom: 2px dotted #ccc;
+            margin-bottom: 4px;
+            min-width: 15px;
+        }
+
+        .toc-page {
+            order: 3;
+            background: white;
+            padding-left: 5px;
+            color: #777;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .toc-item:hover .toc-page {
+            background: transparent;
+            color: var(--accent-color);
         }
 
         .viewer-panel {
@@ -166,7 +215,7 @@
                 grid-template-columns: 1fr;
             }
             .toc-panel {
-                max-height: 300px;
+                max-height: 350px;
             }
             .search-box {
                 width: 100%;
@@ -194,47 +243,56 @@
     </div>
 
     <main>
-        <!-- Searchable Table of Contents -->
         <section class="toc-panel">
             <h2>Table of Contents</h2>
             <ul class="toc-list" id="tocList">
-                <li class="toc-item" onclick="goToPage(1)"><span>📖 Front Cover</span> <span class="page-num">-</span></li>
-                <li class="toc-item" onclick="goToPage(2)"><span>📋 Table of Contents</span> <span class="page-num">-</span></li>
-                <li class="toc-item" onclick="goToPage(3)"><span>Ylva's Seychelles Yoghurt</span> <span class="page-num">p. 1</span></li>
-                <li class="toc-item" onclick="goToPage(4)"><span>Classic Waffles</span> <span class="page-num">p. 2</span></li>
-                <li class="toc-item" onclick="goToPage(5)"><span>Leslie's English Breakfast Muffins</span> <span class="page-num">p. 3</span></li>
-                <li class="toc-item" onclick="goToPage(6)"><span>No-Knead Three-Seed Bread</span> <span class="page-num">p. 4</span></li>
-                <li class="toc-item" onclick="goToPage(7)"><span>Best Ever Homemade Flour Tortillas</span> <span class="page-num">p. 5</span></li>
-                <li class="toc-item" onclick="goToPage(8)"><span>Smoky Corn & Feta Salad</span> <span class="page-num">p. 6</span></li>
-                <li class="toc-item" onclick="goToPage(9)"><span>Authentic Falafel</span> <span class="page-num">p. 7</span></li>
-                <li class="toc-item" onclick="goToPage(10)"><span>Quick & Easy Red Lentil Dahl</span> <span class="page-num">p. 8</span></li>
-                <li class="toc-item" onclick="goToPage(11)"><span>Beetroot Risotto</span> <span class="page-num">p. 9</span></li>
-                <li class="toc-item" onclick="goToPage(12)"><span>Beetroot & Aubergine Sri Lankan Curry</span> <span class="page-num">p. 10</span></li>
-                <li class="toc-item" onclick="goToPage(13)"><span>Quick & Nourishing Mango Carrot Soup</span> <span class="page-num">p. 11</span></li>
-                <li class="toc-item" onclick="goToPage(14)"><span>Simple Hummus</span> <span class="page-num">p. 12</span></li>
-                <li class="toc-item" onclick="goToPage(15)"><span>Avocado Toast with Egg</span> <span class="page-num">p. 13</span></li>
-                <li class="toc-item" onclick="goToPage(16)"><span>Creole 'Grilled' Fish</span> <span class="page-num">p. 14</span></li>
-                <li class="toc-item" onclick="goToPage(17)"><span>Goat Biryani</span> <span class="page-num">p. 15</span></li>
-                <li class="toc-item" onclick="goToPage(18)"><span>Andrew's Avocado Pasta</span> <span class="page-num">p. 16</span></li>
-                <li class="toc-item" onclick="goToPage(19)"><span>Joe's Coconut Fish Curry</span> <span class="page-num">p. 17</span></li>
-                <li class="toc-item" onclick="goToPage(20)"><span>Fish Stew (Bouillon Poisson)</span> <span class="page-num">p. 18</span></li>
-                <li class="toc-item" onclick="goToPage(21)"><span>West Indian Sweet Potato Curry</span> <span class="page-num">p. 19</span></li>
-                <li class="toc-item" onclick="goToPage(22)"><span>Kesar Mango & Chicken Curry</span> <span class="page-num">p. 20</span></li>
-                <li class="toc-item" onclick="goToPage(23)"><span>Wendy's Paneer & Aubergine Curry</span> <span class="page-num">p. 21</span></li>
-                <li class="toc-item" onclick="goToPage(24)"><span>Joe's Aubergine & Chickpea Curry</span> <span class="page-num">p. 22</span></li>
-                <li class="toc-item" onclick="goToPage(25)"><span>Maria's Crispy Honey Chilli Chicken</span> <span class="page-num">p. 23</span></li>
-                <li class="toc-item" onclick="goToPage(26)"><span>Asami's St. Helena Fishcakes</span> <span class="page-num">p. 24</span></li>
-                <li class="toc-item" onclick="goToPage(27)"><span>Asami's Egg Rolls</span> <span class="page-num">p. 25</span></li>
-                <li class="toc-item" onclick="goToPage(28)"><span>Moroccan Roasted Vegetables</span> <span class="page-num">p. 26</span></li>
-                <li class="toc-item" onclick="goToPage(29)"><span>Shakshuka</span> <span class="page-num">p. 27</span></li>
-                <li class="toc-item" onclick="goToPage(30)"><span>Emma's Peanut Butter Date Bark</span> <span class="page-num">p. 28</span></li>
-                <li class="toc-item" onclick="goToPage(31)"><span>Maria's Chewy Muesli Bars</span> <span class="page-num">p. 29</span></li>
-                <li class="toc-item" onclick="goToPage(32)"><span>The Best Chocolate Cake</span> <span class="page-num">p. 30</span></li>
-                <li class="toc-item" onclick="goToPage(33)"><span>Ylva's One-Ingredient Banana Ice Cream</span> <span class="page-num">p. 31</span></li>
+                
+                <div class="toc-section-title">Intro</div>
+                <li class="toc-item" onclick="goToPage(1)"><span class="toc-name">📖 Front Cover</span><span class="toc-leader"></span><span class="toc-page">-</span></li>
+                <li class="toc-item" onclick="goToPage(2)"><span class="toc-name">📋 Contents Panel 1</span><span class="toc-leader"></span><span class="toc-page">-</span></li>
+                <li class="toc-item" onclick="goToPage(3)"><span class="toc-name">📋 Contents Panel 2</span><span class="toc-leader"></span><span class="toc-page">-</span></li>
+                
+                <div class="toc-section-title">Breakfast & Bread</div>
+                <li class="toc-item" onclick="goToPage(4)"><span class="toc-name">Ylva's Seychelles Yoghurt</span><span class="toc-leader"></span><span class="toc-page">p. 1</span></li>
+                <li class="toc-item" onclick="goToPage(5)"><span class="toc-name">Classic Waffles</span><span class="toc-leader"></span><span class="toc-page">p. 2</span></li>
+                <li class="toc-item" onclick="goToPage(6)"><span class="toc-name">Leslie's English Breakfast Muffins</span><span class="toc-leader"></span><span class="toc-page">p. 3</span></li>
+                <li class="toc-item" onclick="goToPage(7)"><span class="toc-name">No-Knead Three-Seed Bread</span><span class="toc-leader"></span><span class="toc-page">p. 4</span></li>
+                <li class="toc-item" onclick="goToPage(8)"><span class="toc-name">Best Ever Homemade Flour Tortillas</span><span class="toc-leader"></span><span class="toc-page">p. 5</span></li>
+                
+                <div class="toc-section-title">Salads & Starters</div>
+                <li class="toc-item" onclick="goToPage(9)"><span class="toc-name">Smoky Corn & Feta Salad</span><span class="toc-leader"></span><span class="toc-page">p. 6</span></li>
+                <li class="toc-item" onclick="goToPage(10)"><span class="toc-name">Authentic Falafel</span><span class="toc-leader"></span><span class="toc-page">p. 7</span></li>
+                <li class="toc-item" onclick="goToPage(14)"><span class="toc-name">Simple Hummus</span><span class="toc-leader"></span><span class="toc-page">p. 12</span></li>
+                <li class="toc-item" onclick="goToPage(15)"><span class="toc-name">Avocado Toast with Egg</span><span class="toc-leader"></span><span class="toc-page">p. 13</span></li>
+
+                <div class="toc-section-title">Mains & Curries</div>
+                <li class="toc-item" onclick="goToPage(11)"><span class="toc-name">Quick & Easy Red Lentil Dahl</span><span class="toc-leader"></span><span class="toc-page">p. 8</span></li>
+                <li class="toc-item" onclick="goToPage(12)"><span class="toc-name">Beetroot Risotto</span><span class="toc-leader"></span><span class="toc-page">p. 9</span></li>
+                <li class="toc-item" onclick="goToPage(13)"><span class="toc-name">Beetroot & Aubergine Sri Lankan Curry</span><span class="toc-leader"></span><span class="toc-page">p. 10</span></li>
+                <li class="toc-item" onclick="goToPage(14)"><span class="toc-name">Quick & Nourishing Mango Carrot Soup</span><span class="toc-leader"></span><span class="toc-page">p. 11</span></li>
+                <li class="toc-item" onclick="goToPage(16)"><span class="toc-name">Creole 'Grilled' Fish</span><span class="toc-leader"></span><span class="toc-page">p. 14</span></li>
+                <li class="toc-item" onclick="goToPage(17)"><span class="toc-name">Goat Biryani</span><span class="toc-leader"></span><span class="toc-page">p. 15</span></li>
+                <li class="toc-item" onclick="goToPage(18)"><span class="toc-name">Andrew's Avocado Pasta</span><span class="toc-leader"></span><span class="toc-page">p. 16</span></li>
+                <li class="toc-item" onclick="goToPage(19)"><span class="toc-name">Joe's Coconut Fish Curry</span><span class="toc-leader"></span><span class="toc-page">p. 17</span></li>
+                <li class="toc-item" onclick="goToPage(20)"><span class="toc-name">Fish Stew (Bouillon Poisson)</span><span class="toc-leader"></span><span class="toc-page">p. 18</span></li>
+                <li class="toc-item" onclick="goToPage(21)"><span class="toc-name">West Indian Sweet Potato Curry</span><span class="toc-leader"></span><span class="toc-page">p. 19</span></li>
+                <li class="toc-item" onclick="goToPage(22)"><span class="toc-name">Kesar Mango & Chicken Curry</span><span class="toc-leader"></span><span class="toc-page">p. 20</span></li>
+                <li class="toc-item" onclick="goToPage(23)"><span class="toc-name">Wendy's Paneer & Aubergine Curry</span><span class="toc-leader"></span><span class="toc-page">p. 21</span></li>
+                <li class="toc-item" onclick="goToPage(24)"><span class="toc-name">Joe's Aubergine & Chickpea Curry</span><span class="toc-leader"></span><span class="toc-page">p. 22</span></li>
+                <li class="toc-item" onclick="goToPage(25)"><span class="toc-name">Maria's Crispy Honey Chilli Chicken</span><span class="toc-leader"></span><span class="toc-page">p. 23</span></li>
+                <li class="toc-item" onclick="goToPage(26)"><span class="toc-name">Asami's St. Helena Fishcakes</span><span class="toc-leader"></span><span class="toc-page">p. 24</span></li>
+                <li class="toc-item" onclick="goToPage(27)"><span class="toc-name">Asami's Egg Rolls</span><span class="toc-leader"></span><span class="toc-page">p. 25</span></li>
+                <li class="toc-item" onclick="goToPage(28)"><span class="toc-name">Moroccan Roasted Vegetables</span><span class="toc-leader"></span><span class="toc-page">p. 26</span></li>
+                <li class="toc-item" onclick="goToPage(29)"><span class="toc-name">Shakshuka</span><span class="toc-leader"></span><span class="toc-page">p. 27</span></li>
+
+                <div class="toc-section-title">Desserts & Treats</div>
+                <li class="toc-item" onclick="goToPage(30)"><span class="toc-name">Emma's Peanut Butter Date Bark</span><span class="toc-leader"></span><span class="toc-page">p. 28</span></li>
+                <li class="toc-item" onclick="goToPage(31)"><span class="toc-name">Maria's Chewy Muesli Bars</span><span class="toc-leader"></span><span class="toc-page">p. 29</span></li>
+                <li class="toc-item" onclick="goToPage(32)"><span class="toc-name">The Best Chocolate Cake</span><span class="toc-leader"></span><span class="toc-page">p. 30</span></li>
+                <li class="toc-item" onclick="goToPage(33)"><span class="toc-name">Ylva's One-Ingredient Banana Ice Cream</span><span class="toc-leader"></span><span class="toc-page">p. 31</span></li>
             </ul>
         </section>
 
-        <!-- Embedded PDF Section -->
         <section class="viewer-panel">
             <iframe id="pdfViewer" class="pdf-frame" src="visp-cookbook.pdf#page=1&zoom=FitH"></iframe>
         </section>
@@ -243,25 +301,35 @@
     <script>
         const pdfBaseUrl = "visp-cookbook.pdf";
 
-        // Navigation mapping function
         function goToPage(pageNum) {
             const iframe = document.getElementById('pdfViewer');
-            // Navigates directly to the structural index page inside the frame
             iframe.src = `${pdfBaseUrl}#page=${pageNum}&zoom=FitH`;
         }
 
-        // Search panel filtering function
         function filterRecipes() {
             const input = document.getElementById('searchBar').value.toLowerCase();
             const ul = document.getElementById('tocList');
-            const li = ul.getElementsByTagName('li');
+            const items = ul.getElementsByClassName('toc-item');
+            const headers = ul.getElementsByClassName('toc-section-title');
 
-            for (let i = 0; i < li.length; i++) {
-                let recipeName = li[i].getElementsByTagName('span')[0].textContent || li[i].getElementsByTagName('span')[0].innerText;
+            // Filter active item matches
+            for (let i = 0; i < items.length; i++) {
+                let recipeName = items[i].getElementsByClassName('toc-name')[0].textContent;
                 if (recipeName.toLowerCase().indexOf(input) > -1) {
-                    li[i].style.display = "";
+                    items[i].style.display = "flex";
                 } else {
-                    li[i].style.display = "none";
+                    items[i].style.display = "none";
+                }
+            }
+
+            // Hide section categories dynamically if no matching items are visible within them
+            if (input !== "") {
+                for (let h = 0; h < headers.length; h++) {
+                    headers[h].style.display = "none";
+                }
+            } else {
+                for (let h = 0; h < headers.length; h++) {
+                    headers[h].style.display = "block";
                 }
             }
         }
