@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VISP Cookbook - Interactive Flipbook</title>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.net/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-
+    <title>VISP Cookbook - Recipes for an Indian Ocean Island</title>
     <style>
         :root {
             --primary-color: #2c3e50;
             --accent-color: #d35400;
-            --bg-color: #f1f2f6;
+            --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-color: #333333;
         }
@@ -31,48 +26,47 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
         header {
             background-color: var(--card-bg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         header h1 {
             color: var(--primary-color);
-            font-size: 1.8rem;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
 
-        .interface-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 1rem;
-            flex: 1;
+        header p {
+            color: #666;
+            font-style: italic;
         }
 
-        .controls {
+        .actions-bar {
             display: flex;
             justify-content: space-between;
-            width: 100%;
-            max-width: 1000px;
-            margin-bottom: 1rem;
-            gap: 1rem;
             align-items: center;
+            max-width: 1200px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            width: 100%;
+            gap: 1rem;
             flex-wrap: wrap;
         }
 
         .search-box {
-            padding: 0.6rem 1.2rem;
+            padding: 0.6rem 1rem;
             border: 2px solid #ddd;
             border-radius: 25px;
-            width: 280px;
+            width: 300px;
+            font-size: 0.95rem;
             outline: none;
             transition: border-color 0.3s;
         }
@@ -81,79 +75,109 @@
             border-color: var(--accent-color);
         }
 
-        .nav-buttons {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: opacity 0.2s;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
         .btn-download {
             background-color: var(--accent-color);
+            color: white;
             text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        /* Flipbook Wrapper styles */
-        .flipbook-viewport {
+        .btn-download:hover {
+            background-color: #b33900;
+            transform: translateY(-1px);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 0;
-            background: #e4e7eb;
+            padding: 0 1rem 3rem 1rem;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .toc-panel {
+            background: var(--card-bg);
+            padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .toc-panel h2 {
+            font-size: 1.3rem;
             margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .toc-item:hover {
+            background-color: #f0f4f8;
+            color: var(--accent-color);
+        }
+
+        .toc-item .page-num {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .viewer-panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
             min-height: 650px;
         }
 
-        #flipbook {
-            width: 900px;
-            height: 600px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        #flipbook .page {
-            width: 450px;
-            height: 600px;
-            background-color: white;
-            background-size: 100% 100%;
-        }
-
-        /* Custom styling for rendered canvases inside flipbook */
-        canvas {
+        .pdf-frame {
             width: 100%;
             height: 100%;
-            display: block;
+            border: none;
+            flex: 1;
         }
 
-        .loading-overlay {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        /* Sidebar recipe shortcut dropdown for compact design */
-        .recipe-select {
-            padding: 0.6rem 1rem;
-            border-radius: 25px;
-            border: 2px solid #ddd;
-            outline: none;
-            max-width: 250px;
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            .toc-panel {
+                max-height: 300px;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .actions-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-download {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -161,169 +185,80 @@
 
     <header>
         <h1>VISP Cookbook</h1>
+        <p>Recipes for an Indian Ocean Island</p>
     </header>
 
-    <div class="interface-container">
-        <div class="controls">
-            <div>
-                <select id="recipeDropdown" class="recipe-select" onchange="jumpToPage(this.value)">
-                    <option value="">-- Jump to Recipe --</option>
-                    <option value="1">Ylva's Seychelles Yoghurt (p. 1)</option>
-                    <option value="2">Classic Waffles (p. 2)</option>
-                    <option value="3">Leslie's English Breakfast Muffins (p. 3)</option>
-                    <option value="4">No-Knead Three-Seed Bread (p. 4)</option>
-                    <option value="5">Best Ever Homemade Flour Tortillas (p. 5)</option>
-                    <option value="6">Smoky Corn & Feta Salad (p. 6)</option>
-                    <option value="7">Authentic Falafel (p. 7)</option>
-                    <option value="8">Quick & Easy Red Lentil Dahl (p. 8)</option>
-                    <option value="9">Beetroot Risotto (p. 9)</option>
-                    <option value="10">Beetroot & Aubergine Sri Lankan Curry (p. 10)</option>
-                    <option value="11">Quick & Nourishing Mango Carrot Soup (p. 11)</option>
-                    <option value="12">Simple Hummus (p. 12)</option>
-                    <option value="13">Avocado Toast with Egg (p. 13)</option>
-                    <option value="14">Creole 'Grilled' Fish (p. 14)</option>
-                    <option value="15">Goat Biryani (p. 15)</option>
-                    <option value="16">Andrew's Avocado Pasta (p. 16)</option>
-                    <option value="17">Joe's Coconut Fish Curry (p. 17)</option>
-                    <option value="18">Fish Stew (Bouillon Poisson) (p. 18)</option>
-                    <option value="19">West Indian Sweet Potato Curry (p. 19)</option>
-                    <option value="20">Kesar Mango & Chicken Curry (p. 20)</option>
-                    <option value="21">Wendy's Paneer & Aubergine Curry (p. 21)</option>
-                    <option value="22">Joe's Aubergine & Chickpea Curry (p. 22)</option>
-                    <option value="23">Maria's Crispy Honey Chilli Chicken (p. 23)</option>
-                    <option value="24">Asami's St. Helena Fishcakes (p. 24)</option>
-                    <option value="25">Asami's Egg Rolls (p. 25)</option>
-                    <option value="27">Shakshuka (p. 27)</option>
-                    <option value="28">Emma's Peanut Butter Date Bark (p. 28)</option>
-                    <option value="29">Maria's Chewy Muesli Bars (p. 29)</option>
-                    <option value="30">The Best Chocolate Cake (p. 30)</option>
-                    <option value="31">Ylva's One-Ingredient Banana Ice Cream (p. 31)</option>
-                </select>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn" onclick="prevPage()">◀ Previous</button>
-                <span id="pageIndicator">Loading book...</span>
-                <button class="btn" onclick="nextPage()">Next ▶</button>
-            </div>
-
-            <a href="https://liniver.com/classified/visp-cookbook.pdf" class="btn btn-download" download="VISP_Cookbook.pdf">📥 Download PDF</a>
-        </div>
-
-        <div class="flipbook-viewport">
-            <div id="loading" class="loading-overlay">Rendering document pages...</div>
-            <div id="flipbook" style="display:none;">
-                </div>
-        </div>
+    <div class="actions-bar">
+        <input type="text" id="searchBar" class="search-box" placeholder="Search recipes..." onkeyup="filterRecipes()">
+        <a href="visp-cookbook.pdf" class="btn-download" download="VISP_Cookbook.pdf">📥 Download PDF Cookbook</a>
     </div>
 
+    <main>
+        <section class="toc-panel">
+            <h2>Table of Contents</h2>
+            <ul class="toc-list" id="tocList">
+                <li class="toc-item" onclick="goToPage(1)"><span>Ylva's Seychelles Yoghurt</span> <span class="page-num">p. 1</span></li>
+                <li class="toc-item" onclick="goToPage(2)"><span>Classic Waffles</span> <span class="page-num">p. 2</span></li>
+                <li class="toc-item" onclick="goToPage(3)"><span>Leslie's English Breakfast Muffins</span> <span class="page-num">p. 3</span></li>
+                <li class="toc-item" onclick="goToPage(4)"><span>No-Knead Three-Seed Bread</span> <span class="page-num">p. 4</span></li>
+                <li class="toc-item" onclick="goToPage(5)"><span>Best Ever Homemade Flour Tortillas</span> <span class="page-num">p. 5</span></li>
+                <li class="toc-item" onclick="goToPage(6)"><span>Smoky Corn & Feta Salad</span> <span class="page-num">p. 6</span></li>
+                <li class="toc-item" onclick="goToPage(7)"><span>Authentic Falafel</span> <span class="page-num">p. 7</span></li>
+                <li class="toc-item" onclick="goToPage(8)"><span>Quick & Easy Red Lentil Dahl</span> <span class="page-num">p. 8</span></li>
+                <li class="toc-item" onclick="goToPage(9)"><span>Beetroot Risotto</span> <span class="page-num">p. 9</span></li>
+                <li class="toc-item" onclick="goToPage(10)"><span>Beetroot & Aubergine Sri Lankan Curry</span> <span class="page-num">p. 10</span></li>
+                <li class="toc-item" onclick="goToPage(11)"><span>Quick & Nourishing Mango Carrot Soup</span> <span class="page-num">p. 11</span></li>
+                <li class="toc-item" onclick="goToPage(12)"><span>Simple Hummus</span> <span class="page-num">p. 12</span></li>
+                <li class="toc-item" onclick="goToPage(13)"><span>Avocado Toast with Egg</span> <span class="page-num">p. 13</span></li>
+                <li class="toc-item" onclick="goToPage(14)"><span>Creole 'Grilled' Fish</span> <span class="page-num">p. 14</span></li>
+                <li class="toc-item" onclick="goToPage(15)"><span>Goat Biryani</span> <span class="page-num">p. 15</span></li>
+                <li class="toc-item" onclick="goToPage(16)"><span>Andrew's Avocado Pasta</span> <span class="page-num">p. 16</span></li>
+                <li class="toc-item" onclick="goToPage(17)"><span>Joe's Coconut Fish Curry</span> <span class="page-num">p. 17</span></li>
+                <li class="toc-item" onclick="goToPage(18)"><span>Fish Stew (Bouillon Poisson)</span> <span class="page-num">p. 18</span></li>
+                <li class="toc-item" onclick="goToPage(19)"><span>West Indian Sweet Potato Curry</span> <span class="page-num">p. 19</span></li>
+                <li class="toc-item" onclick="goToPage(20)"><span>Kesar Mango & Chicken Curry</span> <span class="page-num">p. 20</span></li>
+                <li class="toc-item" onclick="goToPage(21)"><span>Wendy's Paneer & Aubergine Curry</span> <span class="page-num">p. 21</span></li>
+                <li class="toc-item" onclick="goToPage(22)"><span>Joe's Aubergine & Chickpea Curry</span> <span class="page-num">p. 22</span></li>
+                <li class="toc-item" onclick="goToPage(23)"><span>Maria's Crispy Honey Chilli Chicken</span> <span class="page-num">p. 23</span></li>
+                <li class="toc-item" onclick="goToPage(24)"><span>Asami's St. Helena Fishcakes</span> <span class="page-num">p. 24</span></li>
+                <li class="toc-item" onclick="goToPage(25)"><span>Asami's Egg Rolls</span> <span class="page-num">p. 25</span></li>
+                <li class="toc-item" onclick="goToPage(27)"><span>Shakshuka</span> <span class="page-num">p. 27</span></li>
+                <li class="toc-item" onclick="goToPage(28)"><span>Emma's Peanut Butter Date Bark</span> <span class="page-num">p. 28</span></li>
+                <li class="toc-item" onclick="goToPage(29)"><span>Maria's Chewy Muesli Bars</span> <span class="page-num">p. 29</span></li>
+                <li class="toc-item" onclick="goToPage(30)"><span>The Best Chocolate Cake</span> <span class="page-num">p. 30</span></li>
+                <li class="toc-item" onclick="goToPage(31)"><span>Ylva's One-Ingredient Banana Ice Cream</span> <span class="page-num">p. 31</span></li>
+            </ul>
+        </section>
+
+        <section class="viewer-panel">
+            <iframe id="pdfViewer" class="pdf-frame" src="visp-cookbook.pdf#page=1&zoom=FitH"></iframe>
+        </section>
+    </main>
+
     <script>
-        // Set path to your relative PDF deployment location
-        const pdfUrl = 'visp-cookbook.pdf'; 
-        
-        // Setup PDF.js Worker
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+        const pdfBaseUrl = "visp-cookbook.pdf";
 
-        let pdfDoc = null;
-        const flipbookEl = $('#flipbook');
-
-        // Main loader initialization loop
-        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
-            pdfDoc = pdf;
-            const totalPages = pdf.numPages;
-            let pagesRendered = 0;
-
-            // Step 1: Create skeleton viewports for each page
-            for (let i = 1; i <= totalPages; i++) {
-                const pageDiv = $('<div class="page"></div>');
-                const canvas = $('<canvas></canvas>')[0];
-                pageDiv.append(canvas);
-                flipbookEl.append(pageDiv);
-
-                // Step 2: Extract text data & paint vectors onto layout canvas elements
-                renderPageCanvas(i, canvas, function() {
-                    pagesRendered++;
-                    if (pagesRendered === totalPages) {
-                        initFlipbook();
-                    }
-                });
-            }
-        }).catch(err => {
-            $('#loading').text('Failed to stream document. Please check file path name configuration mappings.');
-            console.error(err);
-        });
-
-        function renderPageCanvas(num, canvas, callback) {
-            pdfDoc.getPage(num).then(function(page) {
-                // Determine target visual aspect viewport multipliers based on high-res rendering goals
-                const viewport = page.getViewport({ scale: 1.5 }); 
-                const ctx = canvas.getContext('2d');
-                
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                const renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-                
-                page.render(renderContext).promise.then(function() {
-                    callback();
-                });
-            });
+        // Navigation mapping function
+        function goToPage(pageNum) {
+            const iframe = document.getElementById('pdfViewer');
+            // Uses standard native web-browser parameters to navigate inside the file frame smoothly
+            iframe.src = `${pdfBaseUrl}#page=${pageNum}&zoom=FitH`;
         }
 
-        function initFlipbook() {
-            $('#loading').hide();
-            flipbookEl.show();
+        // Search panel filtering function
+        function filterRecipes() {
+            const input = document.getElementById('searchBar').value.toLowerCase();
+            const ul = document.getElementById('tocList');
+            const li = ul.getElementsByTagName('li');
 
-            // Initialize Turn.js framework configurations
-            flipbookEl.turn({
-                width: 900,
-                height: 600,
-                autoCenter: true,
-                duration: 800,
-                acceleration: true,
-                elevation: 50,
-                gradients: true,
-                when: {
-                    turned: function(event, page, view) {
-                        updatePageIndicator(page);
-                    }
-                }
-            });
-            
-            updatePageIndicator(1);
-        }
-
-        function updatePageIndicator(currentPage) {
-            const total = pdfDoc ? pdfDoc.numPages : 0;
-            // Handle display calculation adjustments for layout spread mechanics
-            if(currentPage === 1) {
-                $('#pageIndicator').text(`Cover (Page 1 of ${total})`);
-            } else {
-                let nextPage = currentPage + 1;
-                if(nextPage > total) {
-                    $('#pageIndicator').text(`Page ${currentPage} of ${total}`);
+            for (let i = 0; i < li.length; i++) {
+                let recipeName = li[i].getElementsByTagName('span')[0].textContent || li[i].getElementsByTagName('span')[0].innerText;
+                if (recipeName.toLowerCase().indexOf(input) > -1) {
+                    li[i].style.display = "";
                 } else {
-                    $('#pageIndicator').text(`Pages ${currentPage}-${nextPage} of ${total}`);
+                    li[i].style.display = "none";
                 }
             }
-        }
-
-        // Framework control mappings
-        function prevPage() {
-            flipbookEl.turn('previous');
-        }
-
-        function nextPage() {
-            flipbookEl.turn('next');
-        }
-
-        function jumpToPage(num) {
-            if(!num) return;
-            const targetPage = parseInt(num);
-            flipbookEl.turn('page', targetPage);
         }
     </script>
 </body>
