@@ -1,0 +1,1535 @@
+--- title: "Metals & Non-Metals — General Properties" description: "An introduction to metals" category: "Y10" layout: null ---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metals & Non-Metals — General Properties</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --metal: #f5a623;
+    --metal-dim: rgba(245,166,35,0.15);
+    --metal-border: rgba(245,166,35,0.35);
+    --nonmetal: #38bdf8;
+    --nonmetal-dim: rgba(56,189,248,0.12);
+    --nonmetal-border: rgba(56,189,248,0.3);
+    --exception: #a78bfa;
+    --exception-dim: rgba(167,139,250,0.15);
+    --text: #e8eaf0;
+    --text-dim: #8b90a7;
+    --correct: #4ade80;
+    --wrong: #f87171;
+    --radius: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 60px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(245,166,35,0.07) 0%, rgba(56,189,248,0.05) 50%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span.m { color: var(--metal); }
+  .hero h1 span.nm { color: var(--nonmetal); }
+
+  .hero-sub {
+    color: var(--text-dim);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    font-size: 15px;
+  }
+
+  .hero-key {
+    display: inline-flex;
+    gap: 24px;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 100px;
+    padding: 10px 24px;
+    font-size: 13px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-key span { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.m { background: var(--metal); }
+  .dot.nm { background: var(--nonmetal); }
+  .dot.ex { background: var(--exception); }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+  }
+
+  .progress-steps {
+    display: flex;
+    gap: 6px;
+  }
+
+  .progress-step {
+    flex: 1;
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    transition: background 0.4s;
+  }
+
+  .progress-step.done { background: var(--metal); }
+  .progress-step.active { background: linear-gradient(90deg, var(--metal), var(--nonmetal)); }
+
+  /* SECTIONS */
+  .lesson-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .section {
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .section h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  /* SPLIT COMPARE */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 520px) { .compare { grid-template-columns: 1fr; } }
+
+  .compare-card {
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid;
+  }
+
+  .compare-card.metal {
+    background: var(--metal-dim);
+    border-color: var(--metal-border);
+  }
+
+  .compare-card.nonmetal {
+    background: var(--nonmetal-dim);
+    border-color: var(--nonmetal-border);
+  }
+
+  .compare-card.exception {
+    background: var(--exception-dim);
+    border-color: rgba(167,139,250,0.3);
+    grid-column: 1 / -1;
+  }
+
+  .card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .card-label.m { color: var(--metal); }
+  .card-label.nm { color: var(--nonmetal); }
+  .card-label.ex { color: var(--exception); }
+
+  .compare-card p { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+  /* EVERYDAY EXAMPLES */
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .example-item {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-align: center;
+  }
+
+  .example-item:hover { border-color: rgba(255,255,255,0.2); background: var(--surface2); }
+  .example-item.selected-good { border-color: var(--correct); background: rgba(74,222,128,0.1); }
+  .example-item.selected-bad { border-color: var(--wrong); background: rgba(248,113,113,0.1); }
+
+  .example-icon { font-size: 28px; margin-bottom: 6px; }
+  .example-label { font-size: 12px; color: var(--text-dim); }
+  .example-feedback { font-size: 11px; margin-top: 6px; font-weight: 500; display: none; }
+  .selected-good .example-feedback { color: var(--correct); display: block; }
+  .selected-bad .example-feedback { color: var(--wrong); display: block; }
+
+  /* THINK BOX */
+  .think {
+    background: var(--surface);
+    border-left: 3px solid var(--metal);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  .think strong { color: var(--text); }
+
+  /* TOGGLE REVEAL */
+  .reveal-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--text-dim);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+  }
+
+  .reveal-btn:hover { border-color: rgba(255,255,255,0.35); color: var(--text); }
+
+  .revealed { display: none; margin-top: 12px; }
+  .revealed.open { display: block; }
+
+  /* METALS TABLE */
+  .metals-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+
+  .metals-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .metals-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+
+  .metals-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .conductivity-bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--metal);
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 4px;
+  }
+
+  /* DUCTILE/BRITTLE DEMO */
+  .property-demo {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  @media (max-width: 520px) { .property-demo { flex-direction: column; } }
+
+  .demo-card {
+    flex: 1;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.07);
+    text-align: center;
+  }
+
+  .demo-visual {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .metal-rod {
+    width: 80px;
+    height: 10px;
+    background: linear-gradient(180deg, #f5a623 0%, #d4881c 100%);
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(245,166,35,0.3);
+    transition: all 0.6s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  .metal-rod.bent {
+    transform: rotate(-20deg) scaleX(0.85);
+    clip-path: polygon(0 0, 50% 0, 50% 15%, 100% 35%, 100% 100%, 50% 100%, 50% 85%, 0 100%);
+  }
+
+  .brittle-rod {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    transition: gap 0.4s;
+  }
+
+  .piece {
+    height: 10px;
+    background: linear-gradient(180deg, #38bdf8 0%, #0ea5e9 100%);
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(56,189,248,0.2);
+  }
+
+  .piece.p1 { width: 28px; }
+  .piece.p2 { width: 18px; }
+  .piece.p3 { width: 24px; }
+
+  .brittle-rod.broken { gap: 10px; }
+
+  .demo-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+  }
+
+  .demo-btn.m-btn { background: var(--metal-dim); border-color: var(--metal-border); color: var(--metal); }
+  .demo-btn.nm-btn { background: var(--nonmetal-dim); border-color: var(--nonmetal-border); color: var(--nonmetal); }
+  .demo-btn:hover { opacity: 0.8; }
+
+  .demo-label { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .demo-sub { font-size: 12px; color: var(--text-dim); }
+
+  /* MELTING POINT VIS */
+  .melt-vis {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 16px 0;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .melt-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .melt-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .melt-name {
+    font-size: 12px;
+    width: 80px;
+    flex-shrink: 0;
+    color: var(--text-dim);
+  }
+
+  .melt-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .melt-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+    width: 0;
+  }
+
+  .melt-fill.metal-fill { background: linear-gradient(90deg, var(--metal), #ff6b00); }
+  .melt-fill.nonmetal-fill { background: var(--nonmetal); }
+
+  .melt-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    width: 65px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .melt-divider {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 14px 0 10px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 14px;
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,0.07);
+    margin-top: 60px;
+  }
+
+  .quiz-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+
+  .quiz-q {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .quiz-q:last-of-type { border-bottom: none; }
+
+  .quiz-text {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quiz-opt {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .quiz-opt:hover:not(:disabled) { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+  .quiz-opt.correct { border-color: var(--correct); background: rgba(74,222,128,0.1); color: var(--correct); }
+  .quiz-opt.wrong { border-color: var(--wrong); background: rgba(248,113,113,0.08); color: var(--wrong); }
+  .quiz-opt:disabled { cursor: default; }
+
+  .quiz-feedback {
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 20px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  .quiz-score {
+    text-align: center;
+    padding: 24px 0 8px;
+    display: none;
+  }
+
+  .score-number {
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--metal);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .score-label { font-size: 14px; color: var(--text-dim); margin-top: 4px; }
+
+  .check-btn {
+    display: block;
+    margin: 24px auto 0;
+    background: linear-gradient(135deg, var(--metal), #d4881c);
+    color: #0f1117;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .check-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .check-btn:active { transform: translateY(0); }
+
+  /* WIRE ANIMATION */
+  .wire-anim {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 16px 0;
+    border: 1px solid rgba(255,255,255,0.07);
+    text-align: center;
+  }
+
+  svg.circuit { width: 100%; max-width: 400px; height: 80px; }
+
+  .electron {
+    animation: flow 2s linear infinite;
+    fill: var(--metal);
+  }
+
+  @keyframes flow {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(280px); opacity: 0.2; }
+  }
+
+  /* SUMMARY TASK */
+  .summary-outer {
+    background: var(--surface);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 60px 24px 70px;
+    margin-top: 40px;
+  }
+  .summary-container { max-width: 780px; margin: 0 auto; }
+  .summary-title { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+  .summary-intro { color: var(--text-dim); font-size: 15px; max-width: 580px; margin-bottom: 32px; }
+  .format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 36px; }
+  .format-card { background: var(--surface2); border: 2px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.2s; }
+  .format-card:hover { border-color: rgba(255,255,255,0.2); background: #2a2f45; }
+  .format-card.selected { border-color: var(--metal); background: var(--metal-dim); }
+  .format-icon { font-size: 28px; margin-bottom: 8px; }
+  .format-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .format-desc { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
+  .scaffold { display: none; }
+  .scaffold.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  .scaffold-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 14px; }
+  .scaffold-intro { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.6; }
+  .poster-layout { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .poster-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 500px) { .poster-split { grid-template-columns: 1fr; } }
+  .poster-zone { border-radius: 8px; padding: 14px 16px; border: 1px dashed; }
+  .header-zone { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
+  .metal-zone { border-color: var(--metal-border); background: var(--metal-dim); }
+  .nonmetal-zone { border-color: var(--nonmetal-border); background: var(--nonmetal-dim); }
+  .exception-zone { border-color: rgba(167,139,250,0.3); background: var(--exception-dim); }
+  .source-zone { border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); }
+  .zone-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+  .zone-hint { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+  .info-blocks { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+  .info-block { display: flex; gap: 16px; align-items: flex-start; background: var(--surface2); border-radius: 10px; padding: 14px 16px; }
+  .info-num { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+  .info-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .info-body { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .task-box { background: rgba(245,166,35,0.07); border: 1px solid var(--metal-border); border-radius: var(--radius); padding: 18px 20px; margin-top: 20px; }
+  .task-box-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--metal); margin-bottom: 10px; }
+  .task-list { padding-left: 18px; }
+  .task-list li { font-size: 14px; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .task-list li:last-child { margin-bottom: 0; }
+  .success-criteria { background: var(--surface2); border-radius: var(--radius); padding: 18px 20px; margin-top: 16px; }
+  .sc-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--correct); margin-bottom: 12px; }
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 500px) { .sc-grid { grid-template-columns: 1fr; } }
+  .sc-item { font-size: 13px; color: var(--text-dim); padding-left: 14px; position: relative; line-height: 1.4; }
+  .sc-item::before { content: '✓'; position: absolute; left: 0; color: var(--correct); font-size: 11px; top: 1px; }
+  .table-scaffold-wrap { overflow-x: auto; margin: 16px 0; }
+  .fill-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+  .fill-table th { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); padding: 8px 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .fill-table td { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+  .prop-cell { font-weight: 500; font-size: 13px; color: var(--text); white-space: nowrap; padding-right: 12px !important; }
+  .fill-cell { min-height: 44px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 8px; color: var(--text); font-size: 13px; line-height: 1.4; outline: none; transition: border-color 0.2s; cursor: text; }
+  .fill-cell:focus { border-color: rgba(245,166,35,0.4); background: rgba(245,166,35,0.04); }
+  .fill-cell:empty::before { content: attr(data-placeholder); color: rgba(139,144,167,0.5); pointer-events: none; }
+  .table-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 20px 0; }
+  .fc-wrap { perspective: 800px; height: 160px; }
+  .fc { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(.4,0,.2,1); cursor: pointer; }
+  .fc.flipped { transform: rotateY(180deg); }
+  .fc-front, .fc-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; justify-content: center; }
+  .fc-front { background: var(--surface2); border: 1px solid rgba(255,255,255,0.09); }
+  .fc-back { background: var(--metal-dim); border: 1px solid var(--metal-border); transform: rotateY(180deg); }
+  .fc-num { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--metal); margin-bottom: 8px; }
+  .fc-q { font-size: 13px; font-weight: 500; line-height: 1.4; flex: 1; }
+  .fc-a { font-size: 12px; color: var(--text); line-height: 1.5; }
+  .fc-flip-hint { font-size: 10px; color: var(--text-dim); margin-top: 8px; text-align: right; }
+
+  /* FOOTER */
+  .lesson-footer {
+    text-align: center;
+    padding: 0 24px 48px;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .scroll-hint {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 40px;
+    animation: bounce 1.5s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">Cambridge IGCSE Coordinated Sciences · Properties of Matter</div>
+  <h1><span class="m">Metals</span> vs <span class="nm">Non-metals</span></h1>
+  <p class="hero-sub">Most metals share a recognisable set of properties — but chemistry loves exceptions. Work through this lesson to find out what's typical, and what isn't.</p>
+  <div class="hero-key">
+    <span><span class="dot m"></span> Metal property</span>
+    <span><span class="dot nm"></span> Non-metal property</span>
+    <span><span class="dot ex"></span> Exception</span>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="progress-step" id="ps1"></div>
+    <div class="progress-step" id="ps2"></div>
+    <div class="progress-step" id="ps3"></div>
+    <div class="progress-step" id="ps4"></div>
+  </div>
+</div>
+
+<!-- LESSON CONTENT -->
+<div class="lesson-container">
+
+  <!-- SECTION A: Thermal Conductivity -->
+  <div class="section" id="sec1">
+    <div class="section-header">
+      <span class="section-badge">PART A</span>
+      <h2>Thermal Conductivity</h2>
+    </div>
+
+    <p style="font-size:15px; margin-bottom:16px;">Heat flows easily through metals. You already know this from everyday life — even if you haven't put a name to it yet.</p>
+
+    <div class="think">
+      <strong>Think first 🤔</strong> — Which of the objects below would you expect to get hot quickly when placed on a stove? Tap each one to decide.
+    </div>
+
+    <div class="examples-grid">
+      <div class="example-item" onclick="checkExample(this, true)">
+        <div class="example-icon">🥘</div>
+        <div class="example-label">Metal saucepan</div>
+        <div class="example-feedback">Yes — conducts heat well</div>
+      </div>
+      <div class="example-item" onclick="checkExample(this, false)">
+        <div class="example-icon">🪵</div>
+        <div class="example-label">Wooden handle</div>
+        <div class="example-feedback">Non-metal — stays cool</div>
+      </div>
+      <div class="example-item" onclick="checkExample(this, true)">
+        <div class="example-icon">🍴</div>
+        <div class="example-label">Steel fork</div>
+        <div class="example-feedback">Yes — metal conducts</div>
+      </div>
+      <div class="example-item" onclick="checkExample(this, false)">
+        <div class="example-icon">🧴</div>
+        <div class="example-label">Plastic bottle</div>
+        <div class="example-feedback">Non-metal — poor conductor</div>
+      </div>
+      <div class="example-item" onclick="checkExample(this, true)">
+        <div class="example-icon">🔑</div>
+        <div class="example-label">Metal key</div>
+        <div class="example-feedback">Conducts heat to your hand</div>
+      </div>
+      <div class="example-item" onclick="checkExample(this, false)">
+        <div class="example-icon">🧱</div>
+        <div class="example-label">Ceramic mug</div>
+        <div class="example-feedback">Poor conductor — stays cool</div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card metal">
+        <div class="card-label m">⬢ Metals</div>
+        <p>Good thermal conductors. Free electrons carry kinetic energy rapidly through the material. Saucepans, radiators, and heat sinks are all metal for this reason.</p>
+      </div>
+      <div class="compare-card nonmetal">
+        <div class="card-label nm">◯ Non-metals</div>
+        <p>Generally poor thermal conductors (insulators). No free electrons — energy is transferred more slowly through vibrating bonds only.</p>
+      </div>
+      <div class="compare-card exception">
+        <div class="card-label ex">⚠ Notable Exception</div>
+        <p><strong>Diamond</strong> — a non-metal form of carbon — is actually the best thermal conductor of any known material at room temperature. Its rigid covalent lattice transmits vibrations extremely efficiently, despite having no free electrons. This makes it useful in cutting tools and electronics cooling.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION B: Electrical Conductivity -->
+  <div class="section" id="sec2">
+    <div class="section-header">
+      <span class="section-badge">PART B</span>
+      <h2>Electrical Conductivity</h2>
+    </div>
+
+    <p style="font-size:15px; margin-bottom:16px;">Metals are electrical conductors because of their structure. Recall from metallic bonding: a sea of delocalised electrons is free to move and carry charge.</p>
+
+    <div class="wire-anim">
+      <svg class="circuit" viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="35" width="380" height="10" rx="5" fill="rgba(245,166,35,0.3)" stroke="#f5a623" stroke-width="1"/>
+        <circle class="electron" cx="20" cy="40" r="4" style="animation-delay:0s"/>
+        <circle class="electron" cx="50" cy="40" r="4" style="animation-delay:0.3s"/>
+        <circle class="electron" cx="90" cy="40" r="4" style="animation-delay:0.6s"/>
+        <circle class="electron" cx="130" cy="40" r="4" style="animation-delay:0.9s"/>
+        <circle class="electron" cx="170" cy="40" r="4" style="animation-delay:1.2s"/>
+        <circle class="electron" cx="210" cy="40" r="4" style="animation-delay:1.5s"/>
+        <text x="200" y="72" text-anchor="middle" fill="rgba(245,166,35,0.5)" font-size="9" font-family="Space Mono, monospace" letter-spacing="3">DELOCALISED ELECTRONS →</text>
+      </svg>
+      <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">Free electrons flow through the metal wire, carrying electrical charge</div>
+    </div>
+
+    <div class="think">
+      <strong>Which metals are used in wires?</strong> Not all metals are equally good. Reveal the answer below.
+    </div>
+
+    <button class="reveal-btn" onclick="toggleReveal('wire-reveal', this)">Show me ▾</button>
+    <div class="revealed" id="wire-reveal">
+      <table class="metals-table">
+        <thead>
+          <tr>
+            <th>Metal</th>
+            <th>Relative conductivity</th>
+            <th>Typical use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Silver (Ag)</td>
+            <td><span class="conductivity-bar" style="width:100px"></span></td>
+            <td style="color:var(--text-dim); font-size:13px;">Electronics (expensive)</td>
+          </tr>
+          <tr>
+            <td>Copper (Cu)</td>
+            <td><span class="conductivity-bar" style="width:94px"></span></td>
+            <td style="color:var(--text-dim); font-size:13px;">House wiring, PCBs ✓</td>
+          </tr>
+          <tr>
+            <td>Gold (Au)</td>
+            <td><span class="conductivity-bar" style="width:73px"></span></td>
+            <td style="color:var(--text-dim); font-size:13px;">Connector pins</td>
+          </tr>
+          <tr>
+            <td>Aluminium (Al)</td>
+            <td><span class="conductivity-bar" style="width:59px"></span></td>
+            <td style="color:var(--text-dim); font-size:13px;">Power cables ✓ (light)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="compare" style="margin-top:16px;">
+      <div class="compare-card metal">
+        <div class="card-label m">⬢ Metals</div>
+        <p>Conduct electricity in solid and liquid state. Free electrons carry the charge. Copper and aluminium dominate real-world wiring.</p>
+      </div>
+      <div class="compare-card nonmetal">
+        <div class="card-label nm">◯ Non-metals</div>
+        <p>Generally non-conductors (insulators). Used as cable sheaths and plug casings for this reason — they keep electricity in the wire.</p>
+      </div>
+      <div class="compare-card exception">
+        <div class="card-label ex">⚠ Notable Exception</div>
+        <p><strong>Graphite</strong> — another form of carbon — conducts electricity. Each carbon atom bonds to three others in layers, leaving one electron per atom delocalised between the layers. These mobile electrons allow graphite to conduct. It's used in electrodes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION C: Malleability -->
+  <div class="section" id="sec3">
+    <div class="section-header">
+      <span class="section-badge">PART C</span>
+      <h2>Malleability &amp; Brittleness</h2>
+    </div>
+
+    <p style="font-size:15px; margin-bottom:16px;">Students often muddle <strong>malleable</strong> and <strong>brittle</strong>. The interactive below should fix that. Try bending each material.</p>
+
+    <div class="property-demo">
+      <div class="demo-card">
+        <div class="demo-label" style="color:var(--metal)">Metal</div>
+        <div class="demo-visual">
+          <div class="metal-rod" id="metal-rod"></div>
+        </div>
+        <div class="demo-sub" id="metal-sub">Can be hammered or bent into shape</div>
+        <button class="demo-btn m-btn" id="metal-btn" onclick="bendMetal()">Bend it →</button>
+      </div>
+      <div class="demo-card">
+        <div class="demo-label" style="color:var(--nonmetal)">Solid Non-metal</div>
+        <div class="demo-visual">
+          <div class="brittle-rod" id="brittle-rod">
+            <div class="piece p1"></div><div class="piece p2"></div><div class="piece p3"></div>
+          </div>
+        </div>
+        <div class="demo-sub" id="brittle-sub">Shatters when struck or bent</div>
+        <button class="demo-btn nm-btn" id="brittle-btn" onclick="breakIt()">Strike it →</button>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card metal">
+        <div class="card-label m">⬢ Metals — Malleable &amp; Ductile</div>
+        <p><strong>Malleable:</strong> can be hammered into flat sheets. <strong>Ductile:</strong> can be drawn into wires. The layers of metal ions can slide over each other without breaking bonds, because the electron sea adapts.</p>
+      </div>
+      <div class="compare-card nonmetal">
+        <div class="card-label nm">◯ Solid Non-metals — Brittle</div>
+        <p>When a force is applied, layers of atoms shift and bring like-charges next to each other, causing repulsion — the material snaps. Sulfur, phosphorus, and iodine are all brittle solids.</p>
+      </div>
+    </div>
+
+    <div class="think">
+      <strong>⚠ Important:</strong> Most non-metals are not even solid at room temperature — nitrogen, oxygen, chlorine, and hydrogen are all gases. Solid non-metals (like sulfur) are the brittle ones.
+    </div>
+  </div>
+
+  <!-- SECTION D: Melting Points -->
+  <div class="section" id="sec4">
+    <div class="section-header">
+      <span class="section-badge">PART D</span>
+      <h2>Melting &amp; Boiling Points</h2>
+    </div>
+
+    <p style="font-size:15px; margin-bottom:16px;">Metals generally have high melting points because a lot of energy is needed to break the strong metallic bonds. Non-metals are the opposite — many are already gases at room temperature.</p>
+
+    <div class="melt-vis" id="melt-vis">
+      <div class="melt-title">Melting Points (°C) — click to animate</div>
+      <div id="melt-rows"></div>
+      <button class="reveal-btn" onclick="animateMelt()" style="margin-top:8px">Load comparison ▾</button>
+    </div>
+
+    <div class="compare">
+      <div class="compare-card metal">
+        <div class="card-label m">⬢ Metals</div>
+        <p>Most have high melting points. Iron melts at 1538°C; tungsten, used in light bulb filaments, melts at an extraordinary 3422°C. Strong metallic bonds require a lot of energy to overcome.</p>
+      </div>
+      <div class="compare-card nonmetal">
+        <div class="card-label nm">◯ Non-metals</div>
+        <p>Typically low melting points. Nitrogen melts at −210°C, bromine at −7°C. Most are already gases at 25°C. Simple molecular structures — weak intermolecular forces only.</p>
+      </div>
+    </div>
+
+    <div class="think">
+      <strong>Room temperature check:</strong> At 25°C, most metals are solid (only mercury is a liquid). Most non-metals are gases (oxygen, nitrogen, chlorine, hydrogen…). Which state do <em>you</em> think of first when someone says "non-metal"?
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section" id="quiz">
+    <div class="quiz-header">✦ Check your understanding</div>
+
+    <div class="quiz-q" id="qq1">
+      <div class="quiz-text">1. A student says "non-metals are always poor thermal conductors." What is wrong with this statement?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQ(1, false, this)">Nothing — non-metals never conduct heat</button>
+        <button class="quiz-opt" onclick="answerQ(1, true, this)">Diamond is a non-metal but conducts heat exceptionally well</button>
+        <button class="quiz-opt" onclick="answerQ(1, false, this)">Metals are also poor conductors</button>
+        <button class="quiz-opt" onclick="answerQ(1, false, this)">Only liquids conduct thermal energy</button>
+      </div>
+      <div class="quiz-feedback" id="qf1"></div>
+    </div>
+
+    <div class="quiz-q" id="qq2">
+      <div class="quiz-text">2. Why are metals electrical conductors?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQ(2, false, this)">They have tightly held electrons in fixed positions</button>
+        <button class="quiz-opt" onclick="answerQ(2, false, this)">They are liquids that allow ions to flow</button>
+        <button class="quiz-opt" onclick="answerQ(2, true, this)">They have a sea of delocalised electrons free to move and carry charge</button>
+        <button class="quiz-opt" onclick="answerQ(2, false, this)">Their atoms are very small</button>
+      </div>
+      <div class="quiz-feedback" id="qf2"></div>
+    </div>
+
+    <div class="quiz-q" id="qq3">
+      <div class="quiz-text">3. Which non-metal conducts electricity and is used in electrodes?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQ(3, false, this)">Sulfur</button>
+        <button class="quiz-opt" onclick="answerQ(3, false, this)">Diamond</button>
+        <button class="quiz-opt" onclick="answerQ(3, true, this)">Graphite</button>
+        <button class="quiz-opt" onclick="answerQ(3, false, this)">Silicon</button>
+      </div>
+      <div class="quiz-feedback" id="qf3"></div>
+    </div>
+
+    <div class="quiz-q" id="qq4">
+      <div class="quiz-text">4. A material shatters when hammered. What does this tell you about it?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQ(4, false, this)">It is definitely a metal</button>
+        <button class="quiz-opt" onclick="answerQ(4, true, this)">It is brittle — likely a solid non-metal</button>
+        <button class="quiz-opt" onclick="answerQ(4, false, this)">It has a high melting point</button>
+        <button class="quiz-opt" onclick="answerQ(4, false, this)">It is a good thermal conductor</button>
+      </div>
+      <div class="quiz-feedback" id="qf4"></div>
+    </div>
+
+    <div class="quiz-q" id="qq5">
+      <div class="quiz-text">5. Tungsten is used in light bulb filaments that reach 2500°C in operation. What property does this demonstrate?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQ(5, false, this)">Tungsten is brittle</button>
+        <button class="quiz-opt" onclick="answerQ(5, false, this)">Tungsten is a non-metal</button>
+        <button class="quiz-opt" onclick="answerQ(5, true, this)">Tungsten has a very high melting point, typical of metals</button>
+        <button class="quiz-opt" onclick="answerQ(5, false, this)">Tungsten is a poor electrical conductor</button>
+      </div>
+      <div class="quiz-feedback" id="qf5"></div>
+    </div>
+
+    <div class="quiz-q" id="qq6">
+      <div class="quiz-text">6. At room temperature (25°C), which of the following statements is correct?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answerQ(6, false, this)">Most non-metals are solid</button>
+        <button class="quiz-opt" onclick="answerQ(6, true, this)">Most metals are solid; most non-metals are gases</button>
+        <button class="quiz-opt" onclick="answerQ(6, false, this)">All metals and non-metals are solid</button>
+        <button class="quiz-opt" onclick="answerQ(6, false, this)">Metals are gases and non-metals are solid</button>
+      </div>
+      <div class="quiz-feedback" id="qf6"></div>
+    </div>
+
+    <button class="check-btn" onclick="showScore()">See my score</button>
+
+    <div class="quiz-score" id="quiz-score">
+      <div class="score-number" id="score-num">0/6</div>
+      <div class="score-label" id="score-label"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SUMMARY TASK -->
+<div class="summary-outer">
+  <div class="summary-container">
+
+    <div class="summary-header">
+      <div class="eyebrow" style="margin-bottom:10px">✦ Summary Task</div>
+      <h2 class="summary-title">Create your own revision resource</h2>
+      <p class="summary-intro">You've worked through the lesson — now consolidate it. Choose a format below and use the scaffold provided to produce your own summary of metals vs non-metals properties.</p>
+    </div>
+
+    <!-- FORMAT PICKER -->
+    <div class="format-grid">
+      <div class="format-card" onclick="selectFormat('poster')" id="fmt-poster">
+        <div class="format-icon">🪧</div>
+        <div class="format-name">Poster</div>
+        <div class="format-desc">A single-page visual for the classroom wall</div>
+      </div>
+      <div class="format-card" onclick="selectFormat('infographic')" id="fmt-infographic">
+        <div class="format-icon">📊</div>
+        <div class="format-name">Infographic</div>
+        <div class="format-desc">Icons, data, and short labels — no long sentences</div>
+      </div>
+      <div class="format-card" onclick="selectFormat('table')" id="fmt-table">
+        <div class="format-icon">📋</div>
+        <div class="format-name">Comparison Table</div>
+        <div class="format-desc">A structured grid to compare properties side by side</div>
+      </div>
+      <div class="format-card" onclick="selectFormat('flashcards')" id="fmt-flashcards">
+        <div class="format-icon">🃏</div>
+        <div class="format-name">Flashcard Set</div>
+        <div class="format-desc">Six key facts — one per card, front and back</div>
+      </div>
+    </div>
+
+    <!-- SCAFFOLDS -->
+    <div id="scaffold-area" style="display:none">
+
+      <!-- POSTER scaffold -->
+      <div class="scaffold" id="scaffold-poster">
+        <div class="scaffold-label">Poster scaffold</div>
+        <p class="scaffold-intro">A good poster communicates the key ideas visually at a glance. Aim for <strong>minimal text, maximum contrast</strong>. Use the structure below as your layout guide.</p>
+        <div class="poster-layout">
+          <div class="poster-zone header-zone">
+            <div class="zone-label">TITLE ZONE</div>
+            <div class="zone-hint">e.g. "Metals vs Non-Metals: General Properties" · large, bold, colour-coded</div>
+          </div>
+          <div class="poster-split">
+            <div class="poster-zone metal-zone">
+              <div class="zone-label" style="color:var(--metal)">METALS COLUMN</div>
+              <div class="zone-hint">List 4 properties with a symbol or icon each:<br>🔥 Thermal conductor<br>⚡ Electrical conductor<br>🔨 Malleable / ductile<br>🌡 High melting point</div>
+            </div>
+            <div class="poster-zone nonmetal-zone">
+              <div class="zone-label" style="color:var(--nonmetal)">NON-METALS COLUMN</div>
+              <div class="zone-hint">Contrast each property:<br>❄️ Thermal insulator (mostly)<br>🚫 Non-conductor (mostly)<br>💥 Brittle (solid non-metals)<br>🧊 Low melting point (mostly gases)</div>
+            </div>
+          </div>
+          <div class="poster-zone exception-zone">
+            <div class="zone-label" style="color:var(--exception)">EXCEPTIONS BANNER</div>
+            <div class="zone-hint">Diamond (thermal) · Graphite (electrical) — highlight these clearly</div>
+          </div>
+          <div class="poster-zone source-zone">
+            <div class="zone-label">EXAMPLES / REAL WORLD</div>
+            <div class="zone-hint">Saucepans · copper wiring · aluminium power cables · sulfur crystals</div>
+          </div>
+        </div>
+        <div class="task-box">
+          <div class="task-box-label">Your task</div>
+          <ol class="task-list">
+            <li>Sketch the layout above on A3 paper (or open Canva / Google Slides).</li>
+            <li>Fill each zone using <em>your own words</em> — not copy-pasted from this page.</li>
+            <li>Colour-code: amber/gold for metals, blue for non-metals, purple for exceptions.</li>
+            <li>Add at least one real-world example per property (e.g. copper wire for electrical conductivity).</li>
+            <li>Include the two exceptions with a brief explanation of <em>why</em> they break the rule.</li>
+          </ol>
+        </div>
+        <div class="success-criteria">
+          <div class="sc-label">✓ Success criteria</div>
+          <div class="sc-grid">
+            <div class="sc-item">All 4 properties covered for both metals and non-metals</div>
+            <div class="sc-item">Both exceptions named and explained</div>
+            <div class="sc-item">At least 4 real-world examples</div>
+            <div class="sc-item">Clear visual hierarchy — readable at arm's length</div>
+            <div class="sc-item">Colour-coding used consistently</div>
+            <div class="sc-item">No unexplained bullet points — every claim has a reason</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFOGRAPHIC scaffold -->
+      <div class="scaffold" id="scaffold-infographic">
+        <div class="scaffold-label">Infographic scaffold</div>
+        <p class="scaffold-intro">Infographics use <strong>icons + short labels + data</strong>. Every element earns its place — no waffle. Think magazine science spread, not essay.</p>
+        <div class="info-blocks">
+          <div class="info-block">
+            <div class="info-num" style="color:var(--metal)">01</div>
+            <div class="info-content">
+              <div class="info-title">Hero stat</div>
+              <div class="info-body">Lead with a striking number. e.g. <em>"Tungsten melts at 3422°C — hotter than the surface of the Sun."</em> Choose your own striking fact.</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-num" style="color:var(--metal)">02</div>
+            <div class="info-content">
+              <div class="info-title">Property icons (×4)</div>
+              <div class="info-body">One icon per property. Under each icon: one line for metals, one for non-metals. Keep each under 8 words.</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-num" style="color:var(--exception)">03</div>
+            <div class="info-content">
+              <div class="info-title">Exception spotlight</div>
+              <div class="info-body">A small "Did you know?" panel for diamond and graphite. One sentence each — lead with the surprising fact.</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-num" style="color:var(--nonmetal)">04</div>
+            <div class="info-content">
+              <div class="info-title">State at room temperature</div>
+              <div class="info-body">A simple visual: "Most metals → solid · Most non-metals → gas" with 3 named examples each.</div>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-num" style="color:var(--text-dim)">05</div>
+            <div class="info-content">
+              <div class="info-title">Source bar</div>
+              <div class="info-body">Bottom strip: your name, subject, date. Treat it like a real publication.</div>
+            </div>
+          </div>
+        </div>
+        <div class="task-box">
+          <div class="task-box-label">Your task</div>
+          <ol class="task-list">
+            <li>Choose your tool: paper + pencil, Canva, Google Slides, or Piktochart.</li>
+            <li>Build all 5 sections above. No full sentences except in the exception spotlight.</li>
+            <li>Every number you include must be accurate — fact-check against the lesson.</li>
+            <li>Use icons consistently (you can draw them or use emoji if working on paper).</li>
+          </ol>
+        </div>
+        <div class="success-criteria">
+          <div class="sc-label">✓ Success criteria</div>
+          <div class="sc-grid">
+            <div class="sc-item">Hero stat is accurate and genuinely striking</div>
+            <div class="sc-item">All 4 properties covered with icons</div>
+            <div class="sc-item">Both exceptions present with correct explanations</div>
+            <div class="sc-item">Minimal text — no sentence longer than 12 words outside the spotlight</div>
+            <div class="sc-item">Visual hierarchy clear — most important info largest</div>
+            <div class="sc-item">Accurate data throughout (check your melting points!)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE scaffold -->
+      <div class="scaffold" id="scaffold-table">
+        <div class="scaffold-label">Comparison table scaffold</div>
+        <p class="scaffold-intro">Fill in every cell — including the exceptions column. A blank cell is a gap in your understanding.</p>
+        <div class="table-scaffold-wrap">
+          <table class="fill-table">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th style="color:var(--metal)">Metals</th>
+                <th style="color:var(--nonmetal)">Non-metals</th>
+                <th style="color:var(--exception)">Exception(s)</th>
+                <th>Real-world example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="prop-cell">Thermal conductivity</td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+              </tr>
+              <tr>
+                <td class="prop-cell">Electrical conductivity</td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+              </tr>
+              <tr>
+                <td class="prop-cell">Physical texture / workability</td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+              </tr>
+              <tr>
+                <td class="prop-cell">Melting / boiling point</td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+              </tr>
+              <tr>
+                <td class="prop-cell">State at room temp.</td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+                <td><div class="fill-cell" contenteditable="true" spellcheck="false" data-placeholder="Type here…"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-actions">
+          <button class="reveal-btn" onclick="revealTable()">Reveal model answers ▾</button>
+          <button class="reveal-btn" onclick="clearTable()">Clear my answers ↺</button>
+        </div>
+        <div id="model-table" style="display:none; margin-top:16px;">
+          <div class="scaffold-label" style="color:var(--correct)">Model answers</div>
+          <table class="fill-table" style="margin-top:12px">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th style="color:var(--metal)">Metals</th>
+                <th style="color:var(--nonmetal)">Non-metals</th>
+                <th style="color:var(--exception)">Exception(s)</th>
+                <th>Real-world example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="prop-cell">Thermal conductivity</td>
+                <td style="font-size:13px">Good conductors — free electrons transfer kinetic energy</td>
+                <td style="font-size:13px">Poor conductors / insulators</td>
+                <td style="font-size:13px; color:var(--exception)">Diamond — best known thermal conductor</td>
+                <td style="font-size:13px">Metal saucepan; copper heat sink</td>
+              </tr>
+              <tr>
+                <td class="prop-cell">Electrical conductivity</td>
+                <td style="font-size:13px">Good conductors — delocalised electrons carry charge</td>
+                <td style="font-size:13px">Non-conductors / insulators</td>
+                <td style="font-size:13px; color:var(--exception)">Graphite — delocalised electrons between layers</td>
+                <td style="font-size:13px">Copper wire; aluminium power cable</td>
+              </tr>
+              <tr>
+                <td class="prop-cell">Physical texture / workability</td>
+                <td style="font-size:13px">Malleable and ductile — can be bent, hammered, drawn into wire</td>
+                <td style="font-size:13px">Brittle (solid non-metals) — shatter when struck</td>
+                <td style="font-size:13px; color:var(--exception)">Most non-metals are gases — brittleness only applies to solids</td>
+                <td style="font-size:13px">Copper wire (ductile); sulfur crystals (brittle)</td>
+              </tr>
+              <tr>
+                <td class="prop-cell">Melting / boiling point</td>
+                <td style="font-size:13px">Generally high — strong metallic bonds require much energy to break</td>
+                <td style="font-size:13px">Generally low — weak intermolecular forces</td>
+                <td style="font-size:13px; color:var(--exception)">Mercury (metal) melts at −39°C; diamond (non-metal) has exceptionally high MP</td>
+                <td style="font-size:13px">Tungsten filament (3422°C); nitrogen gas (−196°C BP)</td>
+              </tr>
+              <tr>
+                <td class="prop-cell">State at room temp.</td>
+                <td style="font-size:13px">Almost all solid (exception: mercury is a liquid)</td>
+                <td style="font-size:13px">Most are gases; some solids (sulfur, iodine); bromine is a liquid</td>
+                <td style="font-size:13px; color:var(--exception)">Bromine (non-metal liquid); mercury (metal liquid)</td>
+                <td style="font-size:13px">Iron nail (solid metal); oxygen in air (non-metal gas)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="task-box" style="margin-top:20px">
+          <div class="task-box-label">Extension</div>
+          <ol class="task-list">
+            <li>Add a sixth row for <strong>lustre</strong> (shininess) — research whether this is a reliable distinguishing property.</li>
+            <li>Can you think of any property where the pattern for metals and non-metals is the same rather than opposite?</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- FLASHCARDS scaffold -->
+      <div class="scaffold" id="scaffold-flashcards">
+        <div class="scaffold-label">Flashcard set scaffold</div>
+        <p class="scaffold-intro">Six cards — one key idea each. Write the <strong>question on the front</strong>, <strong>answer on the back</strong>. Click any card below to flip it and see the suggested content, then make your own version.</p>
+        <div class="cards-grid">
+          <div class="fc-wrap">
+            <div class="fc" onclick="flipCard(this)">
+              <div class="fc-front"><span class="fc-num">1</span><div class="fc-q">What is the general thermal conductivity of metals, and why?</div><div class="fc-flip-hint">tap to flip</div></div>
+              <div class="fc-back"><div class="fc-a">Metals are good thermal conductors. Their delocalised electrons carry kinetic energy rapidly through the material — no need to wait for vibrations to pass atom to atom.</div></div>
+            </div>
+          </div>
+          <div class="fc-wrap">
+            <div class="fc" onclick="flipCard(this)">
+              <div class="fc-front"><span class="fc-num">2</span><div class="fc-q">Which non-metal breaks the thermal conductivity rule, and how?</div><div class="fc-flip-hint">tap to flip</div></div>
+              <div class="fc-back"><div class="fc-a">Diamond. Its rigid covalent lattice transmits vibrations so efficiently that it outperforms all metals as a thermal conductor — despite having no free electrons.</div></div>
+            </div>
+          </div>
+          <div class="fc-wrap">
+            <div class="fc" onclick="flipCard(this)">
+              <div class="fc-front"><span class="fc-num">3</span><div class="fc-q">Why are metals electrical conductors but most non-metals are not?</div><div class="fc-flip-hint">tap to flip</div></div>
+              <div class="fc-back"><div class="fc-a">Metals have a sea of delocalised electrons that move freely and carry charge. Non-metals have no such free electrons — all electrons are localised in bonds.</div></div>
+            </div>
+          </div>
+          <div class="fc-wrap">
+            <div class="fc" onclick="flipCard(this)">
+              <div class="fc-front"><span class="fc-num">4</span><div class="fc-q">What is the difference between malleable and brittle?</div><div class="fc-flip-hint">tap to flip</div></div>
+              <div class="fc-back"><div class="fc-a">Malleable: can be hammered into shape without breaking (metals). Brittle: shatters when a force is applied (solid non-metals). The electron sea in metals allows layers to slide; rigid bonds in non-metals resist then snap.</div></div>
+            </div>
+          </div>
+          <div class="fc-wrap">
+            <div class="fc" onclick="flipCard(this)">
+              <div class="fc-front"><span class="fc-num">5</span><div class="fc-q">Why do metals generally have higher melting points than non-metals?</div><div class="fc-flip-hint">tap to flip</div></div>
+              <div class="fc-back"><div class="fc-a">Metals have strong metallic bonds (positive ions in a sea of electrons) that require a lot of energy to break. Non-metals have weak intermolecular forces — many are gases at room temperature.</div></div>
+            </div>
+          </div>
+          <div class="fc-wrap">
+            <div class="fc" onclick="flipCard(this)">
+              <div class="fc-front"><span class="fc-num">6</span><div class="fc-q">Name one conducting non-metal and explain why it conducts.</div><div class="fc-flip-hint">tap to flip</div></div>
+              <div class="fc-back"><div class="fc-a">Graphite. Each carbon bonds to three others, leaving one electron per atom delocalised between the layers. These mobile electrons allow graphite to conduct electricity — it's used in electrodes.</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="task-box" style="margin-top:20px">
+          <div class="task-box-label">Your task</div>
+          <ol class="task-list">
+            <li>Make your own physical (paper) version of these six cards — write the question yourself, don't copy the wording directly.</li>
+            <li>On the back of each card, include: the answer, one example, and one reason <em>why</em>.</li>
+            <li>Test a partner: can they get all six without hesitation?</li>
+            <li>Extension: add a 7th card for a property not covered here (e.g. lustre, density, or reactivity with acids).</li>
+          </ol>
+        </div>
+        <div class="success-criteria">
+          <div class="sc-label">✓ Success criteria</div>
+          <div class="sc-grid">
+            <div class="sc-item">All 6 cards completed in your own words</div>
+            <div class="sc-item">Each answer includes a "because" or "due to"</div>
+            <div class="sc-item">Both exceptions (diamond, graphite) appear</div>
+            <div class="sc-item">At least one real-world example per card</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end scaffold-area -->
+
+  </div><!-- end summary-container -->
+</div><!-- end summary-outer -->
+
+<div class="lesson-footer">
+  VISP · Sixth Form Science · Properties of Metals &amp; Non-Metals
+</div>
+
+<script>
+  // INTERSECTION OBSERVER for section reveal + progress
+  const sections = document.querySelectorAll('.section');
+  const progressSteps = [
+    document.getElementById('ps1'),
+    document.getElementById('ps2'),
+    document.getElementById('ps3'),
+    document.getElementById('ps4'),
+  ];
+
+  const sectionIds = ['sec1','sec2','sec3','sec4'];
+  const completed = new Set();
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        const idx = sectionIds.indexOf(entry.target.id);
+        if (idx !== -1) {
+          completed.add(idx);
+          updateProgress();
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  sections.forEach(s => observer.observe(s));
+
+  function updateProgress() {
+    progressSteps.forEach((step, i) => {
+      if (completed.has(i)) {
+        const max = Math.max(...completed);
+        if (i === max) step.className = 'progress-step active';
+        else step.className = 'progress-step done';
+      }
+    });
+  }
+
+  // EVERYDAY EXAMPLE CLICK
+  function checkExample(el, isGood) {
+    if (el.classList.contains('selected-good') || el.classList.contains('selected-bad')) return;
+    el.classList.add(isGood ? 'selected-good' : 'selected-bad');
+  }
+
+  // REVEAL TOGGLE
+  function toggleReveal(id, btn) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+    btn.textContent = el.classList.contains('open') ? 'Hide ▴' : 'Show me ▾';
+  }
+
+  // METAL BENDING
+  let metalBent = false;
+  function bendMetal() {
+    const rod = document.getElementById('metal-rod');
+    const btn = document.getElementById('metal-btn');
+    const sub = document.getElementById('metal-sub');
+    metalBent = !metalBent;
+    rod.classList.toggle('bent', metalBent);
+    if (metalBent) {
+      btn.textContent = 'Straighten ↩';
+      sub.textContent = 'Malleable — it bends without breaking';
+    } else {
+      btn.textContent = 'Bend it →';
+      sub.textContent = 'Can be hammered or bent into shape';
+    }
+  }
+
+  // BRITTLE BREAK
+  let broken = false;
+  function breakIt() {
+    const rod = document.getElementById('brittle-rod');
+    const btn = document.getElementById('brittle-btn');
+    const sub = document.getElementById('brittle-sub');
+    broken = !broken;
+    rod.classList.toggle('broken', broken);
+    if (broken) {
+      btn.textContent = 'Reset ↩';
+      sub.textContent = 'Brittle — it shattered into pieces';
+    } else {
+      btn.textContent = 'Strike it →';
+      sub.textContent = 'Shatters when struck or bent';
+    }
+  }
+
+  // MELTING POINT VIS
+  const meltData = [
+    { name: 'Tungsten', val: 3422, type: 'metal', max: 3422 },
+    { name: 'Iron', val: 1538, type: 'metal', max: 3422 },
+    { name: 'Copper', val: 1085, type: 'metal', max: 3422 },
+    { name: 'Aluminium', val: 660, type: 'metal', max: 3422 },
+    { name: 'Mercury', val: -39, type: 'metal', max: 3422 },
+    { name: 'Sulfur (non-m.)', val: 115, type: 'nonmetal', max: 3422 },
+    { name: 'Bromine (non-m.)', val: -7, type: 'nonmetal', max: 3422 },
+    { name: 'Nitrogen (non-m.)', val: -210, type: 'nonmetal', max: 3422 },
+  ];
+
+  function animateMelt() {
+    const container = document.getElementById('melt-rows');
+    container.innerHTML = '';
+    const min = -300;
+    const range = 3422 - min;
+
+    let metalLabel = document.createElement('div');
+    metalLabel.className = 'melt-divider';
+    metalLabel.textContent = 'METALS';
+    container.appendChild(metalLabel);
+
+    meltData.filter(d => d.type === 'metal').forEach((d, i) => {
+      container.appendChild(makeMeltRow(d, min, range, i * 80));
+    });
+
+    let nmLabel = document.createElement('div');
+    nmLabel.className = 'melt-divider';
+    nmLabel.textContent = 'NON-METALS';
+    container.appendChild(nmLabel);
+
+    meltData.filter(d => d.type === 'nonmetal').forEach((d, i) => {
+      container.appendChild(makeMeltRow(d, min, range, (i + meltData.filter(d => d.type==='metal').length) * 80));
+    });
+
+    document.querySelector('#melt-vis .reveal-btn').style.display = 'none';
+  }
+
+  function makeMeltRow(d, min, range, delay) {
+    const pct = Math.max(1, ((d.val - min) / range) * 100);
+    const row = document.createElement('div');
+    row.className = 'melt-row';
+    row.innerHTML = `
+      <div class="melt-name">${d.name}</div>
+      <div class="melt-track"><div class="melt-fill ${d.type === 'metal' ? 'metal-fill' : 'nonmetal-fill'}" style="width:0" data-pct="${pct}"></div></div>
+      <div class="melt-val">${d.val}°C</div>
+    `;
+    setTimeout(() => {
+      row.querySelector('.melt-fill').style.width = pct + '%';
+    }, 100);
+    return row;
+  }
+
+  // QUIZ
+  const answers = {};
+  const feedback = {
+    1: { right: 'Correct! Diamond is a famous exception — the best thermal conductor of any material.', wrong: 'Not quite. Diamond is a non-metal that conducts heat extremely well — the statement ignores exceptions.' },
+    2: { right: 'Correct! Delocalised electrons are the key — they can move freely and carry charge.', wrong: 'Not quite. It\'s the sea of free/delocalised electrons that allows metals to conduct.' },
+    3: { right: 'Correct! Graphite has layers with delocalised electrons between them.', wrong: 'Not quite. Graphite is the electrically conducting non-metal — the others don\'t have free electrons.' },
+    4: { right: 'Correct! Brittleness is the characteristic of solid non-metals when a stress is applied.', wrong: 'Not quite. Brittle behaviour (shattering) is typical of solid non-metals, not metals.' },
+    5: { right: 'Correct! Metals typically have high melting points — tungsten\'s is the highest of all elements.', wrong: 'Not quite. The relevant property here is tungsten\'s extremely high melting point, a typical metal property.' },
+    6: { right: 'Exactly right! Most metals are solid at room temperature; nitrogen, oxygen, chlorine and many others are gases.', wrong: 'Not quite. Most metals are solid at 25°C, but most non-metals are gases — only mercury is a liquid metal.' },
+  };
+
+  function answerQ(q, isCorrect, btn) {
+    const opts = btn.closest('.quiz-options').querySelectorAll('.quiz-opt');
+    opts.forEach(o => o.disabled = true);
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.getElementById('qf' + q).textContent = isCorrect ? feedback[q].right : feedback[q].wrong;
+    answers[q] = isCorrect;
+
+    // mark correct if wrong chosen
+    if (!isCorrect) {
+      opts.forEach(o => {
+        if (o.onclick.toString().includes('true')) o.classList.add('correct');
+      });
+    }
+  }
+
+  function showScore() {
+    const total = Object.values(answers).filter(Boolean).length;
+    const el = document.getElementById('quiz-score');
+    el.style.display = 'block';
+    document.getElementById('score-num').textContent = total + '/6';
+    const labels = ['Keep going — review the sections above!', 'Good start — revisit the exceptions!', 'Getting there!', 'Solid effort!', 'Great work!', 'Excellent — full marks! 🎉', 'Outstanding! 🌟'];
+    document.getElementById('score-label').textContent = labels[total] || '';
+  }
+
+  // SUMMARY TASK
+  function selectFormat(fmt) {
+    document.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('fmt-' + fmt).classList.add('selected');
+    document.querySelectorAll('.scaffold').forEach(s => s.classList.remove('active'));
+    document.getElementById('scaffold-' + fmt).classList.add('active');
+    const sa = document.getElementById('scaffold-area');
+    sa.style.display = 'block';
+    setTimeout(() => sa.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  function flipCard(el) { el.classList.toggle('flipped'); }
+
+  function revealTable() {
+    const mt = document.getElementById('model-table');
+    mt.style.display = mt.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function clearTable() {
+    document.querySelectorAll('.fill-cell').forEach(c => { c.textContent = ''; });
+  }
+</script>
+</body>
+</html>
