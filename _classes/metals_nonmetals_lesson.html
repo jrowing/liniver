@@ -4,7 +4,6 @@ description: "An introduction to metals"
 category: "Y10" 
 layout: null 
 ---
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -584,6 +583,133 @@ layout: null
     100% { transform: translateX(280px); opacity: 0.2; }
   }
 
+  /* VIDEOS & RESEARCH */
+  .vr-outer {
+    background: #0c0f18;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 60px 24px 70px;
+  }
+  .vr-container { max-width: 780px; margin: 0 auto; }
+
+  .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 48px; }
+  @media (max-width: 640px) { .video-grid { grid-template-columns: 1fr; } }
+
+  .video-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .video-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 12px 16px 0;
+  }
+
+  .video-embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    margin: 10px 0 0;
+  }
+
+  .video-embed iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .video-meta { padding: 14px 16px 0; }
+  .video-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .video-source { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--nonmetal); margin-bottom: 8px; }
+  .video-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  .watch-qs { background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.06); padding: 14px 16px; margin-top: 14px; }
+  .wq-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--metal); margin-bottom: 10px; }
+  .wq-list { padding-left: 16px; }
+  .wq-list li { font-size: 12px; color: var(--text-dim); margin-bottom: 7px; line-height: 1.5; }
+  .wq-list li:last-child { margin-bottom: 0; }
+
+  /* RESEARCH */
+  .research-section { }
+  .research-header { margin-bottom: 24px; }
+  .research-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .research-intro { font-size: 14px; color: var(--text-dim); max-width: 580px; line-height: 1.6; }
+
+  .rt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 580px) { .rt-grid { grid-template-columns: 1fr; } }
+
+  .rt-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius);
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .rt-card:hover { border-color: rgba(255,255,255,0.15); }
+
+  .rt-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 3px 7px;
+    margin-bottom: 10px;
+  }
+  .rt-tag-core { background: var(--metal-dim); color: var(--metal); border: 1px solid var(--metal-border); }
+  .rt-tag-extend { background: var(--exception-dim); color: var(--exception); border: 1px solid rgba(167,139,250,0.3); }
+  .rt-tag-real { background: var(--nonmetal-dim); color: var(--nonmetal); border: 1px solid var(--nonmetal-border); }
+
+  .rt-icon { font-size: 24px; margin-bottom: 8px; }
+  .rt-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .rt-body { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
+
+  .rt-expand-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-dim);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+  }
+  .rt-expand-btn:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+  .rt-expand-btn.open { border-color: rgba(245,166,35,0.3); color: var(--metal); }
+
+  .rt-questions {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    animation: fadeIn 0.3s ease;
+  }
+  .rt-questions.open { display: block; }
+  .rt-questions ol { padding-left: 16px; }
+  .rt-questions li { font-size: 13px; color: var(--text); margin-bottom: 9px; line-height: 1.5; }
+  .rt-questions li:last-child { margin-bottom: 0; }
+  .rt-suggest {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-style: italic;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    line-height: 1.5;
+  }
+
   /* SUMMARY TASK */
   .summary-outer {
     background: var(--surface);
@@ -999,6 +1125,177 @@ layout: null
   </div>
 
 </div>
+
+<!-- VIDEOS & RESEARCH -->
+<div class="vr-outer">
+  <div class="vr-container">
+
+    <div class="eyebrow" style="margin-bottom:10px">▶ Watch &amp; Research</div>
+    <h2 class="summary-title">Go deeper</h2>
+    <p class="summary-intro">Two videos to consolidate what you've learned, followed by independent research tasks. Watch first, then choose a task.</p>
+
+    <!-- VIDEOS -->
+    <div class="video-grid">
+
+      <div class="video-card">
+        <div class="video-label">VIDEO 1 OF 2</div>
+        <div class="video-embed">
+          <iframe src="https://www.youtube.com/embed/DOB_fJO6-uA" title="Metals & Non-metals: Electron Arrangement & Properties — Cognito" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-meta">
+          <div class="video-title">Metals &amp; Non-metals: Electron Arrangement &amp; Properties</div>
+          <div class="video-source">Cognito · 2025 · ~8 min</div>
+          <div class="video-desc">Covers the four general properties from this lesson plus how electron arrangement explains the differences. Good exam-focused summary.</div>
+        </div>
+        <div class="watch-qs">
+          <div class="wq-label">Watch questions — answer as you go</div>
+          <ol class="wq-list">
+            <li>How does the video explain <em>why</em> metals conduct electricity, in terms of electrons? Does it match what you learned here?</li>
+            <li>The video mentions the periodic table location of metals and non-metals. Sketch the dividing line from memory after watching.</li>
+            <li>Note down any property or example mentioned in the video that wasn't covered in this lesson.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-label">VIDEO 2 OF 2</div>
+        <div class="video-embed">
+          <iframe src="https://www.youtube.com/embed/R-Q_00aPqpU" title="What Are Allotropes? Non-Metals — FuseSchool" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-meta">
+          <div class="video-title">What Are Allotropes? — Non-Metals</div>
+          <div class="video-source">FuseSchool · ~4 min</div>
+          <div class="video-desc">Focuses on diamond and graphite — the two exceptions from this lesson. Explains their structures and why they break the usual non-metal rules.</div>
+        </div>
+        <div class="watch-qs">
+          <div class="wq-label">Watch questions — answer as you go</div>
+          <ol class="wq-list">
+            <li>What is an allotrope? Give the definition in your own words after watching.</li>
+            <li>The video explains graphite's structure in detail. Draw a simple diagram of the layers from memory after watching.</li>
+            <li>Why is diamond hard but graphite soft, even though both are pure carbon? Explain using the video's structural diagrams.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div><!-- end video-grid -->
+
+    <!-- RESEARCH TASKS -->
+    <div class="research-section">
+      <div class="research-header">
+        <div class="eyebrow" style="margin-bottom:8px">🔍 Research Tasks</div>
+        <h3 class="research-title">Choose one (or more) to investigate</h3>
+        <p class="research-intro">These tasks take you beyond the lesson content. Use reliable sources — try BBC Bitesize, RSC ChemSpider, or your textbook. Aim for a written response of at least a paragraph per question.</p>
+      </div>
+
+      <div class="rt-grid">
+
+        <div class="rt-card" id="rt1">
+          <div class="rt-tag rt-tag-core">Core</div>
+          <div class="rt-icon">💎</div>
+          <div class="rt-title">The Carbon Paradox</div>
+          <div class="rt-body">Diamond and graphite are both made entirely of carbon atoms, yet one is the hardest natural material and one of the best thermal conductors, while the other is soft and conducts electricity. Research the structures of both allotropes at the atomic level.</div>
+          <button class="rt-expand-btn" onclick="toggleRT('rt1')">See the questions ▾</button>
+          <div class="rt-questions" id="rt1-qs">
+            <ol>
+              <li>How many covalent bonds does each carbon atom form in (a) diamond and (b) graphite? What shape does each arrangement make?</li>
+              <li>What are the delocalised electrons in graphite and where do they come from?</li>
+              <li>Why can graphite layers slide over each other, but diamond cannot be scratched by almost anything?</li>
+              <li>What is graphene? How is it related to graphite and why is it scientifically exciting?</li>
+            </ol>
+            <div class="rt-suggest">Suggested sources: RSC.org, BBC Bitesize Chemistry (allotropes), your Cambridge textbook Chapter on carbon chemistry.</div>
+          </div>
+        </div>
+
+        <div class="rt-card" id="rt2">
+          <div class="rt-tag rt-tag-core">Core</div>
+          <div class="rt-icon">⚡</div>
+          <div class="rt-title">Why Copper, Not Silver?</div>
+          <div class="rt-body">Silver is a better electrical conductor than copper — yet your house is wired with copper. Research the real-world trade-offs behind material selection for electrical wiring.</div>
+          <button class="rt-expand-btn" onclick="toggleRT('rt2')">See the questions ▾</button>
+          <div class="rt-questions" id="rt2-qs">
+            <ol>
+              <li>List three properties a material needs to be a good electrical wiring material (not just conductivity).</li>
+              <li>Why is aluminium used in high-voltage power transmission cables instead of copper, despite being a worse conductor?</li>
+              <li>What is resistivity? Find the resistivity values for copper, aluminium, and silver and compare them.</li>
+              <li>Research one recent development in superconducting materials. What temperature do current superconductors require, and why is this a practical problem?</li>
+            </ol>
+            <div class="rt-suggest">Suggested sources: IOP Physics.org, Engineering Toolbox, New Scientist articles on superconductors.</div>
+          </div>
+        </div>
+
+        <div class="rt-card" id="rt3">
+          <div class="rt-tag rt-tag-extend">Extension</div>
+          <div class="rt-icon">🌡</div>
+          <div class="rt-title">The Outliers: Mercury &amp; Bromine</div>
+          <div class="rt-body">At room temperature, mercury is the only metal that is liquid, and bromine is the only non-metal liquid. Both break the "typical" pattern. Investigate why.</div>
+          <button class="rt-expand-btn" onclick="toggleRT('rt3')">See the questions ▾</button>
+          <div class="rt-questions" id="rt3-qs">
+            <ol>
+              <li>Mercury's low melting point (−39°C) is unusual for a metal. Look up the relativistic effects that explain this — write a brief summary in plain language.</li>
+              <li>Bromine boils at 59°C — just above room temperature. What type of intermolecular forces hold bromine molecules together in the liquid?</li>
+              <li>Mercury is highly toxic. Research one historical case where mercury poisoning affected a large population or a famous individual.</li>
+              <li>Find two current industrial or scientific uses of liquid mercury and evaluate whether the risks justify the uses.</li>
+            </ol>
+            <div class="rt-suggest">Suggested sources: RSC.org element pages, Wikipedia (for relativistic effects — check the citations), Chemistry World magazine.</div>
+          </div>
+        </div>
+
+        <div class="rt-card" id="rt4">
+          <div class="rt-tag rt-tag-extend">Extension</div>
+          <div class="rt-icon">🔩</div>
+          <div class="rt-title">Metalloids: The In-Between Elements</div>
+          <div class="rt-body">Silicon, germanium, arsenic, antimony — these elements sit on the "staircase" line between metals and non-metals on the periodic table. They're neither fully one nor the other. Research this category.</div>
+          <button class="rt-expand-btn" onclick="toggleRT('rt4')">See the questions ▾</button>
+          <div class="rt-questions" id="rt4-qs">
+            <ol>
+              <li>List five elements generally classified as metalloids and give one property each that is "metal-like" and one that is "non-metal-like".</li>
+              <li>Silicon is a semiconductor. Explain in simple terms what a semiconductor is and why it is more useful than a pure conductor or insulator for electronics.</li>
+              <li>Why is the metal/non-metal classification described as "general" rather than exact? Use metalloids and the exceptions from this lesson in your answer.</li>
+              <li>Research the "silicon revolution" — how did silicon-based semiconductors change human technology? Give three specific examples.</li>
+            </ol>
+            <div class="rt-suggest">Suggested sources: BBC Bitesize, Khan Academy Chemistry, Science Museum Group articles on the silicon chip.</div>
+          </div>
+        </div>
+
+        <div class="rt-card" id="rt5">
+          <div class="rt-tag rt-tag-real">Real World</div>
+          <div class="rt-icon">🌊</div>
+          <div class="rt-title">Metals in the Ocean</div>
+          <div class="rt-body">Seawater contains dissolved metal ions and non-metal compounds — and it corrodes most metals aggressively. Marine environments present unique materials challenges. Research the chemistry of metals at sea.</div>
+          <button class="rt-expand-btn" onclick="toggleRT('rt5')">See the questions ▾</button>
+          <div class="rt-questions" id="rt5-qs">
+            <ol>
+              <li>Why does salt water corrode metals faster than fresh water? Explain using the concept of electrical conductivity.</li>
+              <li>Titanium is used in submarine hulls and offshore structures despite being expensive. What properties make it ideal for marine use?</li>
+              <li>Research "sacrificial anodes" — what are they, what metal are they usually made from, and how do they protect ship hulls?</li>
+              <li>Deep-sea polymetallic nodules contain manganese, nickel, copper, and cobalt. Research the debate around deep-sea mining: what are the arguments for and against extracting these metal deposits?</li>
+            </ol>
+            <div class="rt-suggest">Suggested sources: NOAA Ocean Service, National Geographic, BBC Science (deep-sea mining debates), your Cambridge textbook (corrosion section).</div>
+          </div>
+        </div>
+
+        <div class="rt-card" id="rt6">
+          <div class="rt-tag rt-tag-real">Real World</div>
+          <div class="rt-icon">🏎</div>
+          <div class="rt-title">Materials in Extreme Environments</div>
+          <div class="rt-body">Formula 1 cars, spacecraft re-entry shields, and jet turbine blades all require materials that behave well far outside normal conditions. Research how engineers exploit the properties of metals and non-metals in extreme engineering.</div>
+          <button class="rt-expand-btn" onclick="toggleRT('rt6')">See the questions ▾</button>
+          <div class="rt-questions" id="rt6-qs">
+            <ol>
+              <li>Tungsten has the highest melting point of all metals (3422°C). Find two specific engineering applications that rely on this property and explain why no other material would work as well.</li>
+              <li>Carbon fibre (a non-metal material) is used in F1 chassis and aircraft parts. List its key properties and explain why it outperforms metals in these applications.</li>
+              <li>The Space Shuttle's heat shield tiles were made of silicon dioxide — a non-metal compound. Research how they worked and why metals could not be used instead.</li>
+              <li>Research "superalloys" — what are they, which metals are they typically based on, and where are they used?</li>
+            </ol>
+            <div class="rt-suggest">Suggested sources: NASA Materials Science articles, Engineering.com, F1 Technical (f1technical.net), IOM3 (Institute of Materials).</div>
+          </div>
+        </div>
+
+      </div><!-- end rt-grid -->
+    </div><!-- end research-section -->
+
+  </div><!-- end vr-container -->
+</div><!-- end vr-outer -->
 
 <!-- SUMMARY TASK -->
 <div class="summary-outer">
@@ -1512,6 +1809,15 @@ layout: null
     document.getElementById('score-num').textContent = total + '/6';
     const labels = ['Keep going — review the sections above!', 'Good start — revisit the exceptions!', 'Getting there!', 'Solid effort!', 'Great work!', 'Excellent — full marks! 🎉', 'Outstanding! 🌟'];
     document.getElementById('score-label').textContent = labels[total] || '';
+  }
+
+  // RESEARCH TASK TOGGLES
+  function toggleRT(id) {
+    const qs = document.getElementById(id + '-qs');
+    const btn = document.querySelector('#' + id + ' .rt-expand-btn');
+    const isOpen = qs.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.textContent = isOpen ? 'Hide questions ▴' : 'See the questions ▾';
   }
 
   // SUMMARY TASK
