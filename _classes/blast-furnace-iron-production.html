@@ -1,0 +1,672 @@
+--- 
+title: "Blast Furnace Research" 
+description: "From rock to rail" 
+category: "Y10" 
+layout: null 
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Blast Furnace | Rock to Rail — Iron Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --furnace-black:#12100e;
+    --panel:#1b1815;
+    --panel-2:#221e19;
+    --molten:#ff5a1f;
+    --ember:#ffb347;
+    --slag-grey:#5b564e;
+    --slag-grey-soft:#3a3630;
+    --ash:#f5f0e6;
+    --ash-dim:#c9c2b4;
+    --rust:#8b3a1f;
+    --line:#332e27;
+    --good:#6fbf73;
+    --bad:#e0604a;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--furnace-black);
+    color:var(--ash);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  ::selection{background:var(--molten); color:var(--furnace-black);}
+
+  h1,h2,h3,.display{
+    font-family:'Big Shoulders Display',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    color:var(--ash);
+    margin:0;
+  }
+
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  a{color:var(--ember);}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px;
+    background:rgba(18,16,14,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .brand{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:900;
+    font-size:1.15rem;
+    letter-spacing:0.03em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--molten); box-shadow:0 0 10px 2px var(--molten);}
+  .topbar nav{display:flex; gap:4px; flex-wrap:wrap;}
+  .topbar nav button{
+    background:none;border:1px solid transparent;color:var(--ash-dim);
+    font-family:'Inter',sans-serif; font-size:0.78rem; font-weight:600;
+    padding:7px 12px; border-radius:20px; cursor:pointer;
+    text-transform:uppercase; letter-spacing:0.05em;
+    transition:all .2s;
+  }
+  .topbar nav button:hover, .topbar nav button.active{
+    border-color:var(--molten); color:var(--ember);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:80px 24px 56px;
+    max-width:1200px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ember);
+    text-transform:uppercase; letter-spacing:0.12em; margin-bottom:14px;
+  }
+  .hero h1{font-size:clamp(2.6rem,5.5vw,4.6rem); line-height:0.95; font-weight:900;}
+  .hero h1 span{color:var(--molten);}
+  .hero p.lead{font-size:1.05rem; color:var(--ash-dim); max-width:46ch; margin-top:18px;}
+  .hero-stats{display:flex; gap:28px; margin-top:28px; flex-wrap:wrap;}
+  .hero-stats div{border-left:2px solid var(--molten); padding-left:12px;}
+  .hero-stats .num{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:1.6rem; color:var(--ember);}
+  .hero-stats .lbl{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ash-dim);}
+  .hero-visual{display:flex; justify-content:center;}
+  .hero-visual svg{width:100%; max-width:280px; filter:drop-shadow(0 0 30px rgba(255,90,31,0.15));}
+
+  /* ---------- Layout: sticky furnace + content ---------- */
+  .lab{
+    max-width:1300px; margin:0 auto; padding:0 24px 40px;
+    display:grid; grid-template-columns:340px 1fr; gap:48px;
+  }
+  .furnace-rail{position:sticky; top:70px; align-self:start; height:calc(100vh - 90px); display:flex; flex-direction:column; align-items:center; padding-top:16px;}
+  .furnace-readout{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; width:100%; margin-top:16px;
+  }
+  .furnace-readout .zone-name{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:1.3rem; color:var(--ember); text-transform:uppercase;}
+  .furnace-readout .zone-temp{font-family:'IBM Plex Mono',monospace; font-size:0.95rem; color:var(--molten); margin-top:2px;}
+  .furnace-readout .zone-desc{font-size:0.85rem; color:var(--ash-dim); margin-top:8px;}
+
+  .zone{fill:var(--slag-grey-soft); stroke:var(--slag-grey); stroke-width:1.5; transition:fill .4s ease, filter .4s ease;}
+  .zone.zone--active{fill:var(--molten); filter:drop-shadow(0 0 14px var(--molten));}
+  .furnace-shell{fill:none; stroke:var(--ash-dim); stroke-width:2.5;}
+  .zone-label{font-family:'IBM Plex Mono',monospace; font-size:9px; fill:var(--ash-dim); text-transform:uppercase; letter-spacing:0.05em;}
+
+  .content{min-width:0;}
+  section.block{padding:52px 0; border-bottom:1px solid var(--line);}
+  section.block:last-child{border-bottom:none;}
+  .block h2{font-size:2.1rem; font-weight:800;}
+  .block .kicker{font-family:'IBM Plex Mono',monospace; color:var(--ember); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:8px;}
+  .block > p.intro{color:var(--ash-dim); max-width:62ch; margin-top:10px;}
+
+  /* raw materials cards */
+  .materials-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; margin-top:28px;}
+  .material-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px;
+    border-top:3px solid var(--slag-grey);
+  }
+  .material-card.ore{border-top-color:var(--rust);}
+  .material-card.coke{border-top-color:#3d3a36;}
+  .material-card.limestone{border-top-color:#9c9384;}
+  .material-card.air{border-top-color:var(--ember);}
+  .material-card h3{font-size:1.3rem; margin-bottom:4px;}
+  .material-card .formula{font-family:'IBM Plex Mono',monospace; color:var(--ember); font-size:0.85rem;}
+  .material-card p{font-size:0.88rem; color:var(--ash-dim); margin-top:8px;}
+
+  /* process zone cards */
+  .zone-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:22px 24px; margin-top:22px; position:relative; overflow:hidden;
+  }
+  .zone-card::before{
+    content:attr(data-height); position:absolute; top:14px; right:18px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ash-dim);
+  }
+  .zone-card h3{font-size:1.6rem; color:var(--ember);}
+  .zone-card .temp-tag{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.78rem;
+    background:var(--panel-2); color:var(--molten); padding:3px 10px; border-radius:20px; margin:8px 0 12px;
+  }
+  .equation{
+    background:var(--furnace-black); border:1px solid var(--line); border-left:3px solid var(--molten);
+    padding:12px 16px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:0.95rem;
+    margin:10px 0; overflow-x:auto; white-space:nowrap;
+  }
+  .zone-card p{color:var(--ash-dim); font-size:0.93rem;}
+
+  /* products */
+  .products-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin-top:26px;}
+  .product-card{background:var(--panel-2); border-radius:10px; padding:20px;}
+  .product-card h3{font-size:1.25rem; color:var(--ash);}
+  .product-card .tag{font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ember); text-transform:uppercase;}
+  .product-card p{font-size:0.87rem; color:var(--ash-dim); margin-top:6px;}
+
+  /* quiz */
+  .quiz-card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:18px;}
+  .quiz-card p.q{font-weight:600; margin-bottom:12px;}
+  .quiz-options{display:flex; flex-direction:column; gap:8px;}
+  .quiz-options button{
+    text-align:left; background:var(--panel-2); border:1px solid var(--line); color:var(--ash);
+    padding:10px 14px; border-radius:8px; cursor:pointer; font-family:'Inter',sans-serif; font-size:0.9rem;
+    transition:all .15s;
+  }
+  .quiz-options button:hover{border-color:var(--ember);}
+  .quiz-options button.correct{background:rgba(111,191,115,0.15); border-color:var(--good); color:var(--good);}
+  .quiz-options button.incorrect{background:rgba(224,96,74,0.15); border-color:var(--bad); color:var(--bad);}
+  .quiz-feedback{margin-top:10px; font-size:0.85rem; color:var(--ash-dim); min-height:1.2em;}
+  .quiz-score{margin-top:20px; font-family:'IBM Plex Mono',monospace; color:var(--ember);}
+
+  /* poster toolkit */
+  .toolkit-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px;}
+  @media (max-width:760px){.toolkit-grid{grid-template-columns:1fr;}}
+  .toolkit-panel{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:22px;}
+  .toolkit-panel h3{font-size:1.15rem; color:var(--ember); text-transform:uppercase; margin-bottom:14px;}
+  .checklist label{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:0.9rem; cursor:pointer;}
+  .checklist label:last-child{border-bottom:none;}
+  .checklist input{margin-top:3px; accent-color:var(--molten); width:16px; height:16px; flex-shrink:0;}
+  .checklist span.done{text-decoration:line-through; color:var(--ash-dim);}
+
+  .tiers{display:flex; flex-direction:column; gap:14px; margin-top:26px;}
+  .tier{
+    display:grid; grid-template-columns:120px 1fr; gap:16px; align-items:start;
+    background:var(--panel); border-radius:10px; padding:16px 18px; border-left:4px solid var(--slag-grey);
+  }
+  .tier.slag{border-left-color:var(--slag-grey);}
+  .tier.pig{border-left-color:var(--rust);}
+  .tier.steel{border-left-color:var(--ember);}
+  .tier .tier-name{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:1.35rem;}
+  .tier.slag .tier-name{color:var(--ash-dim);}
+  .tier.pig .tier-name{color:var(--rust);}
+  .tier.steel .tier-name{color:var(--ember);}
+  .tier p{font-size:0.87rem; color:var(--ash-dim); margin:4px 0 0;}
+
+  .design-tips{list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .design-tips li{font-size:0.88rem; color:var(--ash-dim); padding-left:20px; position:relative;}
+  .design-tips li::before{content:"—"; position:absolute; left:0; color:var(--ember);}
+
+  /* glossary */
+  .glossary{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:2px; margin-top:24px; background:var(--line); border-radius:10px; overflow:hidden;}
+  .glossary dt{background:var(--panel); padding:14px 16px 4px; font-family:'IBM Plex Mono',monospace; font-size:0.85rem; color:var(--ember);}
+  .glossary dd{background:var(--panel); margin:0; padding:0 16px 14px; font-size:0.83rem; color:var(--ash-dim);}
+
+  footer{text-align:center; padding:36px 20px; color:var(--ash-dim); font-size:0.8rem; font-family:'IBM Plex Mono',monospace;}
+
+  /* mobile */
+  @media (max-width:920px){
+    .hero{grid-template-columns:1fr; text-align:left;}
+    .hero-visual{order:-1; max-width:180px; margin:0 auto;}
+    .hero-visual svg{max-width:170px;}
+    .lab{grid-template-columns:1fr;}
+    .furnace-rail{position:relative; top:0; height:auto; padding:20px 0 0;}
+    .furnace-rail svg{max-width:150px;}
+    .topbar nav{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span>ROCK&nbsp;TO&nbsp;RAIL</div>
+  <nav>
+    <button data-jump="materials">Materials</button>
+    <button data-jump="process">The Furnace</button>
+    <button data-jump="products">Products</button>
+    <button data-jump="quiz">Check Yourself</button>
+    <button data-jump="toolkit">Poster Toolkit</button>
+  </nav>
+</div>
+
+<header class="hero">
+  <div>
+    <div class="eyebrow">IGCSE Coordinated Sciences · Extraction of Metals</div>
+    <h1>How do we turn<br><span>rock</span> into rail?</h1>
+    <p class="lead">Every year, over a billion tonnes of iron ore go into blast furnaces and come out as molten iron. This page walks you through exactly how — zone by zone, reaction by reaction — so you've got everything you need to build a brilliant poster on iron production.</p>
+    <div class="hero-stats">
+      <div><div class="num">~1900°C</div><div class="lbl">Hottest zone</div></div>
+      <div><div class="num">4</div><div class="lbl">Raw materials</div></div>
+      <div><div class="num">5</div><div class="lbl">Key reactions</div></div>
+    </div>
+  </div>
+  <div class="hero-visual" id="heroVisual"></div>
+</header>
+
+<div class="lab">
+  <!-- Sticky furnace cross-section -->
+  <div class="furnace-rail">
+    <svg viewBox="0 0 320 640" id="furnaceSvg">
+      <defs>
+        <clipPath id="furnaceClip">
+          <path d="M130,40 L60,160 L88,300 L92,460 L92,580 L228,580 L228,460 L232,300 L260,160 L190,40 Z"/>
+        </clipPath>
+      </defs>
+
+      <!-- zone bands, clipped to furnace silhouette -->
+      <g clip-path="url(#furnaceClip)">
+        <rect class="zone" data-zone="throat" x="0" y="30" width="320" height="130"></rect>
+        <rect class="zone" data-zone="stack" x="0" y="160" width="320" height="140"></rect>
+        <rect class="zone" data-zone="bosh" x="0" y="300" width="320" height="160"></rect>
+        <rect class="zone" data-zone="tuyeres" x="0" y="460" width="320" height="60"></rect>
+        <rect class="zone" data-zone="hearth" x="0" y="520" width="320" height="60"></rect>
+      </g>
+
+      <!-- outer shell outline -->
+      <path class="furnace-shell" d="M130,40 L60,160 L88,300 L92,460 L92,580 L228,580 L228,460 L232,300 L260,160 L190,40 Z"/>
+
+      <!-- tuyere nozzles -->
+      <rect x="60" y="482" width="24" height="10" fill="#3d3a36" stroke="#5b564e"/>
+      <rect x="236" y="482" width="24" height="10" fill="#3d3a36" stroke="#5b564e"/>
+
+      <!-- tap holes -->
+      <rect x="92" y="565" width="16" height="8" fill="var(--furnace-black)" stroke="#5b564e"/>
+      <rect x="212" y="540" width="16" height="8" fill="var(--furnace-black)" stroke="#5b564e"/>
+
+      <!-- labels -->
+      <text class="zone-label" x="164" y="105" text-anchor="middle">THROAT</text>
+      <text class="zone-label" x="164" y="232" text-anchor="middle">STACK</text>
+      <text class="zone-label" x="164" y="382" text-anchor="middle">BOSH</text>
+      <text class="zone-label" x="164" y="493" text-anchor="middle">TUYERES</text>
+      <text class="zone-label" x="164" y="553" text-anchor="middle">HEARTH</text>
+    </svg>
+
+    <div class="furnace-readout">
+      <div class="zone-name" id="readoutName">Throat</div>
+      <div class="zone-temp mono" id="readoutTemp">~200°C</div>
+      <div class="zone-desc" id="readoutDesc">Iron ore, coke and limestone are loaded in from the top as "the charge."</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- MATERIALS -->
+    <section class="block" id="materials">
+      <div class="kicker">Step 0 · What goes in</div>
+      <h2>The Charge</h2>
+      <p class="intro">Four raw materials go into a blast furnace. Get these right and the rest of the process — and your poster — falls into place.</p>
+      <div class="materials-grid">
+        <div class="material-card ore">
+          <h3>Iron ore</h3>
+          <div class="formula">Haematite, Fe₂O₃</div>
+          <p>The source of iron itself. It's an oxide — iron chemically bonded to oxygen — so it has to be <em>reduced</em> to get pure iron out.</p>
+        </div>
+        <div class="material-card coke">
+          <h3>Coke</h3>
+          <div class="formula">Carbon, C</div>
+          <p>Made by heating coal without air. It's the fuel <em>and</em> the reducing agent — it does the actual job of removing oxygen from the ore.</p>
+        </div>
+        <div class="material-card limestone">
+          <h3>Limestone</h3>
+          <div class="formula">Calcium carbonate, CaCO₃</div>
+          <p>The flux. It reacts with sandy impurities (silica) in the ore to form slag, which is removed separately from the iron.</p>
+        </div>
+        <div class="material-card air">
+          <h3>Hot air blast</h3>
+          <div class="formula">Preheated O₂ / N₂</div>
+          <p>Blasted in through the tuyeres near the bottom. It's what makes the coke combust and drives the whole furnace's heat.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="block" id="process">
+      <div class="kicker">Step 1 · Inside the furnace</div>
+      <h2>Five zones, top to bottom</h2>
+      <p class="intro">A blast furnace runs continuously — materials are added at the top and molten iron is tapped from the bottom, 24 hours a day. As the charge sinks, it passes through zones of rising temperature, each doing a different chemical job. Scroll through and watch the furnace on the left light up.</p>
+
+      <div class="zone-card" data-zone="throat" data-height="≈ top 3m">
+        <h3>1 · Throat — loading the charge</h3>
+        <span class="temp-tag">~200°C</span>
+        <p>Iron ore, coke and limestone are tipped in from the top in alternating layers. Nothing chemical happens yet — this is just the charge beginning its slow journey down.</p>
+      </div>
+
+      <div class="zone-card" data-zone="stack" data-height="≈ mid-upper">
+        <h3>2 · Stack — reduction begins</h3>
+        <span class="temp-tag">400–900°C</span>
+        <p>Hot carbon monoxide gas, rising from lower down, meets the descending iron ore. It pulls the oxygen away from the iron oxide — this is <strong>reduction</strong> (loss of oxygen).</p>
+        <div class="equation">Fe₂O₃(s) + 3CO(g) → 2Fe(s) + 3CO₂(g)</div>
+        <p>This is the single most important reaction in the whole furnace — it's the moment iron ore actually becomes iron. It happens gradually as the ore falls further down and gets hotter.</p>
+      </div>
+
+      <div class="zone-card" data-zone="bosh" data-height="≈ mid-lower">
+        <h3>3 · Bosh — flux and slag</h3>
+        <span class="temp-tag">900–1600°C</span>
+        <p>Limestone decomposes in the heat, releasing carbon dioxide:</p>
+        <div class="equation">CaCO₃(s) → CaO(s) + CO₂(g)</div>
+        <p>The calcium oxide formed then reacts with silica (sand, SiO₂) — the main impurity in the ore — to form molten <strong>slag</strong>:</p>
+        <div class="equation">CaO(s) + SiO₂(s) → CaSiO₃(l)</div>
+        <p>Slag is less dense than iron, so it floats above the molten iron collecting below — which is exactly how the furnace separates them.</p>
+      </div>
+
+      <div class="zone-card" data-zone="tuyeres" data-height="≈ lower">
+        <h3>4 · Tuyeres — combustion</h3>
+        <span class="temp-tag">~1900°C (hottest point)</span>
+        <p>The hot air blast enters here and the coke bursts into combustion — an exothermic reaction that supplies almost all the heat for the whole furnace:</p>
+        <div class="equation">C(s) + O₂(g) → CO₂(g)</div>
+        <p>That CO₂ then reacts with more red-hot coke rising past it, producing the carbon monoxide that does the reducing work higher up in the stack:</p>
+        <div class="equation">CO₂(g) + C(s) → 2CO(g)</div>
+      </div>
+
+      <div class="zone-card" data-zone="hearth" data-height="≈ base">
+        <h3>5 · Hearth — collection and tapping</h3>
+        <span class="temp-tag">~1500°C</span>
+        <p>Molten iron and molten slag collect in the base. Because slag floats, it's tapped off from a higher outlet; the denser molten iron is tapped from a lower outlet at the very bottom, ready to be cast or carried straight to a steelworks.</p>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="block" id="products">
+      <div class="kicker">Step 2 · What comes out</div>
+      <h2>Three outputs</h2>
+      <p class="intro">A working furnace doesn't just make iron — everything that comes out of it gets used for something.</p>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="tag">Main product</div>
+          <h3>Molten iron</h3>
+          <p>About 96% iron. Still contains carbon and other impurities, so it's brittle — this is "pig iron." Most goes straight on to be turned into steel.</p>
+        </div>
+        <div class="product-card">
+          <div class="tag">By-product</div>
+          <h3>Slag</h3>
+          <p>Cooled and crushed, slag is sold on — it's used to make road surfaces and as a component of cement.</p>
+        </div>
+        <div class="product-card">
+          <div class="tag">By-product</div>
+          <h3>Waste gases</h3>
+          <p>The mix of nitrogen, CO and CO₂ leaving the top is captured and burned to preheat the incoming air blast — recycling heat back into the furnace.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="block" id="quiz">
+      <div class="kicker">Step 3 · Prove it</div>
+      <h2>Check yourself</h2>
+      <p class="intro">Five quick questions. No pressure — get one wrong and you'll see why, then you can carry the right answer straight into your poster.</p>
+      <div id="quizContainer"></div>
+      <div class="quiz-score" id="quizScore"></div>
+    </section>
+
+    <!-- POSTER TOOLKIT -->
+    <section class="block" id="toolkit">
+      <div class="kicker">Step 4 · Build it</div>
+      <h2>Poster Toolkit</h2>
+      <p class="intro">Everything below is aimed squarely at your iron production poster — tick things off as you plan, and use the tiers to check how far you've pushed it.</p>
+
+      <div class="toolkit-grid">
+        <div class="toolkit-panel">
+          <h3>Content checklist</h3>
+          <div class="checklist" id="checklist">
+            <label><input type="checkbox"><span>All four raw materials named, with their chemical formulas</span></label>
+            <label><input type="checkbox"><span>A labelled diagram of the furnace, showing at least the throat, tuyeres and hearth</span></label>
+            <label><input type="checkbox"><span>The main reduction equation: Fe₂O₃ + 3CO → 2Fe + 3CO₂</span></label>
+            <label><input type="checkbox"><span>The slag-forming equation: CaO + SiO₂ → CaSiO₃</span></label>
+            <label><input type="checkbox"><span>An explanation of why limestone is added (removing impurities as slag)</span></label>
+            <label><input type="checkbox"><span>What happens to each of the three products afterwards</span></label>
+            <label><input type="checkbox"><span>Correct use of the words "reduction" and "oxidation"</span></label>
+          </div>
+        </div>
+
+        <div class="toolkit-panel">
+          <h3>Suggested structure</h3>
+          <ul class="design-tips">
+            <li>Open with a hook — a striking fact or image, not a dictionary definition.</li>
+            <li>Put one large, clearly labelled diagram at the visual centre of the poster.</li>
+            <li>Walk the reader through the process in the actual order it happens — top to bottom of the furnace.</li>
+            <li>Box or highlight your equations so they're not lost in body text.</li>
+            <li>Finish with a short "why this matters" — where the iron actually goes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:36px; font-size:1.2rem; color:var(--ash); text-transform:uppercase;">Which tier is your draft in?</h3>
+      <div class="tiers">
+        <div class="tier slag">
+          <div class="tier-name">Slag</div>
+          <p>States what the furnace does but doesn't explain <em>how</em>. No equations, or equations copied without explanation.</p>
+        </div>
+        <div class="tier pig">
+          <div class="tier-name">Pig iron</div>
+          <p>Correct raw materials and a labelled diagram. At least the main reduction equation is included and briefly explained.</p>
+        </div>
+        <div class="tier steel">
+          <div class="tier-name">Steel</div>
+          <p>All key equations present and explained in the right order, slag formation is properly justified, and products are linked to real uses. Reads like you actually understand the furnace, not just memorised it.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:36px; font-size:1.2rem; color:var(--ash); text-transform:uppercase;">Design tips for the poster itself</h3>
+      <ul class="design-tips">
+        <li>Pick one accent colour for "hot" zones and one for "cool" zones — colour-code your diagram to match the text around it.</li>
+        <li>Leave white space. A poster crammed edge-to-edge is harder to mark and harder to read from across a room.</li>
+        <li>Use arrows to show flow — materials down, gases up — rather than describing direction in a sentence.</li>
+        <li>Keep font sizes to two or three levels: title, section heading, body. More than that looks noisy.</li>
+      </ul>
+    </section>
+
+    <!-- GLOSSARY -->
+    <section class="block" id="glossary">
+      <div class="kicker">Reference</div>
+      <h2>Glossary</h2>
+      <dl class="glossary">
+        <div><dt>Haematite</dt><dd>The main iron ore, mostly iron(III) oxide, Fe₂O₃.</dd></div>
+        <div><dt>Reduction</dt><dd>Loss of oxygen (or gain of electrons) — what happens to iron oxide as it becomes iron.</dd></div>
+        <div><dt>Oxidation</dt><dd>Gain of oxygen — what happens to carbon as it burns to CO₂.</dd></div>
+        <div><dt>Reducing agent</dt><dd>A substance that removes oxygen from another — carbon monoxide, in this furnace.</dd></div>
+        <div><dt>Flux</dt><dd>A substance added to remove impurities — limestone, which reacts with silica.</dd></div>
+        <div><dt>Gangue</dt><dd>The unwanted rocky material (mainly silica/sand) mixed in with the iron ore.</dd></div>
+        <div><dt>Slag</dt><dd>Molten calcium silicate — the waste product formed when flux reacts with gangue.</dd></div>
+        <div><dt>Tuyeres</dt><dd>Nozzles near the base of the furnace through which the hot air blast is forced in.</dd></div>
+        <div><dt>Exothermic</dt><dd>A reaction that releases heat — coke combustion, which powers the whole furnace.</dd></div>
+        <div><dt>Pig iron</dt><dd>The impure molten iron tapped from the furnace, roughly 96% iron.</dd></div>
+      </dl>
+    </section>
+
+  </div>
+</div>
+
+<footer>Built for Year 10 · Iron Production &amp; The Blast Furnace</footer>
+
+<script>
+// ---------- Hero mini furnace icon ----------
+document.getElementById('heroVisual').innerHTML = `
+<svg viewBox="0 0 320 640" xmlns="http://www.w3.org/2000/svg">
+  <path d="M130,40 L60,160 L88,300 L92,460 L92,580 L228,580 L228,460 L232,300 L260,160 L190,40 Z"
+        fill="none" stroke="#c9c2b4" stroke-width="3"/>
+  <rect x="92" y="500" width="136" height="80" fill="#ff5a1f" opacity="0.85"/>
+  <rect x="92" y="440" width="136" height="60" fill="#ffb347" opacity="0.55"/>
+  <path d="M130,40 L60,160 L88,300 L92,460 L92,580 L228,580 L228,460 L232,300 L260,160 L190,40 Z" fill="#12100e" opacity="0" />
+</svg>`;
+
+// ---------- Zone sync between scroll and furnace SVG ----------
+const zoneData = {
+  throat:  {name:"Throat",  temp:"~200°C",        desc:"Iron ore, coke and limestone are loaded in from the top as \u201cthe charge.\u201d"},
+  stack:   {name:"Stack",   temp:"400–900°C",     desc:"Rising carbon monoxide reduces the iron oxide — this is where ore becomes iron."},
+  bosh:    {name:"Bosh",    temp:"900–1600°C",    desc:"Limestone decomposes and reacts with impurities to form molten slag."},
+  tuyeres: {name:"Tuyeres", temp:"~1900°C",       desc:"Hot air blast makes coke combust — the hottest zone, and the furnace's main heat source."},
+  hearth:  {name:"Hearth",  temp:"~1500°C",       desc:"Molten iron and slag collect and separate by density, ready to be tapped off."}
+};
+
+const svgZones = document.querySelectorAll('#furnaceSvg .zone');
+const readoutName = document.getElementById('readoutName');
+const readoutTemp = document.getElementById('readoutTemp');
+const readoutDesc = document.getElementById('readoutDesc');
+
+function activateZone(key){
+  svgZones.forEach(z => z.classList.toggle('zone--active', z.dataset.zone === key));
+  const d = zoneData[key];
+  if(d){
+    readoutName.textContent = d.name;
+    readoutTemp.textContent = d.temp;
+    readoutDesc.textContent = d.desc;
+  }
+}
+activateZone('throat');
+
+const zoneCards = document.querySelectorAll('.zone-card[data-zone]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      activateZone(entry.target.dataset.zone);
+    }
+  });
+}, {rootMargin: "-40% 0px -50% 0px", threshold: 0});
+zoneCards.forEach(c => observer.observe(c));
+
+// ---------- Nav jump + active state ----------
+const navButtons = document.querySelectorAll('.topbar nav button');
+navButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById(btn.dataset.jump).scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+const sectionEls = document.querySelectorAll('section.block');
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.jump === entry.target.id));
+    }
+  });
+}, {rootMargin: "-45% 0px -50% 0px"});
+sectionEls.forEach(s => navObserver.observe(s));
+
+// ---------- Quiz ----------
+const questions = [
+  {
+    q: "Which raw material is both the fuel AND the reducing agent?",
+    options: ["Limestone", "Coke", "Hot air", "Iron ore"],
+    correct: 1,
+    explain: "Coke (carbon) burns to release heat, and reacts further to form carbon monoxide — the gas that actually reduces the iron ore."
+  },
+  {
+    q: "What is the main reduction reaction in the blast furnace?",
+    options: [
+      "CaCO₃ → CaO + CO₂",
+      "C + O₂ → CO₂",
+      "Fe₂O₃ + 3CO → 2Fe + 3CO₂",
+      "CaO + SiO₂ → CaSiO₃"
+    ],
+    correct: 2,
+    explain: "This is the reaction that removes oxygen from iron oxide, producing molten iron and carbon dioxide."
+  },
+  {
+    q: "Why is limestone added to the furnace?",
+    options: [
+      "To provide extra heat",
+      "To react with sandy impurities and form slag",
+      "To reduce the iron ore directly",
+      "To cool the hearth"
+    ],
+    correct: 1,
+    explain: "Limestone decomposes to calcium oxide, which reacts with silica (gangue) to form slag — separating impurities from the iron."
+  },
+  {
+    q: "Why does slag float above the molten iron in the hearth?",
+    options: [
+      "It's hotter than the iron",
+      "It's less dense than iron",
+      "It's added later, after the iron",
+      "It reacts with the tuyeres"
+    ],
+    correct: 1,
+    explain: "Slag is less dense than molten iron, so it naturally sits on top — which is exactly how the furnace can tap them off separately."
+  },
+  {
+    q: "Which zone of the furnace reaches the highest temperature, and why?",
+    options: [
+      "The throat — because materials enter hot",
+      "The tuyeres — where coke combusts in the hot air blast",
+      "The stack — where reduction happens",
+      "The hearth — where iron is stored"
+    ],
+    correct: 1,
+    explain: "The combustion of coke at the tuyeres (~1900°C) is exothermic and drives the heat for the entire furnace."
+  }
+];
+
+let score = 0;
+let answered = 0;
+const quizContainer = document.getElementById('quizContainer');
+
+questions.forEach((item, qi) => {
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  const qEl = document.createElement('p');
+  qEl.className = 'q';
+  qEl.textContent = (qi+1) + '. ' + item.q;
+  card.appendChild(qEl);
+
+  const optWrap = document.createElement('div');
+  optWrap.className = 'quiz-options';
+
+  const feedback = document.createElement('div');
+  feedback.className = 'quiz-feedback';
+
+  item.options.forEach((opt, oi) => {
+    const b = document.createElement('button');
+    b.textContent = opt;
+    b.addEventListener('click', () => {
+      if(b.dataset.locked) return;
+      Array.from(optWrap.children).forEach(c => c.dataset.locked = "true");
+      answered++;
+      if(oi === item.correct){
+        b.classList.add('correct');
+        score++;
+        feedback.textContent = "Correct — " + item.explain;
+      } else {
+        b.classList.add('incorrect');
+        Array.from(optWrap.children)[item.correct].classList.add('correct');
+        feedback.textContent = "Not quite — " + item.explain;
+      }
+      updateScore();
+    });
+    optWrap.appendChild(b);
+  });
+
+  card.appendChild(optWrap);
+  card.appendChild(feedback);
+  quizContainer.appendChild(card);
+});
+
+function updateScore(){
+  document.getElementById('quizScore').textContent =
+    answered === questions.length
+      ? `Score: ${score} / ${questions.length} — ${score === questions.length ? "furnace-grade understanding." : "have another look at the ones you missed, then head to the toolkit."}`
+      : `Score so far: ${score} / ${answered}`;
+}
+
+// ---------- Poster checklist visual feedback ----------
+document.querySelectorAll('#checklist input').forEach(cb => {
+  cb.addEventListener('change', () => {
+    cb.nextElementSibling.classList.toggle('done', cb.checked);
+  });
+});
+</script>
+</body>
+</html>
