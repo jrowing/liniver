@@ -1,0 +1,883 @@
+--- 
+title: "Carbon Cycle Research" 
+description: "C02 and more" 
+category: "Y9" 
+layout: null 
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Carbon Cycle — Research Station</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --carbon-black:#18160f;
+    --graphite:#2c2820;
+    --graphite-light:#3c362a;
+    --paper:#e9e3d3;
+    --chalk:#f6f2e7;
+    --moss:#7c9a5c;
+    --moss-dim:#5c7443;
+    --ember:#c76b3a;
+    --ember-dim:#8f4d29;
+    --sea:#3f8482;
+    --sea-dim:#2c5f5d;
+    --rust:#a85c3a;
+    --line:#4a4436;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--carbon-black);
+    color:var(--paper);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk', sans-serif;
+    letter-spacing:-0.01em;
+    color:var(--chalk);
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ---- header ---- */
+  header{
+    padding:2.2rem 6vw 1.6rem;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:1.2rem;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:0.72rem;
+    color:var(--moss);
+    margin:0 0 0.5rem;
+  }
+  header h1{
+    font-size:clamp(1.8rem, 3.4vw, 2.6rem);
+    margin:0;
+    font-weight:700;
+  }
+  header h1 span{color:var(--ember);}
+  .timer-box{
+    text-align:right;
+    min-width:220px;
+  }
+  .timer-display{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:2.4rem;
+    font-weight:600;
+    color:var(--chalk);
+    line-height:1;
+    font-variant-numeric:tabular-nums;
+  }
+  .timer-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--paper);
+    opacity:0.6;
+    margin-bottom:0.35rem;
+  }
+  .timer-controls{margin-top:0.5rem;}
+  .timer-controls button{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--paper);
+    padding:0.4rem 0.7rem;
+    border-radius:2px;
+    cursor:pointer;
+    margin-left:0.4rem;
+  }
+  .timer-controls button:hover{border-color:var(--moss); color:var(--moss);}
+
+  /* ---- intro strip ---- */
+  .brief{
+    padding:1.4rem 6vw;
+    display:flex;
+    gap:2.5rem;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    font-size:0.95rem;
+  }
+  .brief div{flex:1; min-width:220px;}
+  .brief .num{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--sea);
+    font-size:0.75rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:0.3rem;
+  }
+
+  /* ---- main layout ---- */
+  main{
+    display:grid;
+    grid-template-columns:minmax(320px, 460px) 1fr;
+    gap:0;
+  }
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;}
+  }
+
+  /* ---- cycle web ---- */
+  .ring-wrap{
+    padding:2.5rem 3vw;
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:sticky;
+    top:0;
+    align-self:start;
+  }
+  @media (max-width:900px){ .ring-wrap{position:static; border-right:none; border-bottom:1px solid var(--line);} }
+  .ring-caption{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--paper);
+    opacity:0.55;
+    margin-top:1rem;
+    text-align:center;
+    max-width:360px;
+  }
+  .reservoir{cursor:default;}
+  .reservoir circle.node-dot{
+    fill:var(--graphite-light);
+    stroke:var(--line);
+    stroke-width:1.5;
+    transition:stroke 0.25s ease, fill 0.25s ease;
+  }
+  .reservoir.center circle.node-dot{ fill:var(--graphite-light); stroke-width:2; }
+  .reservoir.lit circle.node-dot{ stroke:var(--ember); fill:var(--graphite-light); }
+  .reservoir text{
+    font-family:'IBM Plex Mono', monospace;
+    fill:var(--paper);
+    font-size:9.5px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    pointer-events:none;
+  }
+  .reservoir text.r-line2{ fill:var(--ember); }
+
+  .flow-edge{
+    cursor:pointer;
+  }
+  .flow-edge path.hit-line{
+    stroke:transparent;
+    stroke-width:22;
+    fill:none;
+  }
+  .flow-edge.decorative path.hit-line{
+    stroke-width:16;
+    cursor:help;
+  }
+  .flow-edge path.flow-line{
+    stroke:var(--sea-dim);
+    stroke-width:1.75;
+    fill:none;
+    transition:stroke 0.2s ease, stroke-width 0.2s ease;
+  }
+  .flow-edge:hover path.flow-line, .flow-edge.active path.flow-line{
+    stroke:var(--ember);
+    stroke-width:2.5;
+  }
+  .flow-edge.decorative path.flow-line{
+    stroke:var(--line);
+    stroke-width:1.1;
+    stroke-dasharray:1 5;
+  }
+  .flow-edge.decorative{cursor:help;}
+  .carbon-atom{
+    fill:var(--chalk);
+    filter:drop-shadow(0 0 3px rgba(246,242,231,0.7));
+  }
+  .carbon-atom.dim{
+    fill:var(--paper);
+    opacity:0.55;
+  }
+
+  /* ---- content panel ---- */
+  .panel{padding:2.5rem 4vw 4rem;}
+  .station-header{
+    display:flex;
+    align-items:baseline;
+    gap:0.8rem;
+    border-bottom:2px solid var(--moss);
+    padding-bottom:0.8rem;
+    margin-bottom:1.4rem;
+  }
+  .station-header .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--carbon-black);
+    background:var(--moss);
+    padding:0.2rem 0.5rem;
+    border-radius:2px;
+  }
+  .station-header h2{margin:0; font-size:1.7rem;}
+  .grid-2{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:2.2rem;
+  }
+  @media (max-width:640px){ .grid-2{grid-template-columns:1fr;} }
+  .card{
+    background:var(--graphite);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1.2rem 1.4rem;
+    margin-bottom:1.2rem;
+  }
+  .card h3{
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin:0 0 0.6rem;
+    color:var(--sea);
+  }
+  .equation{
+    font-family:'IBM Plex Mono', monospace;
+    background:var(--carbon-black);
+    border:1px solid var(--line);
+    padding:0.7rem 1rem;
+    border-radius:3px;
+    font-size:0.92rem;
+    color:var(--chalk);
+    overflow-x:auto;
+  }
+  .vocab-list{list-style:none; margin:0; padding:0;}
+  .vocab-list li{margin-bottom:0.7rem;}
+  .vocab-list b{color:var(--ember); font-family:'Space Grotesk', sans-serif;}
+  .questions{list-style:none; margin:0; padding:0;}
+  .questions li{
+    padding-left:1.6rem;
+    position:relative;
+    margin-bottom:0.7rem;
+    font-size:0.95rem;
+  }
+  .questions li::before{
+    content:"?";
+    position:absolute; left:0; top:0;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--moss);
+    font-weight:600;
+  }
+  .fact-list{margin:0; padding-left:1.2rem;}
+  .fact-list li{margin-bottom:0.5rem;}
+
+  /* ---- checklist sidebar (within panel, at bottom of ring column on wide, or after content on narrow) ---- */
+  .checklist-box{
+    padding:1.6rem;
+    background:var(--graphite-light);
+    border:1px dashed var(--line);
+    border-radius:4px;
+    margin-top:1.5rem;
+    width:100%;
+  }
+  .checklist-box h3{
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--rust);
+    margin:0 0 0.8rem;
+  }
+  .checklist-box label{
+    display:flex;
+    align-items:flex-start;
+    gap:0.55rem;
+    font-size:0.88rem;
+    margin-bottom:0.6rem;
+    cursor:pointer;
+  }
+  .checklist-box input{margin-top:0.25rem;}
+  .checklist-box .done{ text-decoration:line-through; opacity:0.55; }
+  .progress-bar{
+    height:4px;
+    background:var(--line);
+    border-radius:2px;
+    overflow:hidden;
+    margin-top:0.9rem;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--moss);
+    width:0%;
+    transition:width 0.3s ease;
+  }
+
+  .sources{
+    padding:2.2rem 6vw 2.5rem;
+    border-top:1px solid var(--line);
+  }
+  .sources h3{
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--sea);
+    margin:0 0 1.2rem;
+  }
+  .sources-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:1rem;
+  }
+  .source-card{
+    display:block;
+    background:var(--graphite);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1rem 1.1rem;
+    text-decoration:none;
+    color:var(--paper);
+    transition:border-color 0.2s ease, transform 0.2s ease;
+  }
+  .source-card:hover{
+    border-color:var(--moss);
+    transform:translateY(-2px);
+  }
+  .src-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.65rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ember);
+  }
+  .source-card h4{
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--chalk);
+    font-size:0.98rem;
+    margin:0.4rem 0 0.4rem;
+    line-height:1.3;
+  }
+  .source-card p{
+    font-size:0.85rem;
+    margin:0;
+    opacity:0.85;
+    line-height:1.45;
+  }
+
+  footer{
+    padding:1.8rem 6vw 2.5rem;
+    border-top:1px solid var(--line);
+    font-size:0.85rem;
+    color:var(--paper);
+    opacity:0.75;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:0.6rem;
+  }
+  .pulse{
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.4;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .pulse{animation:none;}
+    .carbon-atom{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="eyebrow">Coordinated Sciences · Biology · Ecosystems</p>
+    <h1>The Carbon <span>Cycle</span></h1>
+  </div>
+  <div class="timer-box">
+    <div class="timer-label">Research phase — 45:00</div>
+    <div class="timer-display mono" id="timer">45:00</div>
+    <div class="timer-controls">
+      <button id="startBtn">Start</button>
+      <button id="pauseBtn">Pause</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+</header>
+
+<div class="brief">
+  <div>
+    <span class="num">01 — Now</span>
+    Work through all eight stations in the diagram. Read the facts, learn the vocabulary, and answer the guiding questions in your notes — you'll need the answers for the poster.
+  </div>
+  <div>
+    <span class="num">02 — Next (45 min)</span>
+    You'll draw and label a full carbon cycle diagram on poster paper, showing carbon moving between the atmosphere, living things, the ocean, and fossil fuel stores.
+  </div>
+  <div>
+    <span class="num">03 — Before you start</span>
+    Carbon never disappears — it just moves between <b>reservoirs</b> (places it's stored) via <b>processes</b> (ways it moves). Every station below is one of those processes.
+  </div>
+</div>
+
+<main>
+  <div class="ring-wrap">
+    <svg id="web" viewBox="0 0 440 440" width="100%" style="max-width:440px;">
+      <defs>
+        <marker id="arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#3f8482"/>
+        </marker>
+        <marker id="arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c76b3a"/>
+        </marker>
+      </defs>
+      <!-- edges and nodes injected by JS -->
+      <g id="edges"></g>
+      <g id="reservoirs"></g>
+    </svg>
+    <p class="ring-caption">This is the real shape of the cycle — reservoirs joined by many paths, not one loop. Click any arrow to open that process.</p>
+
+    <div class="checklist-box">
+      <h3>Your poster must show</h3>
+      <label><input type="checkbox" data-item> <span>All eight processes, correctly labelled</span></label>
+      <label><input type="checkbox" data-item> <span>Arrows showing the <em>direction</em> carbon moves</span></label>
+      <label><input type="checkbox" data-item> <span>At least 5 keywords, defined in your own words</span></label>
+      <label><input type="checkbox" data-item> <span>One human impact (e.g. deforestation or burning fossil fuels)</span></label>
+      <label><input type="checkbox" data-item> <span>The atmosphere, oceans, living things, soil and fossil fuels shown as reservoirs</span></label>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel"><!-- filled by JS --></div>
+</main>
+
+<section class="sources">
+  <h3>Further sources — for when you want to go deeper</h3>
+  <div class="sources-grid">
+    <a class="source-card" href="https://www.savemyexams.com/igcse/science/cie/co-ordinated-sciences-double-award/23/biology/revision-notes/organisms-and-their-environment/energy-and-feeding-relationships/nutrient-cycles/" target="_blank" rel="noopener">
+      <span class="src-tag">Syllabus notes</span>
+      <h4>Nutrient Cycles — CIE IGCSE Co-ordinated Sciences</h4>
+      <p>Save My Exams revision notes written directly against your syllabus, covering the carbon cycle alongside the water cycle.</p>
+    </a>
+    <a class="source-card" href="https://www.iitianacademy.com/igcse/cie-igcse-coordinated-sciences/cie-igcse-co-ordinated-sciences-b18-3-carbon-cycle-study-notes/" target="_blank" rel="noopener">
+      <span class="src-tag">Syllabus notes</span>
+      <h4>B18.3 Carbon Cycle — Study Notes</h4>
+      <p>A concise set of notes matched to the exact CIE syllabus point on the carbon cycle.</p>
+    </a>
+    <a class="source-card" href="https://science.nasa.gov/earth/earth-observatory/the-carbon-cycle/" target="_blank" rel="noopener">
+      <span class="src-tag">Deeper science</span>
+      <h4>The Carbon Cycle — NASA Earth Observatory</h4>
+      <p>A more advanced look at fast and slow carbon cycles, with a detailed reservoir diagram.</p>
+    </a>
+    <a class="source-card" href="https://science.nasa.gov/kids/earth/what-is-the-carbon-cycle/" target="_blank" rel="noopener">
+      <span class="src-tag">Quick overview</span>
+      <h4>What Is the Carbon Cycle? — NASA</h4>
+      <p>A short, clear explainer with a simple diagram — good for checking your understanding at a glance.</p>
+    </a>
+    <a class="source-card" href="https://www.noaa.gov/education/resource-collections/climate/carbon-cycle" target="_blank" rel="noopener">
+      <span class="src-tag">Real-world data</span>
+      <h4>Carbon Cycle — NOAA Education</h4>
+      <p>Explains carbon reservoirs and links to real climate data and lesson activities.</p>
+    </a>
+    <a class="source-card" href="https://www.noaa.gov/what-is-carbon-cycle-1-minute" target="_blank" rel="noopener">
+      <span class="src-tag">Video</span>
+      <h4>What Is the Carbon Cycle? (1-minute video) — NOAA</h4>
+      <p>A short video summary, including a section on "blue carbon" stored in coastal ecosystems.</p>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>Eight stations · click through at your own pace · aim to finish with 5 minutes spare to compare notes with a partner</span>
+  <span class="mono pulse">● carbon is cycling</span>
+</footer>
+
+<script>
+const stations = [
+  {
+    id:'photosynthesis', tag:'Uptake', title:'Photosynthesis',
+    angle:-90,
+    equation:'6CO₂ + 6H₂O  --(light energy)-->  C₆H₁₂O₆ + 6O₂',
+    facts:[
+      'Plants, algae and some bacteria remove CO₂ from the air and turn it into glucose.',
+      'This is the main way carbon moves from the atmosphere into living things.',
+      'It only happens in the light, using chlorophyll in chloroplasts to capture energy.'
+    ],
+    vocab:[
+      ['Chlorophyll','the green pigment that absorbs light energy for photosynthesis'],
+      ['Glucose','a sugar; the main carbon-containing product plants make'],
+      ['Carbon fixation','turning inorganic CO₂ into organic molecules like glucose']
+    ],
+    questions:[
+      'Which reservoir does carbon leave, and which does it enter, during photosynthesis?',
+      'Why do rainforests and oceans both act as major "carbon sinks"?'
+    ]
+  },
+  {
+    id:'respiration', tag:'Release', title:'Respiration',
+    angle:-30,
+    equation:'C₆H₁₂O₆ + 6O₂  -->  6CO₂ + 6H₂O + energy',
+    facts:[
+      'All living things — plants, animals, fungi, microbes — respire, all the time, day and night.',
+      'Respiration releases the energy stored in glucose, and CO₂ as a waste product.',
+      'It is essentially the reverse reaction of photosynthesis.'
+    ],
+    vocab:[
+      ['Respiration','the release of energy from glucose inside cells'],
+      ['Mitochondria','the organelle where most respiration happens'],
+      ['Metabolism','the sum of chemical reactions, including respiration, occurring in an organism']
+    ],
+    questions:[
+      'Why does respiration happen in every living cell, but photosynthesis only in some?',
+      'How would cutting down a forest change the balance between photosynthesis and respiration in that area?'
+    ]
+  },
+  {
+    id:'combustion', tag:'Release', title:'Combustion',
+    angle:30,
+    equation:'Fuel (contains C) + O₂  -->  CO₂ + H₂O + energy',
+    facts:[
+      'Burning wood, coal, oil or gas releases carbon that has been stored for a very long time — sometimes millions of years for fossil fuels.',
+      'Unlike respiration, combustion is not a natural biological process — it needs a source of ignition.',
+      'Combustion is the main reason atmospheric CO₂ has risen sharply since the industrial revolution.'
+    ],
+    vocab:[
+      ['Fossil fuel','coal, oil or natural gas, formed from ancient organic matter'],
+      ['Combustion','rapid reaction of a fuel with oxygen, releasing energy and CO₂'],
+      ['Emissions','gases released into the atmosphere, often from burning fuel']
+    ],
+    questions:[
+      'Why is burning fossil fuels described as releasing "ancient" carbon?',
+      'What is the difference between the carbon released by combustion and the carbon released by respiration?'
+    ]
+  },
+  {
+    id:'decomposition', tag:'Release', title:'Decomposition',
+    angle:90,
+    equation:'Dead organism + decomposers + O₂  -->  CO₂ + nutrients',
+    facts:[
+      'When organisms die, decomposers (bacteria and fungi) break down the carbon compounds in their bodies.',
+      'This releases CO₂ back into the atmosphere (or into soil and water) and returns nutrients to the ecosystem.',
+      'Without decomposition, carbon would stay locked inside dead material forever.'
+    ],
+    vocab:[
+      ['Decomposer','an organism, usually bacteria or fungi, that breaks down dead matter'],
+      ['Detritus','dead organic material being broken down'],
+      ['Nutrient cycling','the recycling of chemical elements through an ecosystem']
+    ],
+    questions:[
+      'What would happen to the carbon cycle if decomposers stopped working?',
+      'How is decomposition similar to respiration in terms of the gases involved?'
+    ]
+  },
+  {
+    id:'fossilisation', tag:'Long-term storage', title:'Fossil Fuel Formation',
+    angle:150,
+    equation:'Dead organisms + heat + pressure + (millions of years)  -->  coal / oil / gas',
+    facts:[
+      'When dead plants or marine organisms are buried before they fully decompose, heat and pressure over millions of years can turn them into coal, oil or natural gas.',
+      'This locks carbon away from the atmosphere for extremely long timescales.',
+      'It is the slowest step in the whole carbon cycle by far.'
+    ],
+    vocab:[
+      ['Fossilisation','the very slow process of dead organic matter turning into fossil fuel or fossils'],
+      ['Sedimentary rock','rock formed from layers of compacted sediment, sometimes containing fossil fuels'],
+      ['Carbon store','a reservoir where carbon is held, sometimes for a very long time']
+    ],
+    questions:[
+      'Why are fossil fuels sometimes called a "non-renewable" carbon store?',
+      'Compare the timescale of fossil fuel formation with the timescale of photosynthesis.'
+    ]
+  },
+  {
+    id:'ocean', tag:'Exchange', title:'Ocean Uptake & Marine Life',
+    angle:-150,
+    equation:'CO₂ (air) ⇌ CO₂ (dissolved in seawater)',
+    facts:[
+      'CO₂ dissolves directly into seawater at the ocean surface — the oceans hold far more carbon than the atmosphere does.',
+      'Marine organisms like coral, plankton and shellfish use dissolved carbon to build calcium carbonate shells and skeletons.',
+      'When these organisms die, their shells can sink and eventually form carbon-rich sedimentary rock like limestone.'
+    ],
+    vocab:[
+      ['Carbon sink','a reservoir that absorbs more carbon than it releases'],
+      ['Calcium carbonate','the compound corals and shellfish use to build hard shells, containing carbon'],
+      ['Ocean acidification','the ocean becoming more acidic as it absorbs excess CO₂']
+    ],
+    questions:[
+      'Why are oceans described as one of the largest carbon reservoirs on Earth?',
+      'How could absorbing too much CO₂ be a problem for ocean life, even though it removes CO₂ from the air?'
+    ]
+  },
+  {
+    id:'decay-transfer', tag:'Transfer', title:'Living Things → Soil',
+    equation:'Dead organisms + waste  -->  organic carbon stored in soil',
+    facts:[
+      'When plants and animals die, or produce waste like fallen leaves, shed skin or faeces, the carbon in that material doesn\'t vanish — it moves into the soil.',
+      'This dead organic material, called detritus, can build up in soil and sediment, sometimes for a long time before anything breaks it down.',
+      'This transfer is the "supply chain" for decomposition — without it, decomposers would have nothing to feed on.'
+    ],
+    vocab:[
+      ['Detritus','dead organic material that has not yet been broken down'],
+      ['Organic carbon','carbon that is part of, or came from, living matter'],
+      ['Litter (ecology)','fallen leaves, dead wood and other plant debris on the ground']
+    ],
+    questions:[
+      'How is this process different from decomposition, even though both involve dead material?',
+      'What might speed up or slow down how quickly detritus builds up in soil?'
+    ]
+  },
+  {
+    id:'ocean-fossil', tag:'Long-term storage', title:'Ocean Sediments → Fossil Fuels',
+    equation:'Marine shells & plankton + burial + pressure (millions of years)  -->  limestone / oil & gas',
+    facts:[
+      'Corals, shellfish and plankton build hard parts or bodies containing carbon while they\'re alive, using carbon dissolved in seawater.',
+      'When they die, these remains can sink to the seabed and build up as layers of sediment on the ocean floor.',
+      'Over millions of years, burial and pressure can turn these layers into carbon-rich rock such as limestone — or, for buried plankton and algae, into oil and natural gas.'
+    ],
+    vocab:[
+      ['Sediment','particles of material, including dead organisms, that settle at the bottom of oceans or lakes'],
+      ['Limestone','a sedimentary rock made mostly of calcium carbonate, often from marine shells'],
+      ['Marine snow','a continuous shower of organic debris falling from upper ocean waters to the deep sea']
+    ],
+    questions:[
+      'Why are oceans important for storing carbon over very long timescales, not just short ones?',
+      'Much of the world\'s oil and gas formed from marine organisms rather than land plants — why might the ocean be especially good at burying carbon this way?'
+    ]
+  }
+];
+
+const svgNS = "http://www.w3.org/2000/svg";
+const edgesGroup = document.getElementById('edges');
+const reservoirsGroup = document.getElementById('reservoirs');
+const cx = 220, cy = 220, R = 155, nodeR = 34;
+
+// five carbon reservoirs, arranged as a pentagon so paths between
+// non-neighbouring reservoirs cross the middle — a web, not a loop.
+const reservoirs = [
+  {id:'atmosphere', lines:['ATMOSPHERIC','CO₂'],        angle:-90},
+  {id:'ocean',      lines:['OCEAN &','MARINE LIFE'],    angle:-18},
+  {id:'fossil',     lines:['FOSSIL FUELS','& ROCK'],    angle:54},
+  {id:'soil',       lines:['SOIL &','DECOMPOSERS'],     angle:126},
+  {id:'living',     lines:['LIVING','THINGS'],          angle:198}
+];
+reservoirs.forEach(r=>{
+  const rad = r.angle*Math.PI/180;
+  r.x = cx + R*Math.cos(rad);
+  r.y = cy + R*Math.sin(rad);
+});
+const getRes = id => reservoirs.find(r=>r.id===id);
+
+// every real path carbon takes between reservoirs — all eight are stations
+const edges = [
+  {id:'e-photo',  from:'atmosphere', to:'living',     station:'photosynthesis', bow:-20},
+  {id:'e-resp',   from:'living',     to:'atmosphere', station:'respiration',    bow:20},
+  {id:'e-decomp', from:'soil',       to:'atmosphere', station:'decomposition',  bow:0},
+  {id:'e-comb',   from:'fossil',     to:'atmosphere', station:'combustion',     bow:0},
+  {id:'e-fossil', from:'soil',       to:'fossil',     station:'fossilisation',  bow:0},
+  {id:'e-ocean',  from:'atmosphere', to:'ocean',      station:'ocean',          bow:0, both:true},
+  {id:'e-decay',  from:'living',     to:'soil',       station:'decay-transfer', bow:0},
+  {id:'e-shell',  from:'ocean',      to:'fossil',     station:'ocean-fossil',   bow:0}
+];
+
+function trimmedPath(from, to, bow){
+  const a = getRes(from), b = getRes(to);
+  const dx = b.x-a.x, dy = b.y-a.y;
+  const len = Math.sqrt(dx*dx+dy*dy);
+  const ux = dx/len, uy = dy/len, px = -uy, py = ux;
+  const sx = a.x + ux*nodeR, sy = a.y + uy*nodeR;
+  const ex = b.x - ux*nodeR, ey = b.y - uy*nodeR;
+  const mx = (sx+ex)/2 + px*bow, my = (sy+ey)/2 + py*bow;
+  return `M ${sx.toFixed(1)},${sy.toFixed(1)} Q ${mx.toFixed(1)},${my.toFixed(1)} ${ex.toFixed(1)},${ey.toFixed(1)}`;
+}
+
+edges.forEach((e, i)=>{
+  const d = trimmedPath(e.from, e.to, e.bow);
+  const g = document.createElementNS(svgNS,'g');
+  g.setAttribute('class', 'flow-edge' + (e.decorative ? ' decorative' : ''));
+  if(e.station) g.setAttribute('data-station', e.station);
+
+  const path = document.createElementNS(svgNS,'path');
+  path.setAttribute('class','flow-line');
+  path.setAttribute('d', d);
+  path.setAttribute('marker-end', e.decorative ? '' : 'url(#arrow-default)');
+  if(e.both) path.setAttribute('marker-start', 'url(#arrow-default)');
+
+  const hit = document.createElementNS(svgNS,'path');
+  hit.setAttribute('class','hit-line');
+  hit.setAttribute('d', d);
+
+  g.appendChild(hit);
+  g.appendChild(path);
+
+  if(e.hint){
+    const title = document.createElementNS(svgNS,'title');
+    title.textContent = e.hint;
+    g.appendChild(title);
+  }
+
+  // a small carbon atom travelling this exact path, forever
+  const atom = document.createElementNS(svgNS,'circle');
+  atom.setAttribute('class','carbon-atom' + (e.decorative ? ' dim' : ''));
+  atom.setAttribute('r', e.decorative ? 2.5 : 3.4);
+  const motion = document.createElementNS(svgNS,'animateMotion');
+  motion.setAttribute('path', d);
+  motion.setAttribute('dur', (e.decorative ? 9 : 5.5 + i*0.8) + 's');
+  motion.setAttribute('repeatCount','indefinite');
+  atom.appendChild(motion);
+  g.appendChild(atom);
+
+  if(e.station){
+    g.addEventListener('click', ()=> selectStation(e.station));
+  }
+  edgesGroup.appendChild(g);
+});
+
+reservoirs.forEach(r=>{
+  const g = document.createElementNS(svgNS,'g');
+  g.setAttribute('class','reservoir');
+  g.setAttribute('data-id', r.id);
+
+  const dot = document.createElementNS(svgNS,'circle');
+  dot.setAttribute('class','node-dot');
+  dot.setAttribute('cx', r.x); dot.setAttribute('cy', r.y); dot.setAttribute('r', nodeR);
+  g.appendChild(dot);
+
+  r.lines.forEach((line, li)=>{
+    const text = document.createElementNS(svgNS,'text');
+    text.setAttribute('x', r.x);
+    text.setAttribute('y', r.y - 4 + li*11);
+    text.setAttribute('text-anchor','middle');
+    if(r.id==='atmosphere' && li===1) text.setAttribute('class','r-line2');
+    text.textContent = line;
+    g.appendChild(text);
+  });
+  reservoirsGroup.appendChild(g);
+});
+
+function selectStation(id){
+  document.querySelectorAll('.flow-edge').forEach(g=>{
+    const isActive = g.dataset.station === id;
+    g.classList.toggle('active', isActive);
+    const p = g.querySelector('path.flow-line');
+    if(!g.classList.contains('decorative')){
+      p.setAttribute('marker-end', isActive ? 'url(#arrow-active)' : 'url(#arrow-default)');
+      if(p.getAttribute('marker-start')) p.setAttribute('marker-start', isActive ? 'url(#arrow-active)' : 'url(#arrow-default)');
+    }
+  });
+  const edge = edges.find(e=>e.station===id);
+  document.querySelectorAll('.reservoir').forEach(g=>{
+    g.classList.toggle('lit', edge && (g.dataset.id===edge.from || g.dataset.id===edge.to));
+  });
+  const s = stations.find(st=>st.id===id);
+  renderPanel(s);
+}
+
+function renderPanel(s){
+  const vocabHtml = s.vocab.map(v=>`<li><b>${v[0]}</b> — ${v[1]}</li>`).join('');
+  const factsHtml = s.facts.map(f=>`<li>${f}</li>`).join('');
+  const qHtml = s.questions.map(q=>`<li>${q}</li>`).join('');
+  document.getElementById('panel').innerHTML = `
+    <div class="station-header">
+      <span class="tag">${s.tag}</span>
+      <h2>${s.title}</h2>
+    </div>
+    <div class="equation">${s.equation}</div>
+    <br>
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <h3>Key facts</h3>
+          <ul class="fact-list">${factsHtml}</ul>
+        </div>
+        <div class="card">
+          <h3>Answer these for your poster</h3>
+          <ul class="questions">${qHtml}</ul>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Vocabulary</h3>
+          <ul class="vocab-list">${vocabHtml}</ul>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// default view
+document.getElementById('panel').innerHTML = `
+  <div class="station-header">
+    <span class="tag">Start here</span>
+    <h2>How to use this page</h2>
+  </div>
+  <p>Click any arrow in the diagram to the left. Each one is a real path carbon takes between reservoirs — the atmosphere, living things, the soil, the ocean, and long-term stores like fossil fuels. Notice it isn't a single loop: carbon can take several different routes, and some reservoirs connect straight to each other without passing through the atmosphere at all.</p>
+  <p>For each station, read the facts, learn the vocabulary in bold, and jot down answers to the questions. You'll turn all eight into a single labelled diagram in the poster activity straight after this.</p>
+  <div class="card" style="max-width:520px;">
+    <h3>Reservoirs to remember</h3>
+    <ul class="fact-list">
+      <li><b>Atmosphere</b> — CO₂ gas in the air</li>
+      <li><b>Living things</b> — carbon in plants, animals, microbes</li>
+      <li><b>Oceans</b> — dissolved CO₂ and marine organisms</li>
+      <li><b>Fossil fuels &amp; rock</b> — carbon locked away for millions of years</li>
+    </ul>
+  </div>
+`;
+
+// ---- timer ----
+let totalSeconds = 45*60;
+let timerInterval = null;
+const timerEl = document.getElementById('timer');
+
+function formatTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+function tick(){
+  if(totalSeconds<=0){ clearInterval(timerInterval); timerInterval=null; timerEl.textContent="00:00"; timerEl.style.color = '#c76b3a'; return; }
+  totalSeconds--;
+  timerEl.textContent = formatTime(totalSeconds);
+}
+function startTimer(){
+  if(timerInterval) return;
+  timerInterval = setInterval(tick, 1000);
+}
+document.getElementById('startBtn').addEventListener('click', startTimer);
+document.getElementById('pauseBtn').addEventListener('click', ()=>{
+  clearInterval(timerInterval); timerInterval=null;
+});
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  clearInterval(timerInterval); timerInterval=null;
+  totalSeconds = 45*60;
+  timerEl.style.color = '#f6f2e7';
+  timerEl.textContent = formatTime(totalSeconds);
+});
+startTimer();
+
+// ---- checklist ----
+const checks = document.querySelectorAll('.checklist-box input[type=checkbox]');
+const progressFill = document.getElementById('progressFill');
+checks.forEach(c=>{
+  c.addEventListener('change', ()=>{
+    c.nextElementSibling.classList.toggle('done', c.checked);
+    const done = document.querySelectorAll('.checklist-box input:checked').length;
+    progressFill.style.width = (done/checks.length*100)+'%';
+  });
+});
+</script>
+
+</body>
+</html>
