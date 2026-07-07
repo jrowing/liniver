@@ -1,0 +1,800 @@
+--- 
+title: "Stellar Lifecycles" 
+description: "Fusion, main sequence, KABOOM!" 
+category: "Y10" 
+layout: null 
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Life Cycle of Stars — Cambridge IGCSE, Year 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#06070d;
+    --panel:#10132199;
+    --panel-solid:#12162a;
+    --panel-line:#262c47;
+    --ink:#e9ebf6;
+    --muted:#9298b8;
+    --faint:#5c6285;
+    --nebula:#a480ff;
+    --nebula-dim:#3a2f66;
+    --fusion:#ffc247;
+    --fusion-dim:#4a3b17;
+    --giant:#ff6a55;
+    --giant-dim:#4a231c;
+    --remnant:#48e0c9;
+    --remnant-dim:#173d38;
+    --core-tag:#7fd4ff;
+    --supp-tag:#ffb454;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--void);
+    color:var(--ink);
+    font-family:'Literata',Georgia,serif;
+    line-height:1.6;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+    line-height:1.15;
+    color:#fff;
+    margin:0;
+  }
+  .mono{
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.02em;
+  }
+  a{color:var(--core-tag);}
+  p{margin:0 0 1em 0;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  section{padding:96px 0;position:relative;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    text-transform:uppercase;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    color:var(--faint);
+    margin-bottom:14px;
+    display:flex;gap:10px;align-items:center;
+  }
+  .eyebrow::before{content:"";width:20px;height:1px;background:var(--faint);display:inline-block;}
+
+  /* ---------- Starfield ---------- */
+  .stars{
+    position:fixed;inset:0;z-index:-1;overflow:hidden;background:
+      radial-gradient(ellipse at 20% -10%, #1a1440 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 10%, #10202b 0%, transparent 50%),
+      var(--void);
+  }
+  .stars span{
+    position:absolute;background:#fff;border-radius:50%;opacity:0.6;
+    animation:twinkle 5s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:0.15;}50%{opacity:0.9;}}
+  @media (prefers-reduced-motion: reduce){
+    .stars span{animation:none;opacity:0.5;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- Header / Hero ---------- */
+  header.hero{
+    padding:64px 0 40px;
+    border-bottom:1px solid var(--panel-line);
+  }
+  .status-bar{
+    display:flex;flex-wrap:wrap;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+    border:1px solid var(--panel-line);border-radius:999px;
+    padding:8px 18px;width:fit-content;margin-bottom:36px;background:#0000002e;
+  }
+  .status-bar b{color:var(--fusion);font-weight:600;}
+  .status-bar .sep{color:var(--faint);}
+  h1.title{
+    font-size:clamp(2.4rem,5.4vw,4.4rem);
+    font-weight:600;
+    max-width:14ch;
+  }
+  h1.title em{
+    font-style:normal;color:var(--nebula);
+  }
+  .hero-sub{
+    max-width:60ch;color:var(--muted);font-size:1.15rem;margin-top:22px;
+  }
+  .hero-sub strong{color:var(--ink);}
+
+  /* ---------- Diagram ---------- */
+  .diagram-card{
+    margin-top:56px;border:1px solid var(--panel-line);border-radius:var(--radius);
+    background:linear-gradient(180deg,#0d1020,#0a0c18);
+    padding:8px 8px 0;
+  }
+  .diagram-legend{
+    display:flex;flex-wrap:wrap;gap:18px;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+  }
+  .legend-dot{display:inline-flex;align-items:center;gap:8px;}
+  .legend-dot i{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  #stage-svg{width:100%;height:auto;display:block;cursor:default;}
+  .node{cursor:pointer;transition:transform .15s ease;}
+  .node:hover{transform:translateY(-3px);}
+  .node rect{stroke-width:1.4;transition:filter .15s ease;}
+  .node:hover rect, .node.active rect{filter:brightness(1.25);}
+  .node text{font-family:'Space Grotesk',sans-serif;fill:#fff;font-size:16px;font-weight:600;}
+  .node .sub{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10.5px;fill:#c9cde0;opacity:0.75;}
+  .connector{fill:none;stroke:#3a4066;stroke-width:2;}
+  .connector.dashed{stroke-dasharray:5 6;stroke:var(--faint);}
+  .connector.recycle{stroke:var(--supp-tag);opacity:0.55;}
+  .flow-label{font-family:'JetBrains Mono',monospace;font-size:11px;fill:var(--muted);}
+  .mass-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.08em;}
+
+  .stage-detail{
+    border-top:1px solid var(--panel-line);
+    padding:26px 28px 30px;
+    display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;
+  }
+  .stage-detail .tag{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:4px 10px;border-radius:999px;
+    border:1px solid currentColor;white-space:nowrap;
+  }
+  .stage-detail h3{font-size:1.5rem;margin-bottom:8px;}
+  .stage-detail-text{flex:1;min-width:260px;}
+  .stage-detail p{color:#cfd2e6;margin-bottom:0;}
+  .stage-detail .hint{color:var(--faint);font-size:13px;margin-top:14px;font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- Section headers ---------- */
+  .sec-head{margin-bottom:44px;max-width:70ch;}
+  .sec-head h2{font-size:clamp(1.8rem,3.2vw,2.6rem);}
+  .sec-head p{color:var(--muted);margin-top:14px;font-size:1.05rem;}
+
+  /* ---------- Syllabus checklist ---------- */
+  .syllabus-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--panel-line);}
+  .syllabus-list li{
+    display:flex;gap:18px;align-items:flex-start;
+    padding:20px 4px;border-bottom:1px solid var(--panel-line);
+  }
+  .syl-tag{
+    flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    padding:4px 10px;border-radius:6px;letter-spacing:.04em;white-space:nowrap;margin-top:2px;
+  }
+  .syl-tag.core{background:#0f2a38;color:var(--core-tag);}
+  .syl-tag.supp{background:#3a2a10;color:var(--supp-tag);}
+  .syllabus-list .code{color:var(--faint);font-family:'JetBrains Mono',monospace;font-size:13px;margin-right:10px;}
+  .syllabus-list p{margin:0;color:#dbdde9;}
+
+  /* ---------- Resource cards ---------- */
+  .res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+  .res-card{
+    border:1px solid var(--panel-line);border-radius:var(--radius);padding:24px;
+    background:#0d1020;display:flex;flex-direction:column;gap:10px;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .res-card:hover{border-color:var(--nebula);transform:translateY(-2px);}
+  .res-kind{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fusion);letter-spacing:.08em;text-transform:uppercase;}
+  .res-card h3{font-size:1.15rem;font-weight:600;}
+  .res-card p{color:var(--muted);font-size:.95rem;margin:0;flex:1;}
+  .res-card a.go{
+    font-family:'JetBrains Mono',monospace;font-size:13px;text-decoration:none;color:var(--core-tag);
+    display:inline-flex;align-items:center;gap:6px;margin-top:6px;
+  }
+  .res-card a.go:hover{text-decoration:underline;}
+
+  /* ---------- Output choice cards ---------- */
+  .choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;}
+  .choice-card{
+    border:1px solid var(--panel-line);border-radius:var(--radius);
+    background:linear-gradient(180deg,#0d1020,#0b0e1a);
+    padding:26px;position:relative;overflow:hidden;
+  }
+  .choice-card::before{
+    content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;
+    background:var(--accent,var(--nebula));opacity:0.18;filter:blur(30px);
+  }
+  .choice-card h3{font-size:1.3rem;margin-bottom:10px;}
+  .choice-card .format-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,var(--nebula));
+    text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:block;
+  }
+  .choice-card p{color:#c7cadd;font-size:.96rem;}
+  .choice-card ul{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:.9rem;}
+  .choice-card ul li{margin-bottom:4px;}
+
+  /* ---------- Rubric ---------- */
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+  .rubric .tier{border:1px solid var(--panel-line);border-radius:var(--radius);padding:24px;background:#0d1020;}
+  .rubric .tier .lvl{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:block;}
+  .rubric .tier h3{font-size:1.1rem;margin-bottom:10px;}
+  .rubric .tier p{color:var(--muted);font-size:.92rem;margin:0;}
+  .rubric .tier.core .lvl{color:var(--core-tag);}
+  .rubric .tier.ext .lvl{color:var(--fusion);}
+  .rubric .tier.beyond .lvl{color:var(--giant);}
+
+  .must-include{
+    margin-top:40px;border:1px dashed var(--panel-line);border-radius:var(--radius);padding:24px 26px;
+  }
+  .must-include h3{font-size:1.05rem;margin-bottom:12px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);}
+  .must-include ul{margin:0;padding-left:20px;color:#cfd2e6;}
+  .must-include li{margin-bottom:8px;}
+
+  /* ---------- Fusion section ---------- */
+  .fusion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:52px;}
+  .fusion-card{
+    border:1px solid var(--panel-line);border-radius:var(--radius);padding:26px;background:#0d1020;
+  }
+  .fusion-card .num{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fusion);letter-spacing:.1em;
+    display:block;margin-bottom:12px;
+  }
+  .fusion-card h3{font-size:1.15rem;margin-bottom:10px;}
+  .fusion-card p{color:#c7cadd;font-size:.95rem;margin-bottom:0;}
+  .fusion-card p + p{margin-top:10px;}
+  .fusion-eq{
+    font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--fusion);
+    background:#1a1508;border:1px solid var(--fusion-dim);border-radius:8px;
+    padding:10px 12px;margin:14px 0;display:block;
+  }
+
+  .element-card{
+    border:1px solid var(--panel-line);border-radius:var(--radius);
+    background:linear-gradient(180deg,#0d1020,#0a0c18);padding:28px;
+  }
+  .element-card .heading-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:22px;}
+  .element-card h3{font-size:1.3rem;}
+  .element-card .heading-row p{color:var(--muted);font-size:.9rem;margin:0;max-width:40ch;}
+  #ladder-svg{width:100%;height:auto;display:block;}
+  .rung text{font-family:'Space Grotesk',sans-serif;font-weight:600;fill:#fff;}
+  .rung .rung-sub{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10px;fill:#a9adc4;}
+  .stop-note{
+    margin-top:20px;padding:14px 16px;border-radius:10px;background:#170e08;border:1px solid var(--giant-dim);
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#ffb39e;
+  }
+  .stop-note b{color:var(--giant);}
+
+  @media (max-width:880px){
+    .fusion-grid{grid-template-columns:1fr;}
+  }
+
+  footer{
+    border-top:1px solid var(--panel-line);padding:48px 0 60px;color:var(--faint);font-size:.9rem;
+  }
+  footer a{color:var(--muted);}
+
+  @media (max-width:640px){
+    section{padding:64px 0;}
+    .stage-detail{padding:20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="starfield" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="status-bar">
+      <span>SYLLABUS <b>CAMBRIDGE IGCSE</b></span>
+      <span class="sep">·</span>
+      <span>TOPIC <b>6.2.2</b> STARS</span>
+      <span class="sep">·</span>
+      <span>YEAR <b>10</b></span>
+      <span class="sep">·</span>
+      <span>STATUS <b>MAIN SEQUENCE</b></span>
+    </div>
+    <h1 class="title">The Life Cycle of <em>Stars</em></h1>
+    <p class="hero-sub">Every atom in you heavier than hydrogen was forged inside a star. This page covers what your <strong>IGCSE Physics / Co-ordinated Sciences</strong> course needs you to know about how stars are born, live, and die &mdash; then hands the story back to you. <strong>Pick a format below and tell it your own way.</strong></p>
+  </div>
+</header>
+
+<section id="diagram-section" style="padding-top:56px;">
+  <div class="wrap">
+    <div class="eyebrow">01 &nbsp;— The map</div>
+    <div class="sec-head">
+      <h2>One cloud of gas. Two very different endings.</h2>
+      <p>Every star starts the same way. What happens next depends on <strong>one number: its mass.</strong> Tap a stage on the diagram to read what's actually happening inside the star.</p>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-legend">
+        <span class="legend-dot"><i style="background:var(--nebula);"></i>Formation</span>
+        <span class="legend-dot"><i style="background:var(--fusion);"></i>Stable fusion</span>
+        <span class="legend-dot"><i style="background:var(--giant);"></i>Dying / explosive</span>
+        <span class="legend-dot"><i style="background:var(--remnant);"></i>Stellar remnant</span>
+        <span class="legend-dot" style="margin-left:auto;color:var(--supp-tag);">┄ dashed = Supplement (Extended only)</span>
+      </div>
+
+      <svg id="stage-svg" viewBox="0 0 1300 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of stellar evolution branching by mass">
+        <!-- connectors: shared start -->
+        <path class="connector" d="M170,300 C210,300 210,300 250,300" marker-end="url(#arrow)"/>
+        <path class="connector" d="M350,300 C390,300 390,300 430,300" marker-end="url(#arrow)"/>
+        <!-- fork from main sequence -->
+        <path class="connector" d="M530,300 C590,300 590,150 650,130" marker-end="url(#arrow)"/>
+        <path class="connector" d="M530,300 C590,300 590,470 650,490" marker-end="url(#arrow)"/>
+        <text class="mass-label" x="560" y="205" fill="#7fd4ff" text-anchor="middle">low/medium mass</text>
+        <text class="mass-label" x="560" y="410" fill="#ff8f7d" text-anchor="middle">high mass (&gt;~8 M☉)</text>
+
+        <!-- low mass row -->
+        <path class="connector" d="M790,130 C830,130 830,130 870,130" marker-end="url(#arrow)"/>
+        <path class="connector" d="M970,130 C1010,130 1010,130 1050,130" marker-end="url(#arrow)"/>
+        <path class="connector dashed" d="M1150,130 C1180,130 1180,130 1210,130" marker-end="url(#arrowdash)"/>
+
+        <!-- high mass row -->
+        <path class="connector" d="M790,490 C830,490 830,490 870,490" marker-end="url(#arrow)"/>
+        <path class="connector" d="M970,490 C1010,490 1010,430 1050,410" marker-end="url(#arrow)"/>
+        <path class="connector" d="M970,490 C1010,490 1010,550 1050,570" marker-end="url(#arrow)"/>
+
+        <!-- recycle loop, supplement -->
+        <path class="connector dashed recycle" d="M870,520 C500,620 150,560 100,360" marker-end="url(#arrowsupp)"/>
+        <text class="flow-label" x="480" y="605" fill="#ffb454" text-anchor="middle">matter recycled into a new nebula — Supplement (h)</text>
+
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3a4066"/></marker>
+          <marker id="arrowdash" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5c6285"/></marker>
+          <marker id="arrowsupp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#ffb454"/></marker>
+        </defs>
+
+        <!-- NODES -->
+        <g class="node active" data-stage="nebula" onclick="showStage('nebula')" tabindex="0" role="button" aria-label="Nebula">
+          <rect x="10" y="270" width="160" height="60" rx="12" fill="var(--nebula-dim)" stroke="var(--nebula)"/>
+          <text x="90" y="296" text-anchor="middle">Nebula</text>
+          <text class="sub" x="90" y="315" text-anchor="middle">gas + dust cloud</text>
+        </g>
+
+        <g class="node" data-stage="protostar" onclick="showStage('protostar')" tabindex="0" role="button" aria-label="Protostar">
+          <rect x="250" y="270" width="160" height="60" rx="12" fill="var(--nebula-dim)" stroke="var(--nebula)"/>
+          <text x="330" y="296" text-anchor="middle">Protostar</text>
+          <text class="sub" x="330" y="315" text-anchor="middle">collapsing, heating</text>
+        </g>
+
+        <g class="node" data-stage="mainsequence" onclick="showStage('mainsequence')" tabindex="0" role="button" aria-label="Main sequence star">
+          <rect x="430" y="270" width="160" height="60" rx="12" fill="var(--fusion-dim)" stroke="var(--fusion)"/>
+          <text x="510" y="296" text-anchor="middle">Main Sequence</text>
+          <text class="sub" x="510" y="315" text-anchor="middle">stable fusion, H→He</text>
+        </g>
+
+        <!-- low mass path -->
+        <g class="node" data-stage="redgiant" onclick="showStage('redgiant')" tabindex="0" role="button" aria-label="Red giant">
+          <rect x="650" y="100" width="140" height="60" rx="12" fill="var(--giant-dim)" stroke="var(--giant)"/>
+          <text x="720" y="126" text-anchor="middle">Red Giant</text>
+          <text class="sub" x="720" y="145" text-anchor="middle">core hydrogen gone</text>
+        </g>
+        <g class="node" data-stage="planetarynebula" onclick="showStage('planetarynebula')" tabindex="0" role="button" aria-label="Planetary nebula">
+          <rect x="870" y="100" width="140" height="60" rx="12" fill="var(--nebula-dim)" stroke="var(--nebula)"/>
+          <text x="940" y="126" text-anchor="middle" style="font-size:14px;">Planetary Nebula</text>
+          <text class="sub" x="940" y="145" text-anchor="middle">outer layers shed</text>
+        </g>
+        <g class="node" data-stage="whitedwarf" onclick="showStage('whitedwarf')" tabindex="0" role="button" aria-label="White dwarf">
+          <rect x="1050" y="100" width="140" height="60" rx="12" fill="var(--remnant-dim)" stroke="var(--remnant)"/>
+          <text x="1120" y="126" text-anchor="middle">White Dwarf</text>
+          <text class="sub" x="1120" y="145" text-anchor="middle">hot, dense core</text>
+        </g>
+        <g class="node" data-stage="blackdwarf" onclick="showStage('blackdwarf')" tabindex="0" role="button" aria-label="Black dwarf, theoretical">
+          <rect x="1210" y="100" width="80" height="60" rx="12" fill="none" stroke="var(--faint)" stroke-dasharray="4 5"/>
+          <text x="1250" y="126" text-anchor="middle" style="font-size:12px;fill:#9298b8;">Black</text>
+          <text x="1250" y="142" text-anchor="middle" style="font-size:12px;fill:#9298b8;">Dwarf</text>
+          <text class="sub" x="1250" y="156" text-anchor="middle" style="font-size:8.5px;">not examined</text>
+        </g>
+
+        <!-- high mass path -->
+        <g class="node" data-stage="redsupergiant" onclick="showStage('redsupergiant')" tabindex="0" role="button" aria-label="Red supergiant">
+          <rect x="650" y="460" width="140" height="60" rx="12" fill="var(--giant-dim)" stroke="var(--giant)"/>
+          <text x="720" y="486" text-anchor="middle" style="font-size:14px;">Red Supergiant</text>
+          <text class="sub" x="720" y="505" text-anchor="middle">expands, cools, huge</text>
+        </g>
+        <g class="node" data-stage="supernova" onclick="showStage('supernova')" tabindex="0" role="button" aria-label="Supernova">
+          <rect x="870" y="460" width="140" height="60" rx="12" fill="var(--giant-dim)" stroke="var(--giant)"/>
+          <text x="940" y="486" text-anchor="middle">Supernova</text>
+          <text class="sub" x="940" y="505" text-anchor="middle">core collapse, explosion</text>
+        </g>
+        <g class="node" data-stage="neutronstar" onclick="showStage('neutronstar')" tabindex="0" role="button" aria-label="Neutron star">
+          <rect x="1050" y="380" width="140" height="60" rx="12" fill="var(--remnant-dim)" stroke="var(--remnant)"/>
+          <text x="1120" y="406" text-anchor="middle">Neutron Star</text>
+          <text class="sub" x="1120" y="425" text-anchor="middle">2–8 M☉ core</text>
+        </g>
+        <g class="node" data-stage="blackhole" onclick="showStage('blackhole')" tabindex="0" role="button" aria-label="Black hole">
+          <rect x="1050" y="540" width="140" height="60" rx="12" fill="#050506" stroke="var(--remnant)"/>
+          <text x="1120" y="566" text-anchor="middle">Black Hole</text>
+          <text class="sub" x="1120" y="585" text-anchor="middle">&gt;~8 M☉ core</text>
+        </g>
+      </svg>
+
+      <div class="stage-detail" id="stage-detail">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fusion">
+  <div class="wrap">
+    <div class="eyebrow">02 &nbsp;— The engine</div>
+    <div class="sec-head">
+      <h2>What is fusion, and why does it matter?</h2>
+      <p>One process explains almost everything on the diagram above: why a protostar isn't yet a star, why stars shine for billions of years without going out, and why you're made of atoms that didn't exist at the birth of the universe.</p>
+    </div>
+
+    <div class="fusion-grid">
+      <div class="fusion-card">
+        <span class="num">01 / WHAT IT IS</span>
+        <h3>Forcing nuclei together</h3>
+        <p>Nuclear fusion is what happens when two nuclei are forced so close together that they join to form a new, heavier nucleus. In a star, that's hydrogen nuclei fusing into helium nuclei.</p>
+        <p>Normally, two hydrogen nuclei (both positively charged) repel each other strongly. Only extreme temperature and pressure &mdash; the kind you get deep inside a collapsing star &mdash; can force them together anyway.</p>
+      </div>
+      <div class="fusion-card">
+        <span class="num">02 / WHERE THE ENERGY COMES FROM</span>
+        <h3>The missing mass</h3>
+        <p>A helium nucleus has very slightly <em>less</em> mass than the four hydrogen nuclei that made it. That missing mass doesn't disappear &mdash; it's released as energy.</p>
+        <span class="fusion-eq">E = mc²</span>
+        <p>Because c (the speed of light) is so large, even a tiny bit of missing mass releases an enormous amount of energy. That's what makes a star shine.</p>
+      </div>
+      <div class="fusion-card">
+        <span class="num">03 / WHY IT'S STABLE</span>
+        <h3>A balance, not a bonfire</h3>
+        <p>Fusion pushes outward (heat and radiation pressure). Gravity pulls inward. In a stable main sequence star these two forces are exactly balanced &mdash; this is what the syllabus means by a star being "stable."</p>
+        <p>That balance is why the Sun has shone steadily for about 4.6 billion years instead of collapsing or blowing apart.</p>
+      </div>
+    </div>
+
+    <div class="element-card" style="margin-bottom:52px;">
+      <div class="heading-row">
+        <h3>Nebula, protostar, star — what's actually different?</h3>
+        <p>Same material, three names. Only one thing changes between them.</p>
+      </div>
+      <svg viewBox="0 0 1100 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of nebula, protostar and main sequence star by whether fusion is happening" style="width:100%;height:auto;">
+        <line x1="40" y1="95" x2="1060" y2="95" stroke="#262c47" stroke-width="2"/>
+        <circle cx="120" cy="95" r="10" fill="var(--nebula-dim)" stroke="var(--nebula)" stroke-width="2"/>
+        <text x="120" y="60" text-anchor="middle" font-family="Space Grotesk" font-weight="600" fill="#fff" font-size="17">Nebula</text>
+        <text x="120" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#9298b8">cold · diffuse</text>
+        <text x="120" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#9298b8">no fusion</text>
+
+        <circle cx="450" cy="95" r="14" fill="var(--nebula-dim)" stroke="var(--nebula)" stroke-width="2"/>
+        <text x="450" y="52" text-anchor="middle" font-family="Space Grotesk" font-weight="600" fill="#fff" font-size="17">Protostar</text>
+        <text x="450" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#9298b8">contracting &amp; heating</text>
+        <text x="450" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#9298b8">from gravity alone — still no fusion</text>
+
+        <circle cx="900" cy="95" r="20" fill="var(--fusion-dim)" stroke="var(--fusion)" stroke-width="2.4"/>
+        <text x="900" y="45" text-anchor="middle" font-family="Space Grotesk" font-weight="600" fill="#fff" font-size="18">Main Sequence Star</text>
+        <text x="900" y="135" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#ffc247">~15,000,000°C at the core</text>
+        <text x="900" y="153" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#ffc247">hydrogen fusion ignites</text>
+      </svg>
+      <p style="color:#c7cadd;font-size:.95rem;margin-top:18px;">A nebula and a protostar can both be hot and glowing &mdash; but that heat comes purely from gravitational contraction, particles colliding as they're squeezed closer together. Nothing is fusing. The moment the core reaches roughly 15 million°C, hydrogen fusion ignites, outward pressure switches on, and the object becomes a genuinely stable star. <strong>Fusion is the dividing line</strong> &mdash; it's the difference between syllabus points (b) and (c).</p>
+    </div>
+
+    <div class="element-card">
+      <div class="heading-row">
+        <h3>How fusion builds the elements</h3>
+        <p>Every element heavier than hydrogen was built inside a star, or in its explosive death.</p>
+      </div>
+      <svg id="ladder-svg" viewBox="0 0 1200 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ladder of elements built by fusion as core temperature increases">
+        <line x1="40" y1="110" x2="900" y2="110" stroke="#3a4066" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="470" y="150" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#9298b8">rising core temperature, main sequence → red giant/supergiant →</text>
+
+        <g class="rung">
+          <circle cx="80" cy="110" r="9" fill="var(--fusion)"/>
+          <text x="80" y="80" text-anchor="middle" font-size="16">H</text>
+          <text class="rung-sub" x="80" y="95" text-anchor="middle">hydrogen</text>
+        </g>
+        <g class="rung">
+          <circle cx="290" cy="110" r="9" fill="var(--fusion)"/>
+          <text x="290" y="80" text-anchor="middle" font-size="16">He</text>
+          <text class="rung-sub" x="290" y="95" text-anchor="middle">helium</text>
+        </g>
+        <g class="rung">
+          <circle cx="500" cy="110" r="9" fill="var(--giant)"/>
+          <text x="500" y="80" text-anchor="middle" font-size="16">C, O</text>
+          <text class="rung-sub" x="500" y="95" text-anchor="middle">carbon, oxygen</text>
+        </g>
+        <g class="rung">
+          <circle cx="710" cy="110" r="9" fill="var(--giant)"/>
+          <text x="710" y="80" text-anchor="middle" font-size="15">Ne, Si...</text>
+          <text class="rung-sub" x="710" y="95" text-anchor="middle">massive stars only</text>
+        </g>
+        <g class="rung">
+          <circle cx="900" cy="110" r="10" fill="var(--giant)" stroke="#fff" stroke-width="1.5"/>
+          <text x="900" y="80" text-anchor="middle" font-size="17" fill="var(--giant)">Fe</text>
+          <text class="rung-sub" x="900" y="95" text-anchor="middle">iron — fusion stops here</text>
+        </g>
+
+        <line x1="940" y1="110" x2="1160" y2="110" stroke="var(--supp-tag)" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#arrowsupp)"/>
+        <g class="rung">
+          <rect x="1000" y="90" width="130" height="40" rx="10" fill="#170e08" stroke="var(--giant)"/>
+          <text x="1065" y="115" text-anchor="middle" font-size="14" fill="var(--supp-tag)">Au, U, and beyond</text>
+        </g>
+        <text x="1065" y="155" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="var(--supp-tag)">made in the supernova itself</text>
+
+        <defs>
+          <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3a4066"/></marker>
+        </defs>
+      </svg>
+      <div class="stop-note">
+        <b>Why fusion stops at iron:</b> up to iron, fusing nuclei together releases energy. Fusing iron would <em>absorb</em> energy instead of releasing it — so once a massive star's core turns to iron, fusion can no longer hold the core up against gravity. That's what triggers the core collapse behind a supernova (syllabus point g). The huge burst of energy in that explosion is what forces the reactions that build elements heavier than iron — including the gold, silver, and uranium scattered into the nebula the star leaves behind.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="syllabus">
+  <div class="wrap">
+    <div class="eyebrow">03 &nbsp;— What's examined</div>
+    <div class="sec-head">
+      <h2>Matched to Cambridge IGCSE 6.2.2</h2>
+      <p>Every point below is something you could be asked to describe or explain in Paper 2/4 (Extended) or Paper 1/3 (Core). <span class="mono syl-tag core" style="position:relative;top:-1px;">CORE</span> content is for everyone; <span class="mono syl-tag supp" style="position:relative;top:-1px;">SUPPLEMENT</span> content is Extended candidates only.</p>
+    </div>
+    <ul class="syllabus-list">
+      <li><span class="syl-tag core">CORE</span><p><span class="code">6.2.1</span>Stars are powered by nuclear reactions that release energy; in stable stars, this is the fusion of hydrogen into helium.</p></li>
+      <li><span class="syl-tag core">CORE</span><p><span class="code">(a)</span>A star forms from an interstellar cloud of gas and dust that contains hydrogen.</p></li>
+      <li><span class="syl-tag core">CORE</span><p><span class="code">(b)</span>A protostar is that cloud collapsing and heating up because of its own gravitational attraction.</p></li>
+      <li><span class="syl-tag core">CORE</span><p><span class="code">(c)</span>A protostar becomes a stable star once the inward pull of gravity is balanced by the outward force from the very high temperature at its centre — nuclear fusion has begun.</p></li>
+      <li><span class="syl-tag core">CORE</span><p><span class="code">(d)</span>Every star eventually runs out of hydrogen fuel for fusion.</p></li>
+      <li><span class="syl-tag core">CORE</span><p><span class="code">(e)</span>Most stars then expand into red giants; more massive stars expand into red supergiants.</p></li>
+      <li><span class="syl-tag core">CORE</span><p><span class="code">(f)</span>A red giant sheds its outer layers as a planetary nebula, leaving a white dwarf at its centre.</p></li>
+      <li><span class="syl-tag core">CORE</span><p><span class="code">(g)</span>A red supergiant explodes as a supernova, scattering a nebula of hydrogen and newly-made heavier elements, and leaving behind a neutron star or a black hole.</p></li>
+      <li><span class="syl-tag supp">SUPPLEMENT</span><p><span class="code">(h)</span>The nebula thrown out by a supernova can go on to form new stars — matter is recycled.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="wrap">
+    <div class="eyebrow">04 &nbsp;— Go deeper</div>
+    <div class="sec-head">
+      <h2>Trusted places to research from</h2>
+      <p>Use these before you start building your project — they're where the real images, data, and explanations in your final piece should come from. Credit whatever you use.</p>
+    </div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-kind">Watch + Read</span>
+        <h3>BBC Bitesize — The life cycle of a star</h3>
+        <p>A clear, exam-focused walkthrough with a short video and diagram — the best first stop for the core sequence.</p>
+        <a class="go" href="https://www.bbc.co.uk/bitesize/guides/zpxv97h/revision/1" target="_blank" rel="noopener">bbc.co.uk/bitesize →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-kind">Explore</span>
+        <h3>The Schools' Observatory — Stellar Evolution</h3>
+        <p>Written for UK secondary students, with real telescope images of nebulae, supernova remnants, and white dwarfs.</p>
+        <a class="go" href="https://www.schoolsobservatory.org/learn/space/stars/evolution" target="_blank" rel="noopener">schoolsobservatory.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-kind">Read</span>
+        <h3>NASA Science — Stellar Evolution</h3>
+        <p>NASA's rolling hub of stellar evolution articles, images, and discoveries — good for up-to-date examples.</p>
+        <a class="go" href="https://science.nasa.gov/universe/stars/stellar-evolution/" target="_blank" rel="noopener">science.nasa.gov →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-kind">Explore</span>
+        <h3>ESA/Hubble — The Lives of Stars</h3>
+        <p>Real Hubble Space Telescope photographs of nebulae, dying stars, and supernova remnants, with the science behind each.</p>
+        <a class="go" href="https://esahubble.org/science/stellar_evolution/" target="_blank" rel="noopener">esahubble.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-kind">Activities + posters</span>
+        <h3>NASA — Life and Death of Stars Resource Guide</h3>
+        <p>A collection of downloadable posters, activities, and presentations on stellar life cycles — ideal if you're building a poster or infographic.</p>
+        <a class="go" href="https://www.nasa.gov/stem-content/life-and-death-of-stars-resource-guide/" target="_blank" rel="noopener">nasa.gov →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-kind">Reference image</span>
+        <h3>NASA JPL — Stellar Evolution Infographic</h3>
+        <p>A single clean infographic of the whole sequence — useful as a layout reference, not for copying directly.</p>
+        <a class="go" href="https://www.jpl.nasa.gov/infographics/stellar-evolution/" target="_blank" rel="noopener">jpl.nasa.gov →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="choose">
+  <div class="wrap">
+    <div class="eyebrow">05 &nbsp;— Show what you know</div>
+    <div class="sec-head">
+      <h2>Pick your format</h2>
+      <p>Same content, your choice of vehicle. Every option below needs to cover the same core science — pick the one that plays to what you're best at making.</p>
+    </div>
+    <div class="choice-grid">
+      <div class="choice-card" style="--accent:var(--nebula);">
+        <span class="format-tag">Poster</span>
+        <h3>A3 wall poster</h3>
+        <p>One diagram, both branches, labelled clearly enough to teach a Year 7 student in 60 seconds.</p>
+        <ul>
+          <li>Full nebula → remnant sequence, both mass paths</li>
+          <li>At least one real image, credited</li>
+          <li>Minimal text — let the diagram do the work</li>
+        </ul>
+      </div>
+      <div class="choice-card" style="--accent:var(--fusion);">
+        <span class="format-tag">Presentation</span>
+        <h3>6–8 slide deck</h3>
+        <p>Built to actually present out loud, not to be read silently — talk to your slides, don't read them.</p>
+        <ul>
+          <li>One stage per slide, plus an intro and a "why mass matters" slide</li>
+          <li>One sentence of speaker notes per slide, max</li>
+          <li>End on the recycling idea — we're made of old stars</li>
+        </ul>
+      </div>
+      <div class="choice-card" style="--accent:var(--giant);">
+        <span class="format-tag">Article</span>
+        <h3>600–800 word feature</h3>
+        <p>Write it like a real popular-science piece — a hook, a clear structure, no bullet points.</p>
+        <ul>
+          <li>Headline + strapline</li>
+          <li>Use an analogy for fusion or gravitational collapse</li>
+          <li>One diagram or image, captioned</li>
+        </ul>
+      </div>
+      <div class="choice-card" style="--accent:var(--remnant);">
+        <span class="format-tag">Podcast / video script</span>
+        <h3>3–4 minute narrated script</h3>
+        <p>Write it to be heard, not read — short sentences, a narrator's voice, timestamps for your own reference.</p>
+        <ul>
+          <li>Tell it as one hydrogen atom's journey</li>
+          <li>Signpost each stage clearly for a listener with no diagram</li>
+          <li>A cold open — start mid-story, not "today I'm going to talk about..."</li>
+        </ul>
+      </div>
+      <div class="choice-card" style="--accent:var(--nebula);">
+        <span class="format-tag">Infographic</span>
+        <h3>Single-page visual data story</h3>
+        <p>Numbers do the talking: masses, timescales, temperatures, sizes.</p>
+        <ul>
+          <li>At least 3 real figures (e.g. core temperature, solar masses, lifespan)</li>
+          <li>Consistent colour-coding across the two mass paths</li>
+          <li>No paragraph longer than one sentence</li>
+        </ul>
+      </div>
+      <div class="choice-card" style="--accent:var(--fusion);">
+        <span class="format-tag">Physical or 3D model</span>
+        <h3>Model + explainer card</h3>
+        <p>Build it — clay, card, Blender, whatever you've got — then write the science it can't show on its own.</p>
+        <ul>
+          <li>A labelled model of at least 3 stages</li>
+          <li>A short written explanation of what the model doesn't show (e.g. scale, time)</li>
+          <li>A photo or render if it's physical</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="must-include">
+      <h3>Every format must include</h3>
+      <ul>
+        <li>The correct order: nebula → protostar → main sequence → the split by mass</li>
+        <li>Both endpoints of low/medium-mass stars <em>and</em> high-mass stars, correctly labelled</li>
+        <li>The reason the paths diverge — mass, not luck</li>
+        <li>Correct use of at least six key terms: nebula, protostar, main sequence, red giant/supergiant, white dwarf, supernova, neutron star, black hole</li>
+        <li>An explanation of nuclear fusion — hydrogen fusing into helium — and how it's the reason a protostar becomes a stable star</li>
+        <li>At least one sentence on where elements come from: light elements from fusion inside stars, elements heavier than iron from supernovae</li>
+        <li><em>(Extended only)</em> the recycling idea — how supernova debris seeds new stars</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="rubric">
+  <div class="wrap">
+    <div class="eyebrow">06 &nbsp;— How this gets marked</div>
+    <div class="sec-head">
+      <h2>Success criteria</h2>
+      <p>Loosely mapped to the assessment objectives your exam papers use — AO1 (knowledge) and AO2 (explanation and application).</p>
+    </div>
+    <div class="rubric">
+      <div class="tier core">
+        <span class="lvl">Core secure</span>
+        <h3>Describes accurately</h3>
+        <p>States the correct sequence of stages for both low and high mass stars using the right vocabulary, in the right order. (AO1)</p>
+      </div>
+      <div class="tier ext">
+        <span class="lvl">Extended secure</span>
+        <h3>Explains, not just lists</h3>
+        <p>Explains <em>why</em> a protostar becomes stable, why the paths split by mass, and correctly separates Core from Supplement content. (AO1 + AO2)</p>
+      </div>
+      <div class="tier beyond">
+        <span class="lvl">Going further</span>
+        <h3>Beyond the syllabus</h3>
+        <p>Brings in something not required — the Hertzsprung–Russell diagram, the Chandrasekhar limit, or how heavy elements like gold and iron are actually made — and explains it accurately.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Built for Year 10 IGCSE Physics / Co-ordinated Sciences — Space Physics, topic 6.2.2. Sequence and Core/Supplement split checked against the Cambridge International Physics 0625 and Co-ordinated Sciences 0654 syllabuses.</p>
+  </div>
+</footer>
+
+<script>
+  // starfield
+  (function(){
+    var field = document.getElementById('starfield');
+    var n = window.innerWidth < 640 ? 60 : 120;
+    for (var i=0;i<n;i++){
+      var s = document.createElement('span');
+      var size = Math.random()*2 + 0.6;
+      s.style.width = size+'px';
+      s.style.height = size+'px';
+      s.style.left = Math.random()*100+'%';
+      s.style.top = Math.random()*100+'%';
+      s.style.animationDelay = (Math.random()*5)+'s';
+      s.style.animationDuration = (3+Math.random()*4)+'s';
+      field.appendChild(s);
+    }
+  })();
+
+  var stages = {
+    nebula: {
+      name: "Nebula", tag: "CORE (a)", tagColor:"#7fd4ff",
+      desc: "A vast cloud of gas and dust — mostly hydrogen — drifting in space. Nothing is fusing yet. Gravity is about to take over."
+    },
+    protostar: {
+      name: "Protostar", tag: "CORE (b)", tagColor:"#7fd4ff",
+      desc: "Gravity pulls the cloud in on itself. As it collapses, the material heats up. This dense, hot, not-yet-a-star object is a protostar."
+    },
+    mainsequence: {
+      name: "Main Sequence Star", tag: "CORE (c)", tagColor:"#7fd4ff",
+      desc: "The core gets hot enough for hydrogen nuclei to fuse into helium. The outward push from this fusion now exactly balances the inward pull of gravity — the star is stable. This is where a star spends almost all of its life, including our Sun right now."
+    },
+    redgiant: {
+      name: "Red Giant", tag: "CORE (e) · low/medium mass", tagColor:"#ff8f7d",
+      desc: "Core hydrogen runs out. Without fusion holding it up, the core shrinks while the outer layers balloon outwards and cool, turning the star red and huge — a red giant."
+    },
+    planetarynebula: {
+      name: "Planetary Nebula", tag: "CORE (f)", tagColor:"#7fd4ff",
+      desc: "The red giant can't hold onto its outer layers any longer and sheds them into space as a glowing shell of gas, called a planetary nebula (no planets involved — the name is a historical accident)."
+    },
+    whitedwarf: {
+      name: "White Dwarf", tag: "CORE (f)", tagColor:"#7fd4ff",
+      desc: "What's left behind is the small, incredibly dense, hot core of the old star — a white dwarf. No fusion is happening any more; it simply cools down, extremely slowly, over billions of years."
+    },
+    blackdwarf: {
+      name: "Black Dwarf (theoretical)", tag: "not on the syllabus", tagColor:"#9298b8",
+      desc: "If a white dwarf cooled completely it would become a cold, dark black dwarf. The universe isn't old enough for any to exist yet — this stage is theoretical, and you won't be examined on it."
+    },
+    redsupergiant: {
+      name: "Red Supergiant", tag: "CORE (e) · high mass", tagColor:"#ff8f7d",
+      desc: "A much more massive star runs out of core hydrogen too, but its far greater gravity drives much more extreme expansion — swelling into an enormous red supergiant, hundreds of times the Sun's size."
+    },
+    supernova: {
+      name: "Supernova", tag: "CORE (g)", tagColor:"#7fd4ff",
+      desc: "The core finally collapses in less than a second, then rebounds in a catastrophic explosion. This blasts a nebula of hydrogen and newly-forged heavy elements — carbon, iron, and more — out into space."
+    },
+    neutronstar: {
+      name: "Neutron Star", tag: "CORE (g)", tagColor:"#7fd4ff",
+      desc: "If the collapsing core's remaining mass is roughly 2–8 times the Sun's mass, it crushes down into a neutron star: a city-sized ball made almost entirely of neutrons, so dense that a sugar-cube of it would weigh billions of tonnes on Earth."
+    },
+    blackhole: {
+      name: "Black Hole", tag: "CORE (g)", tagColor:"#7fd4ff",
+      desc: "If the remaining core is more massive still, no known force can stop the collapse. It crushes down into a black hole — gravity so strong that not even light can escape."
+    }
+  };
+
+  function showStage(id){
+    document.querySelectorAll('.node').forEach(function(n){n.classList.remove('active');});
+    var el = document.querySelector('.node[data-stage="'+id+'"]');
+    if(el) el.classList.add('active');
+    var s = stages[id];
+    var panel = document.getElementById('stage-detail');
+    panel.innerHTML =
+      '<div class="stage-detail-text">' +
+        '<span class="tag mono" style="color:'+s.tagColor+'">'+s.tag+'</span>' +
+        '<h3 style="margin-top:12px;">'+s.name+'</h3>' +
+        '<p>'+s.desc+'</p>' +
+      '</div>' +
+      '<div class="hint">tap another stage to keep exploring →</div>';
+  }
+  document.querySelectorAll('.node').forEach(function(n){
+    n.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); showStage(n.getAttribute('data-stage')); }
+    });
+  });
+  showStage('nebula');
+</script>
+
+</body>
+</html>
