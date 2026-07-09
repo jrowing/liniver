@@ -1,0 +1,1005 @@
+--- 
+title: "Space - the final frontier...." 
+description: "A chance to look at the fun stuff" 
+category: "Y10" 
+layout: null 
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Explorer — GCSE Research Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --void: #080c14;
+    --deep: #0d1421;
+    --panel: #111827;
+    --border: #1e2d45;
+    --muted: #2a3d5a;
+    --text: #c8d8ef;
+    --bright: #e8f0fc;
+    --dim: #6b8aac;
+    --gold: #f5c842;
+    --nebula: #7b5ea7;
+    --aurora: #3eb89a;
+    --flare: #e05c3a;
+    --ice: #5bafd6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--void);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── STARFIELD ── */
+  #starfield {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── LAYOUT ── */
+  .page { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 24px 60px;
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    font-weight: 700;
+    color: var(--bright);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 span {
+    color: var(--gold);
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--dim);
+    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto 36px;
+  }
+
+  /* ── SEARCH ── */
+  .search-wrap {
+    display: flex;
+    gap: 8px;
+    max-width: 500px;
+    margin: 0 auto 20px;
+  }
+
+  .search-wrap input {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--bright);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-wrap input:focus { border-color: var(--gold); }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  .search-wrap button {
+    background: var(--gold);
+    color: var(--void);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+
+  .search-wrap button:hover { opacity: 0.85; }
+
+  /* ── FILTER TABS ── */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 24px 48px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .filter-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--void);
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--muted);
+  }
+
+  .card-accent {
+    height: 3px;
+  }
+
+  .cat-solar .card-accent   { background: var(--gold); }
+  .cat-stars .card-accent   { background: var(--flare); }
+  .cat-cosmos .card-accent  { background: var(--nebula); }
+  .cat-end .card-accent     { background: var(--ice); }
+  .cat-explore .card-accent { background: var(--aurora); }
+  .cat-mystery .card-accent { background: var(--dim); }
+
+  .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+
+  .card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .cat-solar  .card-tag  { color: var(--gold); }
+  .cat-stars  .card-tag  { color: var(--flare); }
+  .cat-cosmos .card-tag  { color: var(--nebula); }
+  .cat-end    .card-tag  { color: var(--ice); }
+  .cat-explore .card-tag { color: var(--aurora); }
+  .cat-mystery .card-tag { color: var(--dim); }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bright);
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    font-size: 0.85rem;
+    color: var(--dim);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 18px;
+  }
+
+  .card-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .link-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .link-item:hover {
+    background: var(--muted);
+    border-color: var(--muted);
+  }
+
+  .link-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .link-text { flex: 1; }
+
+  .link-name {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--bright);
+    line-height: 1.2;
+  }
+
+  .link-desc {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--dim);
+    line-height: 1.3;
+  }
+
+  .link-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .badge-nasa { background: #1a3a6b; color: #5bafd6; }
+  .badge-esa  { background: #1a3060; color: #8ab4f8; }
+  .badge-bbc  { background: #3a0a0a; color: #e05c3a; }
+  .badge-wiki { background: #2a2a1a; color: #c8c060; }
+  .badge-youtube { background: #3a0a0a; color: #ff6b6b; }
+  .badge-science { background: #1a2a1a; color: #3eb89a; }
+  .badge-uni  { background: #2a1a3a; color: var(--nebula); }
+
+  /* ── INTRO SECTION ── */
+  .how-to {
+    max-width: 760px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .how-to-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .tip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .tip-icon { font-size: 1.4rem; margin-bottom: 8px; }
+
+  .tip h4 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--bright);
+    margin-bottom: 4px;
+  }
+
+  .tip p {
+    font-size: 0.75rem;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ── NO RESULTS ── */
+  .no-results {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--dim);
+    font-size: 0.9rem;
+    grid-column: 1/-1;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">GCSE Science · Space Research Guide</div>
+    <h1>The universe has<br><span>open questions.</span></h1>
+    <p>Pick something you're curious about. Each card gives you a real question to investigate and the best places on the internet to find answers — from NASA to the BBC.</p>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <button class="filter-btn active" onclick="filter('all', this)">All topics</button>
+    <button class="filter-btn" onclick="filter('solar', this)">Solar System</button>
+    <button class="filter-btn" onclick="filter('stars', this)">Stars &amp; Lifecycles</button>
+    <button class="filter-btn" onclick="filter('cosmos', this)">Big Bang &amp; Cosmology</button>
+    <button class="filter-btn" onclick="filter('end', this)">End of Universe</button>
+    <button class="filter-btn" onclick="filter('explore', this)">Space Exploration</button>
+    <button class="filter-btn" onclick="filter('mystery', this)">Big Mysteries</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div style="max-width:900px;margin:0 auto;padding:0 24px 32px;">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search topics, e.g. black holes, dark energy…" oninput="searchCards()">
+      <button onclick="clearSearch()">Clear</button>
+    </div>
+  </div>
+
+  <!-- RESEARCH TIPS -->
+  <div class="how-to">
+    <div class="section-label">How to research well</div>
+    <div class="how-to-grid">
+      <div class="tip">
+        <div class="tip-icon">❓</div>
+        <h4>Start with a question</h4>
+        <p>Don't search for a topic — search for a question. "Why do stars explode?" gets better results than "supernovae."</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔬</div>
+        <h4>Check who wrote it</h4>
+        <p>NASA, ESA, and university sites are reliable. Random blogs may not be. Look for authors with real credentials.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔄</div>
+        <h4>Find where scientists disagree</h4>
+        <p>The best research topics have unresolved questions. If everyone agrees, there's not much to explore.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📊</div>
+        <h4>Look for real data</h4>
+        <p>The best projects include actual numbers, graphs, or observations — not just descriptions of what happens.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD GRID -->
+  <div class="grid" id="cardGrid">
+
+    <!-- SOLAR SYSTEM -->
+    <div class="card cat-solar" data-tags="solar pluto dwarf planet classification">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Solar System</div>
+        <h3>Why was Pluto demoted to a dwarf planet?</h3>
+        <p>In 2006 the IAU changed the rules for what counts as a planet. Pluto failed one of the three criteria. But not all scientists agreed — the debate is still live.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://solarsystem.nasa.gov/planets/dwarf-planets/pluto/overview/" target="_blank" rel="noopener">
+            <span class="link-icon">🚀</span>
+            <span class="link-text"><span class="link-name">NASA Solar System — Pluto</span><span class="link-desc">Official NASA profile with missions and facts</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-33462184" target="_blank" rel="noopener">
+            <span class="link-icon">📺</span>
+            <span class="link-text"><span class="link-name">BBC: Should Pluto be a planet again?</span><span class="link-desc">The ongoing scientific argument explained</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=Goyf_oGn4qs" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Kurzgesagt — The Dwarf Planet Problem</span><span class="link-desc">Excellent animated explainer</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-solar" data-tags="solar water mars moon ice life habitability">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Solar System</div>
+        <h3>Is there water on Mars — and why does it matter?</h3>
+        <p>We've found ice, ancient riverbeds, and possible underground lakes. But liquid water is a very different question. The evidence is genuinely contested.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://mars.nasa.gov/mars-exploration/missions/mars-science-laboratory/" target="_blank" rel="noopener">
+            <span class="link-icon">🔴</span>
+            <span class="link-text"><span class="link-name">NASA Mars Exploration</span><span class="link-desc">Current missions and water-hunting findings</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.esa.int/Science_Exploration/Space_Science/Mars_Express" target="_blank" rel="noopener">
+            <span class="link-icon">🛸</span>
+            <span class="link-text"><span class="link-name">ESA Mars Express — subglacial lakes</span><span class="link-desc">The radar data that found possible liquid water</span></span>
+            <span class="link-badge badge-esa">ESA</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-45047338" target="_blank" rel="noopener">
+            <span class="link-icon">💧</span>
+            <span class="link-text"><span class="link-name">BBC: Lake found under Mars ice cap</span><span class="link-desc">The 2018 discovery explained clearly</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-solar" data-tags="solar moon earth tides life axis">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Solar System</div>
+        <h3>What would happen to Earth without the Moon?</h3>
+        <p>The Moon stabilises our axial tilt, drives the tides, and slows Earth's spin. Without it, Earth's axis could wobble chaotically — and life would look very different.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.sciencefocus.com/space/what-would-happen-if-the-moon-disappeared" target="_blank" rel="noopener">
+            <span class="link-icon">🌙</span>
+            <span class="link-text"><span class="link-name">BBC Science Focus — No Moon</span><span class="link-desc">Clearly written scientific consequences</span></span>
+            <span class="link-badge badge-science">Science</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=OtHkJgNUy6c" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Kurzgesagt — Without the Moon</span><span class="link-desc">What life would actually be like</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLACK HOLES -->
+    <div class="card cat-mystery" data-tags="mystery black hole gravity event horizon singularity">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Big Mysteries</div>
+        <h3>What actually is a black hole?</h3>
+        <p>A region of spacetime where gravity is so strong that nothing — not even light — can escape. But what's actually inside? That's where physics currently breaks down.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://science.nasa.gov/black-holes/" target="_blank" rel="noopener">
+            <span class="link-icon">⚫</span>
+            <span class="link-text"><span class="link-name">NASA — Black Holes explained</span><span class="link-desc">Types, formation, and how we detect them</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.esa.int/Science_Exploration/Space_Science/What_is_a_black_hole" target="_blank" rel="noopener">
+            <span class="link-icon">🔭</span>
+            <span class="link-text"><span class="link-name">ESA — What is a black hole?</span><span class="link-desc">Clear explainer with diagrams</span></span>
+            <span class="link-badge badge-esa">ESA</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=e-P5IFTqB98" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Kurzgesagt — Black Holes explained</span><span class="link-desc">From formation to Hawking radiation</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-47889902" target="_blank" rel="noopener">
+            <span class="link-icon">📸</span>
+            <span class="link-text"><span class="link-name">BBC: First ever black hole image</span><span class="link-desc">The story behind the 2019 Event Horizon Telescope image</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STARS -->
+    <div class="card cat-stars" data-tags="stars sun age radioactive dating meteorites solar">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Stars &amp; Lifecycles</div>
+        <h3>How do we know how old the Sun is?</h3>
+        <p>Surprisingly, the most reliable method isn't looking at the Sun itself — it's radioactive dating of the oldest meteorites. The Sun and the solar system formed from the same cloud of gas.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://solarsystem.nasa.gov/solar-system/sun/in-depth/" target="_blank" rel="noopener">
+            <span class="link-icon">☀️</span>
+            <span class="link-text"><span class="link-name">NASA — The Sun in depth</span><span class="link-desc">Formation, age, and future of our star</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.sciencefocus.com/space/how-old-is-the-sun" target="_blank" rel="noopener">
+            <span class="link-icon">⏱️</span>
+            <span class="link-text"><span class="link-name">BBC Science Focus — Age of the Sun</span><span class="link-desc">The dating methods explained</span></span>
+            <span class="link-badge badge-science">Science</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-stars" data-tags="stars supernovae mass stellar lifecycle red giant neutron star">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Stars &amp; Lifecycles</div>
+        <h3>Why do some stars explode and others just fade away?</h3>
+        <p>Mass is the deciding factor. Stars like our Sun end as white dwarfs. Massive stars die in spectacular supernova explosions that forge the heavy elements in your body.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://science.nasa.gov/universe/stars/types/" target="_blank" rel="noopener">
+            <span class="link-icon">⭐</span>
+            <span class="link-text"><span class="link-name">NASA — Types of stars</span><span class="link-desc">Full lifecycle overview with stellar types</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=PM9CQDlQI0A" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Kurzgesagt — The Last Star</span><span class="link-desc">Stellar death and what comes after</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+          <a class="link-item" href="https://www.esa.int/Science_Exploration/Space_Science/How_do_stars_die" target="_blank" rel="noopener">
+            <span class="link-icon">💥</span>
+            <span class="link-text"><span class="link-name">ESA — How do stars die?</span><span class="link-desc">ESA explainer with real images</span></span>
+            <span class="link-badge badge-esa">ESA</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-stars" data-tags="stars neutron star density mass gravity pulsar">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Stars &amp; Lifecycles</div>
+        <h3>Neutron stars: city-sized objects more massive than the Sun</h3>
+        <p>When a massive star explodes, the core can collapse to a sphere just 20 km across but containing more mass than the Sun. A teaspoon would weigh a billion tonnes.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://science.nasa.gov/universe/stars/neutron-stars/" target="_blank" rel="noopener">
+            <span class="link-icon">💫</span>
+            <span class="link-text"><span class="link-name">NASA — Neutron Stars</span><span class="link-desc">What they are and how we detect them</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-41693143" target="_blank" rel="noopener">
+            <span class="link-icon">📡</span>
+            <span class="link-text"><span class="link-name">BBC: Neutron star collision detected</span><span class="link-desc">The 2017 gravitational wave event explained</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COSMOLOGY -->
+    <div class="card cat-cosmos" data-tags="cosmos big bang CMB cosmic microwave background evidence">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Big Bang &amp; Cosmology</div>
+        <h3>What is the cosmic microwave background, and why does it matter?</h3>
+        <p>The CMB is the afterglow of the Big Bang, light left over from 380,000 years after the universe began. It was discovered accidentally by two engineers trying to fix a noisy antenna.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://science.nasa.gov/missions/esa-nasa-planck-observatory/nasas-planck-mission-finds-universe-older-than-thought/" target="_blank" rel="noopener">
+            <span class="link-icon">🌡️</span>
+            <span class="link-text"><span class="link-name">NASA — Planck mission and the CMB</span><span class="link-desc">What the CMB map reveals about the universe</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.esa.int/Science_Exploration/Space_Science/Planck/Planck_and_the_cosmic_microwave_background" target="_blank" rel="noopener">
+            <span class="link-icon">🔭</span>
+            <span class="link-text"><span class="link-name">ESA Planck — CMB explainer</span><span class="link-desc">From the ESA mission that mapped it in detail</span></span>
+            <span class="link-badge badge-esa">ESA</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=3tCMd1ytvWg" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">PBS Space Time — What is the CMB?</span><span class="link-desc">In-depth but very clear video explainer</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-cosmos" data-tags="cosmos olbers paradox dark night sky expanding universe">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Big Bang &amp; Cosmology</div>
+        <h3>Why is the night sky dark? (Olbers' Paradox)</h3>
+        <p>If the universe is infinite and full of stars, every line of sight should end at one — making the whole sky as bright as the Sun. The fact it isn't tells us something profound about the universe's age and expansion.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.sciencefocus.com/space/why-is-the-sky-dark-at-night-olbers-paradox" target="_blank" rel="noopener">
+            <span class="link-icon">🌃</span>
+            <span class="link-text"><span class="link-name">BBC Science Focus — Olbers' Paradox</span><span class="link-desc">The puzzle and its solution explained clearly</span></span>
+            <span class="link-badge badge-science">Science</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=gGADFMFsHbQ" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">MinutePhysics — Dark Night Sky</span><span class="link-desc">Short, punchy video on the paradox</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-cosmos" data-tags="cosmos hubble expanding universe redshift dark energy">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Big Bang &amp; Cosmology</div>
+        <h3>How do we know the universe is expanding?</h3>
+        <p>Edwin Hubble noticed in 1929 that distant galaxies are moving away from us — and the further away, the faster they recede. His original data is simple enough to analyse yourself.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://hubblesite.org/hubble-30th-anniversary/hubbles-exciting-universe/measuring-the-universes-expansion-rate" target="_blank" rel="noopener">
+            <span class="link-icon">🔭</span>
+            <span class="link-text"><span class="link-name">HubbleSite — Measuring expansion</span><span class="link-desc">How the Hubble constant is measured</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=3mnSDifDSxQ" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Veritasium — Expanding universe</span><span class="link-desc">Excellent deep dive on Hubble's discovery</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- END OF UNIVERSE -->
+    <div class="card cat-end" data-tags="end universe heat death big freeze entropy dark energy">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">End of the Universe</div>
+        <h3>The Big Freeze: how the universe slowly dies</h3>
+        <p>If dark energy keeps accelerating expansion, stars will burn out, black holes will slowly evaporate, and the universe will reach heat death — maximum entropy where nothing can happen. On a timescale of 10¹⁰⁰ years.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.youtube.com/watch?v=uD4izuDMUQA" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Kurzgesagt — The Last Light</span><span class="link-desc">The far future of the universe, beautifully animated</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-54143596" target="_blank" rel="noopener">
+            <span class="link-icon">❄️</span>
+            <span class="link-text"><span class="link-name">BBC: How will the universe end?</span><span class="link-desc">Overview of competing end-of-universe theories</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=F1CddzgVW14" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">PBS Space Time — Heat Death</span><span class="link-desc">What entropy and thermodynamics actually say</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-end" data-tags="end universe big rip dark energy phantom energy galaxies torn">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">End of the Universe</div>
+        <h3>The Big Rip: if dark energy grows stronger</h3>
+        <p>If dark energy increases over time, expansion could eventually overpower gravity, electromagnetism, and even the nuclear force — tearing apart atoms themselves in a finite time.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://science.nasa.gov/universe/the-fate-of-the-universe/" target="_blank" rel="noopener">
+            <span class="link-icon">💥</span>
+            <span class="link-text"><span class="link-name">NASA — Fate of the Universe</span><span class="link-desc">All three major end scenarios compared</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.sciencefocus.com/space/big-rip-how-the-universe-could-be-torn-apart" target="_blank" rel="noopener">
+            <span class="link-icon">🔪</span>
+            <span class="link-text"><span class="link-name">Science Focus — The Big Rip</span><span class="link-desc">What would actually happen, step by step</span></span>
+            <span class="link-badge badge-science">Science</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-end" data-tags="end universe big crunch gravity reverse collapse singularity">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">End of the Universe</div>
+        <h3>The Big Crunch: could the universe collapse?</h3>
+        <p>If there's enough mass, gravity could eventually reverse the expansion and everything could collapse back toward a final singularity — the mirror image of the Big Bang. Current evidence says this is unlikely, but not ruled out.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.youtube.com/watch?v=HdPzOWlLrbE" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">PBS Space Time — Big Crunch</span><span class="link-desc">What the observational evidence actually says</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-54143596" target="_blank" rel="noopener">
+            <span class="link-icon">🌐</span>
+            <span class="link-text"><span class="link-name">BBC — How will the universe end?</span><span class="link-desc">All endings in one place</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-end" data-tags="end universe proton decay particle physics standard model">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">End of the Universe</div>
+        <h3>Do protons decay? (And why does it matter?)</h3>
+        <p>Most end-of-universe scenarios require protons to eventually decay. We've never observed it happening, but experiments deep underground are watching billions of them constantly, waiting for one to vanish.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.symmetrymagazine.org/article/the-not-so-stable-proton" target="_blank" rel="noopener">
+            <span class="link-icon">⚛️</span>
+            <span class="link-text"><span class="link-name">Symmetry Magazine — The unstable proton</span><span class="link-desc">Clear explanation of the search for proton decay</span></span>
+            <span class="link-badge badge-science">Science</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=Ef9QnZVpVd8" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">PBS Space Time — Proton Decay</span><span class="link-desc">Why we're looking and what it would mean</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPACE EXPLORATION -->
+    <div class="card cat-explore" data-tags="explore JWST James Webb telescope infrared Hubble comparison">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Space Exploration</div>
+        <h3>James Webb vs Hubble: what's actually different?</h3>
+        <p>JWST sees in infrared, allowing it to peer through dust clouds and see the very first galaxies. The side-by-side comparison images are striking — and they tell you a lot about how telescopes work.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://webb.nasa.gov/content/observatory/index.html" target="_blank" rel="noopener">
+            <span class="link-icon">🔭</span>
+            <span class="link-text"><span class="link-name">NASA Webb — How it works</span><span class="link-desc">Observatory design, mirrors, and science goals</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-62159035" target="_blank" rel="noopener">
+            <span class="link-icon">🌌</span>
+            <span class="link-text"><span class="link-name">BBC: Webb's first images compared</span><span class="link-desc">Side-by-side with Hubble, clearly explained</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+          <a class="link-item" href="https://www.esa.int/Science_Exploration/Space_Science/Webb" target="_blank" rel="noopener">
+            <span class="link-icon">🛰️</span>
+            <span class="link-text"><span class="link-name">ESA — Webb mission overview</span><span class="link-desc">ESA's role and the science it enables</span></span>
+            <span class="link-badge badge-esa">ESA</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-explore" data-tags="explore Voyager probe deep space distance solar system boundary">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Space Exploration</div>
+        <h3>The Voyager probes: still talking after 47 years</h3>
+        <p>Launched in 1977, Voyager 1 is now over 24 billion km away — and still sending data. The signal takes more than 22 hours to reach us. They've crossed into interstellar space and are humanity's most distant objects.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://voyager.jpl.nasa.gov/" target="_blank" rel="noopener">
+            <span class="link-icon">🚀</span>
+            <span class="link-text"><span class="link-name">NASA — Voyager mission home</span><span class="link-desc">Live distance tracker and current status</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-67879383" target="_blank" rel="noopener">
+            <span class="link-icon">📡</span>
+            <span class="link-text"><span class="link-name">BBC: Voyager 1 mystery signal</span><span class="link-desc">2024 story about fixing the probe from 24bn km away</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-explore" data-tags="explore Moon return Artemis cost engineering future">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Space Exploration</div>
+        <h3>Why is returning to the Moon so hard?</h3>
+        <p>We went in 1969 with 1960s technology. So why is it taking until the 2020s to go back? The answer involves budget, politics, radiation, and exactly what we're trying to achieve this time.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.nasa.gov/humans-in-space/artemis/" target="_blank" rel="noopener">
+            <span class="link-icon">🌕</span>
+            <span class="link-text"><span class="link-name">NASA Artemis programme</span><span class="link-desc">The plan to return humans to the Moon</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-57398088" target="_blank" rel="noopener">
+            <span class="link-icon">🤔</span>
+            <span class="link-text"><span class="link-name">BBC: Why haven't we been back?</span><span class="link-desc">The real reasons, including the political ones</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MYSTERIES -->
+    <div class="card cat-mystery" data-tags="mystery dark matter dark energy invisible universe mass">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Big Mysteries</div>
+        <h3>What is dark matter — and do we actually know it exists?</h3>
+        <p>About 27% of the universe is made of something we can't see, touch, or directly detect — we only know it's there from its gravitational effects. Galaxies would fly apart without it. But we have no idea what it is.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://science.nasa.gov/universe/dark-matter-dark-energy/" target="_blank" rel="noopener">
+            <span class="link-icon">🌑</span>
+            <span class="link-text"><span class="link-name">NASA — Dark Matter &amp; Dark Energy</span><span class="link-desc">What we know and what we're still searching for</span></span>
+            <span class="link-badge badge-nasa">NASA</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=QAa2O_8wBUQ" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Kurzgesagt — Dark Matter explained</span><span class="link-desc">What we actually know vs what we're guessing</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-22200755" target="_blank" rel="noopener">
+            <span class="link-icon">🔎</span>
+            <span class="link-text"><span class="link-name">BBC: Is dark matter real?</span><span class="link-desc">The evidence for and some alternatives</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-mystery" data-tags="mystery life extraterrestrial SETI Fermi paradox aliens">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Big Mysteries</div>
+        <h3>The Fermi Paradox: where is everyone?</h3>
+        <p>The universe is 13.8 billion years old and contains trillions of stars with planets. Intelligent life should have had time to spread everywhere — so why haven't we heard from anyone?</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.youtube.com/watch?v=sNhhvQGsMEc" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Kurzgesagt — The Fermi Paradox</span><span class="link-desc">The question and the most compelling answers</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-24499504" target="_blank" rel="noopener">
+            <span class="link-icon">👽</span>
+            <span class="link-text"><span class="link-name">BBC: Why haven't we found aliens?</span><span class="link-desc">The main explanations scientists take seriously</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+          <a class="link-item" href="https://www.seti.org/faq" target="_blank" rel="noopener">
+            <span class="link-icon">📻</span>
+            <span class="link-text"><span class="link-name">SETI Institute — FAQ</span><span class="link-desc">From the people actually searching</span></span>
+            <span class="link-badge badge-science">Science</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cat-mystery" data-tags="mystery gravitational waves LIGO spacetime ripples detection">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-tag">Big Mysteries</div>
+        <h3>Gravitational waves: listening to ripples in spacetime</h3>
+        <p>Einstein predicted gravitational waves in 1916. We only detected them in 2015 — from two black holes that merged over a billion light-years away. The signal lasted 0.2 seconds and stretched space by less than a proton's width.</p>
+        <div class="card-links">
+          <a class="link-item" href="https://www.ligo.caltech.edu/page/what-are-gw" target="_blank" rel="noopener">
+            <span class="link-icon">〰️</span>
+            <span class="link-text"><span class="link-name">LIGO — What are gravitational waves?</span><span class="link-desc">From the team that detected them</span></span>
+            <span class="link-badge badge-uni">Research</span>
+          </a>
+          <a class="link-item" href="https://www.bbc.co.uk/news/science-environment-35524440" target="_blank" rel="noopener">
+            <span class="link-icon">📰</span>
+            <span class="link-text"><span class="link-name">BBC: Gravitational waves detected</span><span class="link-desc">The 2016 announcement explained</span></span>
+            <span class="link-badge badge-bbc">BBC</span>
+          </a>
+          <a class="link-item" href="https://www.youtube.com/watch?v=4GbWfNHtHRg" target="_blank" rel="noopener">
+            <span class="link-icon">▶</span>
+            <span class="link-text"><span class="link-name">Veritasium — Detecting gravitational waves</span><span class="link-desc">How LIGO actually works, beautifully explained</span></span>
+            <span class="link-badge badge-youtube">Video</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-results hidden" id="noResults">
+      No topics match your search. Try different words, or clear the filter.
+    </div>
+
+  </div><!-- /grid -->
+
+  <footer>
+    Space Explorer · GCSE Research Guide · All external links open in a new tab · No data is collected
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+  // ── STARFIELD ──
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 220; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.4 + 0.2,
+        a: Math.random(),
+        speed: Math.random() * 0.003 + 0.001,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      const pulse = s.a * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200, 216, 239, ${pulse})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+
+  resize();
+  initStars();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+  requestAnimationFrame(drawStars);
+
+  // ── FILTER ──
+  let activeCategory = 'all';
+  let searchTerm = '';
+
+  function filter(cat, btn) {
+    activeCategory = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  function searchCards() {
+    searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    applyFilters();
+  }
+
+  function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    searchTerm = '';
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.card');
+    let visible = 0;
+    cards.forEach(card => {
+      const catMatch = activeCategory === 'all' || card.classList.contains('cat-' + activeCategory);
+      const tags = (card.dataset.tags || '') + ' ' + card.innerText.toLowerCase();
+      const searchMatch = !searchTerm || tags.includes(searchTerm);
+      if (catMatch && searchMatch) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+    document.getElementById('noResults').classList.toggle('hidden', visible > 0);
+  }
+</script>
+</body>
+</html>
