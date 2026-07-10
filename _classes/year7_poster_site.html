@@ -1,0 +1,908 @@
+--- 
+title: "Y7 Posters" 
+description: "Poster task" 
+category: "General" 
+layout: null 
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 7 Science Posters</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --border: #e2e5ee;
+    --text: #1a1d2e;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+
+    --ht1: #7c3aed; --ht1-light: #f5f3ff;
+    --ht2: #059669; --ht2-light: #ecfdf5;
+    --ht3: #d97706; --ht3-light: #fffbeb;
+    --ht4: #dc2626; --ht4-light: #fef2f2;
+    --ht5: #0891b2; --ht5-light: #ecfeff;
+    --ht6: #c026d3; --ht6-light: #fdf4ff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-tabs {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+  .nav-tab {
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-tab:hover { background: var(--bg); color: var(--text); }
+  .nav-tab.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+
+  /* MAIN */
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* HERO */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .hero-icon { font-size: 3rem; flex-shrink: 0; }
+  .hero h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+  }
+  .hero p { color: var(--muted); line-height: 1.6; font-size: 0.95rem; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* TOPIC HEADER */
+  .topic-header {
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .topic-icon { font-size: 2.5rem; }
+  .topic-header h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  .topic-header p { font-size: 0.9rem; margin-top: 0.25rem; opacity: 0.85; }
+
+  /* TWO-COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+  }
+  .card h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card ul { padding-left: 1.25rem; }
+  .card ul li { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.4rem; line-height: 1.5; }
+  .card ul li strong { color: var(--text); }
+
+  /* LINKS CARD */
+  .links-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .links-card h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; }
+  .link-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.83rem;
+    font-weight: 500;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .link-item:hover { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+  .link-icon { font-size: 1rem; flex-shrink: 0; }
+  .link-label { flex: 1; }
+  .link-src { font-size: 0.7rem; color: var(--muted); }
+
+  /* VOCAB */
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; }
+  .vocab-chip {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  .vocab-chip strong { display: block; font-weight: 600; color: var(--text); }
+  .vocab-chip span { color: var(--muted); font-size: 0.75rem; }
+
+  /* POSTER TIPS */
+  .tip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+  }
+  .tip-num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .tip-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .tip-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  .checklist li::before {
+    content: '☐';
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
+  /* COLOR TAG */
+  .tag {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-left: 0.4rem;
+  }
+
+  /* FULL CARD */
+  .full-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .full-card h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  /* COLOUR PALETTE */
+  .palette { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .swatch {
+    width: 44px; height: 44px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+    position: relative;
+    cursor: default;
+  }
+  .swatch::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  .palette-wrap { padding-bottom: 1.5rem; }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Year 7 <span>Science Posters</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="show('home')">🏠 Home</button>
+    <button class="nav-tab" onclick="show('ht1')">HT1</button>
+    <button class="nav-tab" onclick="show('ht2')">HT2</button>
+    <button class="nav-tab" onclick="show('ht3')">HT3</button>
+    <button class="nav-tab" onclick="show('ht4')">HT4</button>
+    <button class="nav-tab" onclick="show('ht5')">HT5</button>
+    <button class="nav-tab" onclick="show('ht6')">HT6</button>
+    <button class="nav-tab" onclick="show('design')">🎨 Poster Tips</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HOME -->
+  <div class="panel active" id="panel-home">
+    <div class="hero">
+      <div class="hero-icon">🔬</div>
+      <div>
+        <h1>Science Poster Project</h1>
+        <p>Choose your topic from the tabs above. Each page gives you the key science, important vocabulary, diagrams to include, and useful websites. When you're ready to start designing, visit <strong>Poster Tips</strong>.</p>
+      </div>
+    </div>
+
+    <div class="section-label">Choose a topic</div>
+    <div class="two-col">
+      <button class="card" onclick="show('ht1')" style="text-align:left;cursor:pointer;border:2px solid var(--ht1-light);background:var(--ht1-light);">
+        <h3 style="color:var(--ht1)">🔭 HT1 — How Science Works</h3>
+        <p style="font-size:0.85rem;color:var(--muted)">Variables, graphs, fair tests, scientific method</p>
+      </button>
+      <button class="card" onclick="show('ht2')" style="text-align:left;cursor:pointer;border:2px solid var(--ht2-light);background:var(--ht2-light);">
+        <h3 style="color:var(--ht2)">🦠 HT2 — Cells</h3>
+        <p style="font-size:0.85rem;color:var(--muted)">Cell structure, plant vs animal cells, specialised cells</p>
+      </button>
+      <button class="card" onclick="show('ht3')" style="text-align:left;cursor:pointer;border:2px solid var(--ht3-light);background:var(--ht3-light);">
+        <h3 style="color:var(--ht3)">⚗️ HT3 — Classifying Matter</h3>
+        <p style="font-size:0.85rem;color:var(--muted)">Elements, compounds, mixtures, the periodic table</p>
+      </button>
+      <button class="card" onclick="show('ht4')" style="text-align:left;cursor:pointer;border:2px solid var(--ht4-light);background:var(--ht4-light);">
+        <h3 style="color:var(--ht4)">⚡ HT4 — Forces</h3>
+        <p style="font-size:0.85rem;color:var(--muted)">Contact & non-contact forces, gravity, friction, resultant</p>
+      </button>
+      <button class="card" onclick="show('ht5')" style="text-align:left;cursor:pointer;border:2px solid var(--ht5-light);background:var(--ht5-light);">
+        <h3 style="color:var(--ht5)">🌿 HT5 — Living Things</h3>
+        <p style="font-size:0.85rem;color:var(--muted)">Classification, kingdoms, adaptation, ecosystems</p>
+      </button>
+      <button class="card" onclick="show('ht6')" style="text-align:left;cursor:pointer;border:2px solid var(--ht6-light);background:var(--ht6-light);">
+        <h3 style="color:var(--ht6)">🌡️ HT6 — Matter & Temperature</h3>
+        <p style="font-size:0.85rem;color:var(--muted)">States of matter, particle model, changes of state</p>
+      </button>
+    </div>
+  </div>
+
+  <!-- HT1 -->
+  <div class="panel" id="panel-ht1">
+    <div class="topic-header" style="background:var(--ht1-light);color:var(--ht1);">
+      <div class="topic-icon">🔭</div>
+      <div>
+        <h2>HT1 — How Science Works</h2>
+        <p>The scientific method: asking questions, planning experiments, and drawing conclusions from evidence.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🧪 Key Ideas to Include</h3>
+        <ul>
+          <li><strong>The scientific method</strong> — observe, question, hypothesis, experiment, results, conclusion</li>
+          <li><strong>Variables</strong> — independent (what you change), dependent (what you measure), control (what you keep the same)</li>
+          <li><strong>Fair tests</strong> — why only changing one variable matters</li>
+          <li><strong>Accuracy vs reliability</strong> — repeating experiments, anomalous results</li>
+          <li><strong>Graphs</strong> — bar charts for categoric data, line graphs for continuous data</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📐 Diagrams to Draw</h3>
+        <ul>
+          <li>A flowchart of the scientific method</li>
+          <li>A labelled graph with axes, title, and a line of best fit</li>
+          <li>A table showing IV, DV, and control variables for an example experiment</li>
+          <li>An annotated diagram of common lab equipment</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <h3>📖 Key Vocabulary</h3>
+      <div class="vocab-grid">
+        <div class="vocab-chip"><strong>Hypothesis</strong><span>A testable prediction</span></div>
+        <div class="vocab-chip"><strong>Independent variable</strong><span>What you change</span></div>
+        <div class="vocab-chip"><strong>Dependent variable</strong><span>What you measure</span></div>
+        <div class="vocab-chip"><strong>Control variable</strong><span>What you keep the same</span></div>
+        <div class="vocab-chip"><strong>Anomalous result</strong><span>An outlier / odd result</span></div>
+        <div class="vocab-chip"><strong>Reproducible</strong><span>Others get same results</span></div>
+        <div class="vocab-chip"><strong>Mean</strong><span>Average of repeated results</span></div>
+        <div class="vocab-chip"><strong>Conclusion</strong><span>What the evidence shows</span></div>
+      </div>
+    </div>
+
+    <div class="links-card">
+      <h3>🔗 Useful Websites</h3>
+      <div class="link-grid">
+        <a class="link-item" href="https://www.bbc.co.uk/bitesize/topics/zhydgk7" target="_blank">
+          <span class="link-icon">📺</span><span class="link-label">Scientific method<br><span class="link-src">BBC Bitesize</span></span>
+        </a>
+        <a class="link-item" href="https://www.khanacademy.org/science/biology/intro-to-biology/science-of-biology/a/the-science-of-biology" target="_blank">
+          <span class="link-icon">🎓</span><span class="link-label">Science of biology<br><span class="link-src">Khan Academy</span></span>
+        </a>
+        <a class="link-item" href="https://www.sciencebuddies.org/science-fair-projects/science-fair/steps-of-the-scientific-method" target="_blank">
+          <span class="link-icon">🔬</span><span class="link-label">Steps of the method<br><span class="link-src">Science Buddies</span></span>
+        </a>
+        <a class="link-item" href="https://www.youtube.com/watch?v=N6IAzlugWw0" target="_blank">
+          <span class="link-icon">▶️</span><span class="link-label">Variables explained<br><span class="link-src">YouTube</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HT2 -->
+  <div class="panel" id="panel-ht2">
+    <div class="topic-header" style="background:var(--ht2-light);color:var(--ht2);">
+      <div class="topic-icon">🦠</div>
+      <div>
+        <h2>HT2 — Cells</h2>
+        <p>The building blocks of all living things — from tiny bacteria to giant whales.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🧪 Key Ideas to Include</h3>
+        <ul>
+          <li><strong>Animal cell</strong> — nucleus, cytoplasm, cell membrane, mitochondria, ribosomes</li>
+          <li><strong>Plant cell</strong> — all of the above plus cell wall, chloroplast, vacuole</li>
+          <li><strong>Prokaryote vs eukaryote</strong> — bacterial cells have no nucleus</li>
+          <li><strong>Specialised cells</strong> — red blood cells, nerve cells, root hair cells, sperm cells</li>
+          <li><strong>Microscopy</strong> — how we can see cells; magnification</li>
+          <li><strong>Organisation</strong> — cells → tissues → organs → organ systems</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📐 Diagrams to Draw</h3>
+        <ul>
+          <li>Labelled animal cell</li>
+          <li>Labelled plant cell (with differences highlighted)</li>
+          <li>Two specialised cells with explanations of their adaptations</li>
+          <li>The hierarchy: cell → tissue → organ → system</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <h3>📖 Key Vocabulary</h3>
+      <div class="vocab-grid">
+        <div class="vocab-chip"><strong>Nucleus</strong><span>Controls the cell</span></div>
+        <div class="vocab-chip"><strong>Cytoplasm</strong><span>Jelly where reactions happen</span></div>
+        <div class="vocab-chip"><strong>Cell membrane</strong><span>Controls what enters/leaves</span></div>
+        <div class="vocab-chip"><strong>Mitochondria</strong><span>Site of respiration</span></div>
+        <div class="vocab-chip"><strong>Chloroplast</strong><span>Site of photosynthesis</span></div>
+        <div class="vocab-chip"><strong>Cell wall</strong><span>Rigid outer layer (plants)</span></div>
+        <div class="vocab-chip"><strong>Vacuole</strong><span>Stores sap (plants)</span></div>
+        <div class="vocab-chip"><strong>Eukaryote</strong><span>Cell with a nucleus</span></div>
+        <div class="vocab-chip"><strong>Prokaryote</strong><span>Cell without a nucleus</span></div>
+        <div class="vocab-chip"><strong>Magnification</strong><span>Image ÷ actual size</span></div>
+      </div>
+    </div>
+
+    <div class="links-card">
+      <h3>🔗 Useful Websites</h3>
+      <div class="link-grid">
+        <a class="link-item" href="https://www.bbc.co.uk/bitesize/topics/znyycdm" target="_blank">
+          <span class="link-icon">📺</span><span class="link-label">Cells<br><span class="link-src">BBC Bitesize KS3</span></span>
+        </a>
+        <a class="link-item" href="https://www.khanacademy.org/science/biology/structure-of-a-cell" target="_blank">
+          <span class="link-icon">🎓</span><span class="link-label">Cell structure<br><span class="link-src">Khan Academy</span></span>
+        </a>
+        <a class="link-item" href="https://www.cellsalive.com/cells/cell_model.htm" target="_blank">
+          <span class="link-icon">🔬</span><span class="link-label">Interactive cell model<br><span class="link-src">Cells Alive</span></span>
+        </a>
+        <a class="link-item" href="https://www.youtube.com/watch?v=URUJD5NEXC8" target="_blank">
+          <span class="link-icon">▶️</span><span class="link-label">Cell structures video<br><span class="link-src">YouTube</span></span>
+        </a>
+        <a class="link-item" href="https://www.sciencefacts.net/animal-cell.html" target="_blank">
+          <span class="link-icon">📄</span><span class="link-label">Animal cell facts<br><span class="link-src">Science Facts</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HT3 -->
+  <div class="panel" id="panel-ht3">
+    <div class="topic-header" style="background:var(--ht3-light);color:var(--ht3);">
+      <div class="topic-icon">⚗️</div>
+      <div>
+        <h2>HT3 — Classifying Matter</h2>
+        <p>Everything around us is made of matter — elements, compounds, and mixtures all behave differently.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🧪 Key Ideas to Include</h3>
+        <ul>
+          <li><strong>Elements</strong> — made of one type of atom; found on the periodic table</li>
+          <li><strong>Compounds</strong> — two or more elements chemically joined; have different properties to the elements</li>
+          <li><strong>Mixtures</strong> — two or more substances not chemically joined; can be separated</li>
+          <li><strong>The periodic table</strong> — metals vs non-metals, groups and periods</li>
+          <li><strong>Separation techniques</strong> — filtration, evaporation, distillation, chromatography</li>
+          <li><strong>Atoms and molecules</strong> — particle diagrams</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📐 Diagrams to Draw</h3>
+        <ul>
+          <li>Particle diagrams for element, compound, and mixture</li>
+          <li>A section of the periodic table labelling groups and periods</li>
+          <li>A diagram of filtration or chromatography</li>
+          <li>Flow chart: how to separate a salt + sand + water mixture</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <h3>📖 Key Vocabulary</h3>
+      <div class="vocab-grid">
+        <div class="vocab-chip"><strong>Element</strong><span>One type of atom only</span></div>
+        <div class="vocab-chip"><strong>Compound</strong><span>Chemically bonded atoms</span></div>
+        <div class="vocab-chip"><strong>Mixture</strong><span>Not chemically joined</span></div>
+        <div class="vocab-chip"><strong>Atom</strong><span>Smallest unit of an element</span></div>
+        <div class="vocab-chip"><strong>Molecule</strong><span>Two or more bonded atoms</span></div>
+        <div class="vocab-chip"><strong>Filtration</strong><span>Separates insoluble solid</span></div>
+        <div class="vocab-chip"><strong>Distillation</strong><span>Separates liquids by b.p.</span></div>
+        <div class="vocab-chip"><strong>Chromatography</strong><span>Separates dissolved dyes</span></div>
+        <div class="vocab-chip"><strong>Period</strong><span>Row on periodic table</span></div>
+        <div class="vocab-chip"><strong>Group</strong><span>Column on periodic table</span></div>
+      </div>
+    </div>
+
+    <div class="links-card">
+      <h3>🔗 Useful Websites</h3>
+      <div class="link-grid">
+        <a class="link-item" href="https://www.bbc.co.uk/bitesize/topics/z9yycdm" target="_blank">
+          <span class="link-icon">📺</span><span class="link-label">Classifying materials<br><span class="link-src">BBC Bitesize KS3</span></span>
+        </a>
+        <a class="link-item" href="https://ptable.com/" target="_blank">
+          <span class="link-icon">🧪</span><span class="link-label">Interactive periodic table<br><span class="link-src">PTable</span></span>
+        </a>
+        <a class="link-item" href="https://www.rsc.org/periodic-table" target="_blank">
+          <span class="link-icon">🔬</span><span class="link-label">Periodic table<br><span class="link-src">Royal Society of Chemistry</span></span>
+        </a>
+        <a class="link-item" href="https://www.khanacademy.org/science/chemistry/atomic-structure-and-properties" target="_blank">
+          <span class="link-icon">🎓</span><span class="link-label">Atoms & elements<br><span class="link-src">Khan Academy</span></span>
+        </a>
+        <a class="link-item" href="https://www.youtube.com/watch?v=axiUxqFSrQw" target="_blank">
+          <span class="link-icon">▶️</span><span class="link-label">Elements vs compounds<br><span class="link-src">YouTube</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HT4 -->
+  <div class="panel" id="panel-ht4">
+    <div class="topic-header" style="background:var(--ht4-light);color:var(--ht4);">
+      <div class="topic-icon">⚡</div>
+      <div>
+        <h2>HT4 — Forces</h2>
+        <p>Forces are pushes and pulls that change the speed, shape, or direction of an object.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🧪 Key Ideas to Include</h3>
+        <ul>
+          <li><strong>Contact forces</strong> — friction, air resistance, tension, normal reaction</li>
+          <li><strong>Non-contact forces</strong> — gravity, magnetism, electrostatic</li>
+          <li><strong>Resultant force</strong> — adding forces together; balanced vs unbalanced</li>
+          <li><strong>Gravity</strong> — weight = mass × gravitational field strength (W = mg)</li>
+          <li><strong>Friction</strong> — opposes motion; can be useful or a problem</li>
+          <li><strong>Force diagrams</strong> — arrows showing size and direction of forces</li>
+          <li><strong>Stretching</strong> — springs and elastic bands; Hooke's Law</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📐 Diagrams to Draw</h3>
+        <ul>
+          <li>Force diagram on a stationary object (balanced forces)</li>
+          <li>Force diagram on a moving/accelerating object (unbalanced)</li>
+          <li>A labelled diagram showing gravity on Earth vs the Moon</li>
+          <li>Extension vs force graph for a spring (Hooke's Law)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <h3>📖 Key Vocabulary</h3>
+      <div class="vocab-grid">
+        <div class="vocab-chip"><strong>Force</strong><span>A push or pull (Newtons)</span></div>
+        <div class="vocab-chip"><strong>Weight</strong><span>Gravitational force on mass</span></div>
+        <div class="vocab-chip"><strong>Mass</strong><span>Amount of matter (kg)</span></div>
+        <div class="vocab-chip"><strong>Friction</strong><span>Opposes motion</span></div>
+        <div class="vocab-chip"><strong>Resultant</strong><span>Combined effect of forces</span></div>
+        <div class="vocab-chip"><strong>Balanced forces</strong><span>No change in motion</span></div>
+        <div class="vocab-chip"><strong>Tension</strong><span>Pulling force in a string</span></div>
+        <div class="vocab-chip"><strong>Hooke's Law</strong><span>Extension ∝ force</span></div>
+        <div class="vocab-chip"><strong>Newton (N)</strong><span>Unit of force</span></div>
+        <div class="vocab-chip"><strong>Gravity</strong><span>Non-contact attractive force</span></div>
+      </div>
+    </div>
+
+    <div class="links-card">
+      <h3>🔗 Useful Websites</h3>
+      <div class="link-grid">
+        <a class="link-item" href="https://www.bbc.co.uk/bitesize/topics/zkgg87h" target="_blank">
+          <span class="link-icon">📺</span><span class="link-label">Forces<br><span class="link-src">BBC Bitesize KS3</span></span>
+        </a>
+        <a class="link-item" href="https://phet.colorado.edu/en/simulations/forces-and-motion-basics" target="_blank">
+          <span class="link-icon">🎮</span><span class="link-label">Forces simulation<br><span class="link-src">PhET Colorado</span></span>
+        </a>
+        <a class="link-item" href="https://www.khanacademy.org/science/physics/forces-newtons-laws" target="_blank">
+          <span class="link-icon">🎓</span><span class="link-label">Newton's laws<br><span class="link-src">Khan Academy</span></span>
+        </a>
+        <a class="link-item" href="https://www.youtube.com/watch?v=foo__DjFw0M" target="_blank">
+          <span class="link-icon">▶️</span><span class="link-label">Forces explained<br><span class="link-src">YouTube</span></span>
+        </a>
+        <a class="link-item" href="https://spark.iop.org/forces" target="_blank">
+          <span class="link-icon">⚡</span><span class="link-label">Forces resources<br><span class="link-src">IoP Spark</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HT5 -->
+  <div class="panel" id="panel-ht5">
+    <div class="topic-header" style="background:var(--ht5-light);color:var(--ht5);">
+      <div class="topic-icon">🌿</div>
+      <div>
+        <h2>HT5 — Living Things</h2>
+        <p>How we classify the incredible diversity of life on Earth — from bacteria to blue whales.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🧪 Key Ideas to Include</h3>
+        <ul>
+          <li><strong>The five kingdoms</strong> — animals, plants, fungi, protists, bacteria</li>
+          <li><strong>Classification system</strong> — kingdom, phylum, class, order, family, genus, species</li>
+          <li><strong>Vertebrates vs invertebrates</strong> — fish, amphibians, reptiles, birds, mammals</li>
+          <li><strong>Adaptation</strong> — how organisms are suited to their environment</li>
+          <li><strong>Ecosystems</strong> — food chains, food webs, producers, consumers, decomposers</li>
+          <li><strong>Binomial nomenclature</strong> — Homo sapiens; two-part naming system</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📐 Diagrams to Draw</h3>
+        <ul>
+          <li>A classification tree for vertebrates (with examples)</li>
+          <li>A food web from a named ecosystem</li>
+          <li>Annotated diagram of an animal showing adaptations</li>
+          <li>A Venn diagram comparing plant and animal kingdoms</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <h3>📖 Key Vocabulary</h3>
+      <div class="vocab-grid">
+        <div class="vocab-chip"><strong>Classification</strong><span>Sorting organisms into groups</span></div>
+        <div class="vocab-chip"><strong>Kingdom</strong><span>Largest classification group</span></div>
+        <div class="vocab-chip"><strong>Species</strong><span>Organisms that can breed</span></div>
+        <div class="vocab-chip"><strong>Vertebrate</strong><span>Has a backbone</span></div>
+        <div class="vocab-chip"><strong>Invertebrate</strong><span>No backbone</span></div>
+        <div class="vocab-chip"><strong>Adaptation</strong><span>Feature that aids survival</span></div>
+        <div class="vocab-chip"><strong>Producer</strong><span>Makes food via photosynthesis</span></div>
+        <div class="vocab-chip"><strong>Consumer</strong><span>Eats other organisms</span></div>
+        <div class="vocab-chip"><strong>Decomposer</strong><span>Breaks down dead matter</span></div>
+        <div class="vocab-chip"><strong>Binomial</strong><span>Two-part scientific name</span></div>
+      </div>
+    </div>
+
+    <div class="links-card">
+      <h3>🔗 Useful Websites</h3>
+      <div class="link-grid">
+        <a class="link-item" href="https://www.bbc.co.uk/bitesize/topics/z6wwxnb" target="_blank">
+          <span class="link-icon">📺</span><span class="link-label">Classification<br><span class="link-src">BBC Bitesize KS3</span></span>
+        </a>
+        <a class="link-item" href="https://education.nationalgeographic.org/resource/classification-living-things" target="_blank">
+          <span class="link-icon">🌍</span><span class="link-label">Classifying life<br><span class="link-src">National Geographic</span></span>
+        </a>
+        <a class="link-item" href="https://www.khanacademy.org/science/biology/ecology" target="_blank">
+          <span class="link-icon">🎓</span><span class="link-label">Ecology<br><span class="link-src">Khan Academy</span></span>
+        </a>
+        <a class="link-item" href="https://www.iucnredlist.org/" target="_blank">
+          <span class="link-icon">🔴</span><span class="link-label">IUCN Red List<br><span class="link-src">Endangered species</span></span>
+        </a>
+        <a class="link-item" href="https://www.youtube.com/watch?v=SA02un37GEQ" target="_blank">
+          <span class="link-icon">▶️</span><span class="link-label">Classification video<br><span class="link-src">YouTube</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HT6 -->
+  <div class="panel" id="panel-ht6">
+    <div class="topic-header" style="background:var(--ht6-light);color:var(--ht6);">
+      <div class="topic-icon">🌡️</div>
+      <div>
+        <h2>HT6 — Matter &amp; Temperature</h2>
+        <p>How particles behave differently in solids, liquids, and gases — and what happens when we heat things up.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>🧪 Key Ideas to Include</h3>
+        <ul>
+          <li><strong>Three states of matter</strong> — solid, liquid, gas; properties of each</li>
+          <li><strong>Particle model</strong> — arrangement and movement of particles in each state</li>
+          <li><strong>Changes of state</strong> — melting, freezing, evaporation, condensation, sublimation</li>
+          <li><strong>Melting and boiling points</strong> — fixed temperatures for pure substances</li>
+          <li><strong>Diffusion</strong> — particles spread from high to low concentration</li>
+          <li><strong>Density</strong> — mass ÷ volume; why solids are usually densest</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📐 Diagrams to Draw</h3>
+        <ul>
+          <li>Particle diagrams for solid, liquid, and gas side by side</li>
+          <li>A state change diagram with arrows and labels (e.g. melting, boiling)</li>
+          <li>A heating curve graph showing melting and boiling points</li>
+          <li>A diffusion diagram — particles spreading through a gas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <h3>📖 Key Vocabulary</h3>
+      <div class="vocab-grid">
+        <div class="vocab-chip"><strong>Solid</strong><span>Fixed shape and volume</span></div>
+        <div class="vocab-chip"><strong>Liquid</strong><span>Fixed volume, flows</span></div>
+        <div class="vocab-chip"><strong>Gas</strong><span>No fixed shape or volume</span></div>
+        <div class="vocab-chip"><strong>Melting point</strong><span>Solid → liquid temperature</span></div>
+        <div class="vocab-chip"><strong>Boiling point</strong><span>Liquid → gas temperature</span></div>
+        <div class="vocab-chip"><strong>Evaporation</strong><span>Liquid → gas (surface)</span></div>
+        <div class="vocab-chip"><strong>Condensation</strong><span>Gas → liquid</span></div>
+        <div class="vocab-chip"><strong>Sublimation</strong><span>Solid → gas directly</span></div>
+        <div class="vocab-chip"><strong>Diffusion</strong><span>Spreading of particles</span></div>
+        <div class="vocab-chip"><strong>Density</strong><span>Mass per unit volume</span></div>
+      </div>
+    </div>
+
+    <div class="links-card">
+      <h3>🔗 Useful Websites</h3>
+      <div class="link-grid">
+        <a class="link-item" href="https://www.bbc.co.uk/bitesize/topics/z9yycdm" target="_blank">
+          <span class="link-icon">📺</span><span class="link-label">States of matter<br><span class="link-src">BBC Bitesize KS3</span></span>
+        </a>
+        <a class="link-item" href="https://phet.colorado.edu/en/simulations/states-of-matter-basics" target="_blank">
+          <span class="link-icon">🎮</span><span class="link-label">States of matter sim<br><span class="link-src">PhET Colorado</span></span>
+        </a>
+        <a class="link-item" href="https://www.khanacademy.org/science/chemistry/states-of-matter-and-intermolecular-forces" target="_blank">
+          <span class="link-icon">🎓</span><span class="link-label">States of matter<br><span class="link-src">Khan Academy</span></span>
+        </a>
+        <a class="link-item" href="https://www.youtube.com/watch?v=pKvo0XWZtjo" target="_blank">
+          <span class="link-icon">▶️</span><span class="link-label">Particle model video<br><span class="link-src">YouTube</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN TIPS -->
+  <div class="panel" id="panel-design">
+    <div class="topic-header" style="background:#f0f9ff;color:#0369a1;">
+      <div class="topic-icon">🎨</div>
+      <div>
+        <h2>How to Make a Great Poster</h2>
+        <p>Follow these tips to make your poster clear, informative, and eye-catching.</p>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:0.75rem;">The golden rules</div>
+    <div class="tip-grid" style="margin-bottom:1.5rem;">
+      <div class="tip-card">
+        <div class="tip-num">1</div>
+        <h4>Big title, clear message</h4>
+        <p>Your title should be readable from across the room. State your topic clearly — "How does friction work?" is better than just "Forces".</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">2</div>
+        <h4>Diagrams do the heavy lifting</h4>
+        <p>Science posters need diagrams. Draw neatly and label everything. A good diagram can replace a paragraph of writing.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">3</div>
+        <h4>Don't just copy — explain</h4>
+        <p>Use your own words. Show you understand by explaining what a diagram means, not just drawing it.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">4</div>
+        <h4>Balance text and images</h4>
+        <p>Aim for roughly half text, half images. A poster covered in only writing is hard to read. Too many pictures and there's no science.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">5</div>
+        <h4>Use colour deliberately</h4>
+        <p>Colour should help — e.g. red for one force, blue for another. Don't use lots of colours just to fill space.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">6</div>
+        <h4>Check your spelling</h4>
+        <p>Scientific words matter. Check the key vocabulary list on your topic page before you write anything on your poster.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="full-card">
+        <h3>📐 Layout Guide</h3>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">A typical A2 portrait poster might look like this:</p>
+        <div style="border:2px dashed var(--border);border-radius:8px;padding:1rem;font-size:0.75rem;color:var(--muted);font-family:monospace;line-height:1.8;">
+          ┌─────────────────────────┐<br>
+          │   🏷️  BIG TITLE HERE    │<br>
+          ├────────────┬────────────┤<br>
+          │            │            │<br>
+          │  DIAGRAM 1 │  DIAGRAM 2 │<br>
+          │            │            │<br>
+          ├────────────┴────────────┤<br>
+          │  Key facts / bullet pts │<br>
+          ├────────────┬────────────┤<br>
+          │ Vocabulary │  Your own  │<br>
+          │   table    │ conclusion │<br>
+          └────────────┴────────────┘
+        </div>
+      </div>
+
+      <div class="full-card">
+        <h3>✅ Poster Checklist</h3>
+        <ul class="checklist">
+          <li>Title is large and clearly states the topic</li>
+          <li>At least two labelled diagrams included</li>
+          <li>Key vocabulary defined or explained</li>
+          <li>All scientific words spelled correctly</li>
+          <li>Information written in my own words</li>
+          <li>Colour used to help explain, not just decorate</li>
+          <li>Sources listed at the bottom</li>
+          <li>Name and class visible on the poster</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <h3>🎨 Choosing Colours</h3>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Simple colour combinations that look clean and professional:</p>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:0.75rem;font-weight:600;margin-bottom:0.5rem;">Navy + Gold</div>
+          <div style="display:flex;gap:0.4rem;">
+            <div style="width:36px;height:36px;border-radius:6px;background:#1e3a5f;"></div>
+            <div style="width:36px;height:36px;border-radius:6px;background:#f5c842;"></div>
+            <div style="width:36px;height:36px;border-radius:6px;background:#ffffff;border:1px solid #ddd;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:600;margin-bottom:0.5rem;">Forest + Cream</div>
+          <div style="display:flex;gap:0.4rem;">
+            <div style="width:36px;height:36px;border-radius:6px;background:#2d6a4f;"></div>
+            <div style="width:36px;height:36px;border-radius:6px;background:#fef9ef;border:1px solid #ddd;"></div>
+            <div style="width:36px;height:36px;border-radius:6px;background:#d4a017;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:600;margin-bottom:0.5rem;">Slate + Coral</div>
+          <div style="display:flex;gap:0.4rem;">
+            <div style="width:36px;height:36px;border-radius:6px;background:#475569;"></div>
+            <div style="width:36px;height:36px;border-radius:6px;background:#fb923c;"></div>
+            <div style="width:36px;height:36px;border-radius:6px;background:#f8fafc;border:1px solid #ddd;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="links-card">
+      <h3>🔗 Useful Tools for Making Your Poster</h3>
+      <div class="link-grid">
+        <a class="link-item" href="https://www.canva.com/create/posters/" target="_blank">
+          <span class="link-icon">🎨</span><span class="link-label">Make a poster<br><span class="link-src">Canva (free)</span></span>
+        </a>
+        <a class="link-item" href="https://app.diagrams.net/" target="_blank">
+          <span class="link-icon">📐</span><span class="link-label">Draw diagrams<br><span class="link-src">diagrams.net (free)</span></span>
+        </a>
+        <a class="link-item" href="https://www.google.com/slides/about/" target="_blank">
+          <span class="link-icon">📊</span><span class="link-label">Google Slides<br><span class="link-src">Poster using slides</span></span>
+        </a>
+        <a class="link-item" href="https://fonts.google.com/" target="_blank">
+          <span class="link-icon">🔤</span><span class="link-label">Free fonts<br><span class="link-src">Google Fonts</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    const tabs = document.querySelectorAll('.nav-tab');
+    const map = ['home','ht1','ht2','ht3','ht4','ht5','ht6','design'];
+    tabs[map.indexOf(id)].classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+</script>
+
+</body>
+</html>
