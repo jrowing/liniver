@@ -1,0 +1,1123 @@
+--- 
+title: "Summer work" 
+description: "Poster task" 
+category: "Y13" 
+layout: null 
+---<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9702 Physics — Summer Bridging Work | VISP</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --surface-alt: #f2f1ee;
+    --border: #e0ddd8;
+    --border-strong: #c8c5c0;
+    --text: #1a1a18;
+    --text-secondary: #5a5955;
+    --text-muted: #9a9895;
+    --accent: #185FA5;
+    --accent-bg: #E6F1FB;
+    --accent-text: #0C447C;
+    --radius: 8px;
+    --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'Menlo', 'Consolas', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #18181a;
+      --surface: #242428;
+      --surface-alt: #1e1e22;
+      --border: #38383e;
+      --border-strong: #52525a;
+      --text: #f0efe8;
+      --text-secondary: #a0a09a;
+      --text-muted: #68687a;
+      --accent: #5BA3E0;
+      --accent-bg: #0d2a45;
+      --accent-text: #8fc5f0;
+    }
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    gap: 1rem;
+  }
+  .site-title { font-size: 15px; font-weight: 500; }
+  .site-title span { color: var(--text-secondary); font-weight: 400; }
+  .overall-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .prog-track {
+    width: 120px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .hero h1 { font-size: 24px; font-weight: 500; margin-bottom: 6px; }
+  .hero .subtitle { color: var(--text-secondary); font-size: 15px; margin-bottom: 1.25rem; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.25rem; }
+  .badge {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .b-blue  { background: #E6F1FB; color: #0C447C; }
+  .b-purple{ background: #EEEDFE; color: #3C3489; }
+  .b-teal  { background: #E1F5EE; color: #085041; }
+  .b-amber { background: #FAEEDA; color: #633806; }
+  .b-coral { background: #FAECE7; color: #712B13; }
+  .b-pink  { background: #FBEAF0; color: #72243E; }
+  .b-green { background: #EAF3DE; color: #27500A; }
+  @media (prefers-color-scheme: dark) {
+    .b-blue  { background: #0d2a45; color: #8fc5f0; }
+    .b-purple{ background: #1e1a40; color: #afa9ec; }
+    .b-teal  { background: #04231a; color: #5dcaa5; }
+    .b-amber { background: #2a1c05; color: #fac775; }
+    .b-coral { background: #2a100a; color: #f0997b; }
+    .b-pink  { background: #280d1a; color: #ed93b1; }
+    .b-green { background: #0f2004; color: #97c459; }
+  }
+  .hero-note {
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ── NAV TABS ── */
+  .module-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .mod-btn {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mod-btn:hover { color: var(--text); border-color: var(--accent); }
+  .mod-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── SECTION TABS ── */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab {
+    font-family: var(--font);
+    font-size: 14px;
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 500; }
+
+  /* ── SECTION PANELS ── */
+  .section { display: none; }
+  .section.active { display: block; }
+  .section-header {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 12px;
+  }
+
+  /* ── TASK CARD ── */
+  .task-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .task-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .task-title { font-size: 16px; font-weight: 500; }
+  .type-badge {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .t-reading    { background: #E1F5EE; color: #085041; }
+  .t-problem    { background: #E6F1FB; color: #0C447C; }
+  .t-investigate{ background: #FAEEDA; color: #633806; }
+  .t-pastpaper  { background: #EEEDFE; color: #3C3489; }
+  @media (prefers-color-scheme: dark) {
+    .t-reading    { background: #04231a; color: #5dcaa5; }
+    .t-problem    { background: #0d2a45; color: #8fc5f0; }
+    .t-investigate{ background: #2a1c05; color: #fac775; }
+    .t-pastpaper  { background: #1e1a40; color: #afa9ec; }
+  }
+
+  /* ── TASK BODY ── */
+  .task-body { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .task-body p { margin-bottom: 8px; }
+  .task-body ul { padding-left: 20px; margin-bottom: 8px; }
+  .task-body li { margin-bottom: 5px; }
+
+  /* ── WORKED EXAMPLE ── */
+  .worked-ex {
+    background: var(--surface-alt);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  .we-label {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .step { margin-bottom: 6px; line-height: 1.6; color: var(--text-secondary); }
+  .math {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--text);
+  }
+
+  /* ── QUESTION BOX ── */
+  .q-box {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-size: 14px;
+  }
+  .q-num { font-weight: 600; color: var(--text-muted); font-size: 12px; margin-bottom: 4px; }
+  .q-text { line-height: 1.7; color: var(--text); }
+  .q-mark { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: var(--accent-bg);
+    border: 1px solid rgba(24,95,165,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent-text);
+    margin: 12px 0;
+    line-height: 1.6;
+  }
+
+  /* ── REVEAL ── */
+  .reveal-btn {
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--accent);
+    background: none;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 5px 14px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.15s;
+  }
+  .reveal-btn:hover { background: var(--accent-bg); }
+  .hidden-content { display: none; }
+  .hidden-content.open { display: block; margin-top: 10px; }
+
+  /* ── CHECKBOX ── */
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .check-row input[type=checkbox] {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+  .check-row label { font-size: 13px; color: var(--text-secondary); cursor: pointer; }
+
+  /* ── DATA TABLE ── */
+  .data-row {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 8px 0;
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    line-height: 1.8;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .page { padding: 1rem 1rem 3rem; }
+    .hero { padding: 1.25rem; }
+    .task-card { padding: 1rem; }
+    .header-inner { height: 48px; }
+    .prog-track { width: 80px; }
+  }
+
+  a { color: var(--accent); }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title">9702 Physics &nbsp;<span>Summer work 2025</span></div>
+    <div class="overall-progress">
+      <span id="prog-label">0 / 30</span>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>9702 Physics — summer bridging work</h1>
+    <p class="subtitle">Year 12 → Year 13 &nbsp;·&nbsp; Vijay International School, Praslin &nbsp;·&nbsp; Cambridge International AS &amp; A Level</p>
+    <div class="hero-meta">
+      <span class="badge b-blue">Year 12 consolidation</span>
+      <span class="badge b-purple">Year 13 preview</span>
+      <span class="badge b-teal">Maths skills</span>
+      <span class="badge b-amber">Practical and data</span>
+      <span class="badge b-coral">Thermal physics</span>
+      <span class="badge b-pink">Quantum and nuclear</span>
+      <span class="badge b-green">Fields</span>
+    </div>
+    <p class="hero-note">
+      This booklet contains <strong>30 tasks</strong> spread across all major 9702 topic areas. Work through at least one tab from each module before September. Tick each task when complete — your progress is saved in the browser. Bring all written work to your first physics lesson.
+      <br><br>
+      Tasks are marked with their style: <span class="type-badge t-problem" style="display:inline-block;margin:0 2px">Problem set</span> <span class="type-badge t-pastpaper" style="display:inline-block;margin:0 2px">Past paper style</span> <span class="type-badge t-reading" style="display:inline-block;margin:0 2px">Reading</span> <span class="type-badge t-investigate" style="display:inline-block;margin:0 2px">Investigative</span>
+    </p>
+  </div>
+
+  <!-- MODULE SWITCHER -->
+  <div class="module-nav">
+    <button class="mod-btn active" onclick="switchModule(1, this)">Module 1 — Tasks 1–15</button>
+    <button class="mod-btn" onclick="switchModule(2, this)">Module 2 — Tasks 16–30</button>
+  </div>
+
+  <!-- ═══════════════ MODULE 1 ═══════════════ -->
+  <div id="module-1">
+
+    <div class="tab-bar" id="tabs1">
+      <button class="tab active" onclick="switchTab('m1','mechanics',this)">Mechanics and waves</button>
+      <button class="tab" onclick="switchTab('m1','electricity',this)">Electricity</button>
+      <button class="tab" onclick="switchTab('m1','maths',this)">Maths skills</button>
+      <button class="tab" onclick="switchTab('m1','preview',this)">Year 13 preview</button>
+      <button class="tab" onclick="switchTab('m1','practical',this)">Practical and data</button>
+    </div>
+
+    <!-- MECHANICS -->
+    <div id="m1-mechanics" class="section active">
+      <p class="section-header">Mechanics, materials and waves</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">1. Projectile motion — worked example then you try</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <p>A ball is launched horizontally from a cliff at 15 m s⁻¹ and lands 45 m from the base.</p>
+          <div class="worked-ex">
+            <div class="we-label">Worked example — find the height of the cliff</div>
+            <div class="step">① Horizontal: <span class="math">x = u_x t</span> → <span class="math">45 = 15t</span> → <span class="math">t = 3.0 s</span></div>
+            <div class="step">② Vertical (u_y = 0): <span class="math">h = ½gt²</span> → <span class="math">h = ½ × 9.81 × 9.0</span></div>
+            <div class="step">③ <span class="math">h = 44 m</span></div>
+          </div>
+          <div class="q-box"><div class="q-num">Q1a</div><div class="q-text">A stone is thrown horizontally at 8.0 m s⁻¹ from a bridge 20 m above a river. Find the horizontal distance it travels before hitting the water.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q1b</div><div class="q-text">Find the magnitude and direction of the stone's velocity at the moment of impact.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q1c</div><div class="q-text">Sketch the trajectory. On the same sketch, draw what you'd expect if air resistance were significant.</div><div class="q-mark">[2]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t1" onchange="updateProgress()"><label for="t1">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">2. Past paper — circular motion and SHM</span>
+          <span class="type-badge t-pastpaper">Past paper style</span>
+        </div>
+        <div class="task-body">
+          <div class="q-box"><div class="q-num">Q2a</div><div class="q-text">Define simple harmonic motion.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q2b</div><div class="q-text">A mass of 0.25 kg on a spring (k = 16 N m⁻¹) oscillates with amplitude 4.0 cm. Calculate (i) the period and (ii) the maximum speed.</div><div class="q-mark">[4]</div></div>
+          <div class="q-box"><div class="q-num">Q2c</div><div class="q-text">Sketch graphs of displacement, velocity, and acceleration against time for two complete oscillations, starting from maximum positive displacement. Show correct phase relationships.</div><div class="q-mark">[4]</div></div>
+          <button class="reveal-btn" onclick="tog('shm-hint')">Show hints ↓</button>
+          <div class="hidden-content" id="shm-hint">
+            <div class="worked-ex">
+              <div class="we-label">Hints</div>
+              <div class="step">Period: <span class="math">T = 2π√(m/k)</span></div>
+              <div class="step">Max speed: <span class="math">v_max = Aω</span> where <span class="math">ω = 2π/T</span></div>
+              <div class="step">Velocity leads displacement by 90°; acceleration is antiphase with displacement.</div>
+            </div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t2" onchange="updateProgress()"><label for="t2">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">3. Superposition and standing waves — investigative</span>
+          <span class="type-badge t-investigate">Investigative</span>
+        </div>
+        <div class="task-body">
+          <p>Search for "Audacity software" (free) or use any online tone generator. Play two tones at 440 Hz and 444 Hz simultaneously.</p>
+          <ul>
+            <li>Record what you hear and explain it using the principle of superposition.</li>
+            <li>Calculate the beat frequency and check it against what you hear.</li>
+            <li>Extend: what would you observe at 440 Hz and 880 Hz? Explain your prediction using standing wave theory.</li>
+          </ul>
+          <div class="info-box">This directly links to 9702 section 5 (superposition) and is the kind of real-world application that appears in Paper 4 extended questions.</div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t3" onchange="updateProgress()"><label for="t3">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- ELECTRICITY -->
+    <div id="m1-electricity" class="section">
+      <p class="section-header">Electricity</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">4. Kirchhoff's laws — worked example then you try</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <div class="worked-ex">
+            <div class="we-label">Worked example — two-loop circuit</div>
+            <div class="step">EMF₁ = 12 V, EMF₂ = 6 V, R₁ = 4 Ω, R₂ = 2 Ω, R₃ = 6 Ω. Find all branch currents.</div>
+            <div class="step">① KCL at node A: <span class="math">I₁ = I₂ + I₃</span></div>
+            <div class="step">② KVL loop 1: <span class="math">12 = 4I₁ + 2I₂</span></div>
+            <div class="step">③ KVL loop 2: <span class="math">6 = 2I₂ − 6I₃</span> → solve simultaneously</div>
+            <div class="step">Result: <span class="math">I₁ = 1.8 A, I₂ = 2.4 A, I₃ = −0.6 A</span> (negative → assumed direction wrong)</div>
+          </div>
+          <div class="q-box"><div class="q-num">Q4a</div><div class="q-text">A battery of EMF 9.0 V and internal resistance 1.2 Ω drives a current through two resistors in series: 3.8 Ω and 5.0 Ω. Find the terminal p.d. and the power dissipated internally.</div><div class="q-mark">[4]</div></div>
+          <div class="q-box"><div class="q-num">Q4b</div><div class="q-text">Three identical resistors, each 12 Ω, are connected in a triangle (delta). Find the effective resistance between any two vertices.</div><div class="q-mark">[3]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t4" onchange="updateProgress()"><label for="t4">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">5. Potential divider — past paper style</span>
+          <span class="type-badge t-pastpaper">Past paper style</span>
+        </div>
+        <div class="task-body">
+          <div class="q-box"><div class="q-num">Q5a</div><div class="q-text">Explain why a voltmeter must have a high resistance to give an accurate reading of terminal p.d.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q5b</div><div class="q-text">A 6.0 V supply drives a potential divider with R₁ = 4.0 kΩ and a thermistor R₂. At 20 °C, R₂ = 8.0 kΩ. Find the output voltage V_out across R₂. Show that V_out falls as temperature increases.</div><div class="q-mark">[5]</div></div>
+          <div class="q-box"><div class="q-num">Q5c</div><div class="q-text">Sketch V_out vs temperature. Explain how you could redesign the circuit so V_out increases with temperature.</div><div class="q-mark">[3]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t5" onchange="updateProgress()"><label for="t5">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">6. Reading — charge carriers in semiconductors</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <p>Read about n-type and p-type semiconductors (your A-level textbook or Isaac Physics).</p>
+          <ul>
+            <li>Write a short explanation (150–200 words) of why a semiconductor's resistance decreases with temperature, while a metal's increases.</li>
+            <li>Connect this to the I–V characteristic of a thermistor you would have seen in Year 12.</li>
+            <li>Stretch: how does doping change carrier density, and why does this matter for diodes?</li>
+          </ul>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t6" onchange="updateProgress()"><label for="t6">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- MATHS -->
+    <div id="m1-maths" class="section">
+      <p class="section-header">Mathematical skills for A-level Physics</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">7. Logarithms — essential for Year 13</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <div class="worked-ex">
+            <div class="we-label">Worked example — radioactive decay and ln</div>
+            <div class="step">N = N₀ e^(−λt). Taking natural log: <span class="math">ln N = ln N₀ − λt</span></div>
+            <div class="step">So a graph of ln N vs t is a straight line, gradient = −λ, y-intercept = ln N₀.</div>
+            <div class="step">This is how we linearise exponential data in practicals.</div>
+          </div>
+          <div class="q-box"><div class="q-num">Q7a</div><div class="q-text">A capacitor discharges through a resistor: V = V₀ e^(−t/RC). Show how to plot a straight-line graph from this equation and state what the gradient represents.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q7b</div><div class="q-text">Solve for t: <span style="font-family:var(--mono);font-size:13px">8 = 24 e^(−t/40)</span>. Give your answer to 3 significant figures.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box">
+            <div class="q-num">Q7c</div>
+            <div class="q-text">Using the data below, plot ln(count rate) vs time and use the gradient to find the decay constant λ and hence the half-life of the source.</div>
+            <div class="data-row">t / min: 0, 5, 10, 15, 20, 25<br>C / min⁻¹: 960, 640, 427, 285, 190, 127</div>
+            <div class="q-mark">[5]</div>
+          </div>
+          <button class="reveal-btn" onclick="tog('log-hint')">Show answer to Q7c ↓</button>
+          <div class="hidden-content" id="log-hint">
+            <div class="worked-ex">
+              <div class="we-label">Q7c answer</div>
+              <div class="step">ln values: 6.87, 6.46, 6.06, 5.65, 5.25, 4.84</div>
+              <div class="step">Gradient ≈ −0.0823 min⁻¹ = −λ</div>
+              <div class="step"><span class="math">t½ = ln2 / λ = 0.693 / 0.0823 ≈ 8.4 min</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t7" onchange="updateProgress()"><label for="t7">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">8. Uncertainty and significant figures</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <div class="q-box"><div class="q-num">Q8a</div><div class="q-text">A student measures a wire diameter five times: 0.42, 0.41, 0.43, 0.42, 0.44 mm. Calculate the mean, the range, and express the result with its absolute uncertainty.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q8b</div><div class="q-text">The student calculates the cross-sectional area using A = π(d/2)². If the percentage uncertainty in d is 2.4%, what is the percentage uncertainty in A?</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q8c</div><div class="q-text">Explain why plotting a graph is usually a better way to determine a physical constant from experimental data than using a single measurement.</div><div class="q-mark">[3]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t8" onchange="updateProgress()"><label for="t8">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">9. Gradient and area under graphs — investigative</span>
+          <span class="type-badge t-investigate">Investigative</span>
+        </div>
+        <div class="task-body">
+          <p>Open a spreadsheet (Google Sheets or Excel). Enter the following displacement–time data for a car:</p>
+          <div class="data-row">t / s: 0, 2, 4, 6, 8, 10<br>x / m: 0, 4, 14, 28, 44, 60</div>
+          <ul>
+            <li>Plot x vs t. Does it look linear? Why not?</li>
+            <li>Calculate approximate velocities at each point using the chord method.</li>
+            <li>Plot v vs t. Estimate the acceleration from the gradient.</li>
+            <li>Stretch: fit a trendline and display its equation. What does the coefficient of t² tell you?</li>
+          </ul>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t9" onchange="updateProgress()"><label for="t9">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- YEAR 13 PREVIEW -->
+    <div id="m1-preview" class="section">
+      <p class="section-header">Year 13 topic preview</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">10. Gravitational fields — first look</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <p>In Year 13 you'll move from "g = 9.81 m s⁻²" to a full field model. Before term starts, look up gravitational field strength g and gravitational potential φ.</p>
+          <ul>
+            <li>Write down (with units) what g and φ represent physically — not just the equations.</li>
+            <li>Explain why g is always positive but φ is always negative for a planet.</li>
+            <li>Use g = GM/r² to estimate g at the surface of the Moon (look up M and r).</li>
+          </ul>
+          <div class="info-box">The relationship g = −dφ/dr will be new — you don't need to use it yet, but notice that g is the negative gradient of the φ vs r graph. We'll build this up in September.</div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t10" onchange="updateProgress()"><label for="t10">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">11. Capacitors — conceptual introduction</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <p>Read the first section on capacitors in your textbook or at Isaac Physics.</p>
+          <div class="q-box"><div class="q-num">Q11a</div><div class="q-text">What is stored in a capacitor — charge, energy, or both? Explain carefully.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q11b</div><div class="q-text">A 470 μF capacitor is charged to 12 V. Calculate (i) the charge stored and (ii) the energy stored.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q11c</div><div class="q-text">Sketch how voltage varies with time as a capacitor charges through a resistor. Mark the time constant τ = RC on your sketch.</div><div class="q-mark">[3]</div></div>
+          <button class="reveal-btn" onclick="tog('cap-hint')">Show hints ↓</button>
+          <div class="hidden-content" id="cap-hint">
+            <div class="worked-ex">
+              <div class="we-label">Formulae to use</div>
+              <div class="step">Charge: <span class="math">Q = CV</span></div>
+              <div class="step">Energy: <span class="math">E = ½CV²</span></div>
+              <div class="step">Charging: <span class="math">V = V₀(1 − e^(−t/RC))</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t11" onchange="updateProgress()"><label for="t11">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">12. Nuclear physics — reading and reflection</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <p>Read about binding energy and mass defect before Year 13 begins.</p>
+          <ul>
+            <li>Explain, in your own words, why fission and fusion can both release energy. Use a sketch of the binding energy per nucleon curve to support your answer.</li>
+            <li>Look up the mass of a proton, neutron, and helium-4 nucleus. Calculate the mass defect of He-4 and hence its binding energy.</li>
+            <li>Reflection: why is nuclear energy described as "energy from mass"? Is this consistent with conservation of energy?</li>
+          </ul>
+          <div class="info-box">Useful data: m_p = 1.00728 u, m_n = 1.00867 u, m(He-4) = 4.00260 u, 1 u = 931.5 MeV c⁻²</div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t12" onchange="updateProgress()"><label for="t12">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- PRACTICAL -->
+    <div id="m1-practical" class="section">
+      <p class="section-header">Practical skills and data analysis</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">13. Home experiment — timing a pendulum</span>
+          <span class="type-badge t-investigate">Investigative</span>
+        </div>
+        <div class="task-body">
+          <p>You need: a piece of string (0.5–1 m), a small mass (key, nut), a ruler, and a phone timer.</p>
+          <ul>
+            <li>Measure T for at least 6 different lengths. Time 10 swings each time to reduce random error.</li>
+            <li>Plot T² vs L. Explain why this gives a straight line, and find g from the gradient.</li>
+            <li>Estimate uncertainties in L and T, and hence in g. Comment on your value.</li>
+            <li>Identify one systematic and one random source of error in your method.</li>
+          </ul>
+          <div class="worked-ex">
+            <div class="we-label">Theory reminder</div>
+            <div class="step"><span class="math">T = 2π√(L/g)</span> → <span class="math">T² = (4π²/g) × L</span></div>
+            <div class="step">Gradient of T² vs L graph = 4π²/g</div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t13" onchange="updateProgress()"><label for="t13">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">14. Analysing real data — speed of sound</span>
+          <span class="type-badge t-pastpaper">Past paper style</span>
+        </div>
+        <div class="task-body">
+          <p>A student uses a signal generator and microphones to measure the speed of sound.</p>
+          <div class="data-row">Distance d / cm: 20, 40, 60, 80, 100<br>Time delay t / ms: 0.59, 1.18, 1.76, 2.35, 2.94</div>
+          <div class="q-box"><div class="q-num">Q14a</div><div class="q-text">Plot d vs t. Draw the best-fit line and calculate the speed of sound from the gradient.</div><div class="q-mark">[4]</div></div>
+          <div class="q-box"><div class="q-num">Q14b</div><div class="q-text">The student's value differs from 340 m s⁻¹. Suggest two experimental reasons and state whether each would cause an overestimate or underestimate.</div><div class="q-mark">[4]</div></div>
+          <div class="q-box"><div class="q-num">Q14c</div><div class="q-text">Describe how you would improve the experiment to get a more reliable value. Include at least one change that reduces random error and one that reduces systematic error.</div><div class="q-mark">[4]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t14" onchange="updateProgress()"><label for="t14">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">15. Reflection — preparing for Paper 3</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <p>Read the 9702 syllabus section on practical assessment (available on the Cambridge website).</p>
+          <ul>
+            <li>List the five main skills assessed in Paper 3 (Advanced Practical Skills).</li>
+            <li>Write one sentence for each explaining what you think the examiners are actually looking for.</li>
+            <li>Which skill do you feel least confident about? Write a specific action you'll take in Year 13 to improve it.</li>
+          </ul>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t15" onchange="updateProgress()"><label for="t15">Task complete</label></div>
+      </div>
+    </div>
+
+  </div><!-- end module 1 -->
+
+
+  <!-- ═══════════════ MODULE 2 ═══════════════ -->
+  <div id="module-2" style="display:none">
+
+    <div class="tab-bar" id="tabs2">
+      <button class="tab active" onclick="switchTab('m2','thermal',this)">Thermal physics</button>
+      <button class="tab" onclick="switchTab('m2','quantum',this)">Quantum and nuclear</button>
+      <button class="tab" onclick="switchTab('m2','fields',this)">Fields</button>
+      <button class="tab" onclick="switchTab('m2','motion2',this)">Motion and momentum</button>
+      <button class="tab" onclick="switchTab('m2','stretch',this)">Stretch tasks</button>
+    </div>
+
+    <!-- THERMAL -->
+    <div id="m2-thermal" class="section active">
+      <p class="section-header">Thermal physics</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">16. Ideal gas law — worked example then you try</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <div class="worked-ex">
+            <div class="we-label">Worked example</div>
+            <div class="step">A gas occupies 2.0 × 10⁻³ m³ at 300 K and 1.0 × 10⁵ Pa. Find the number of moles.</div>
+            <div class="step"><span class="math">pV = nRT</span> → <span class="math">n = pV/RT = (1.0×10⁵ × 2.0×10⁻³) / (8.31 × 300) = 0.080 mol</span></div>
+          </div>
+          <div class="q-box"><div class="q-num">Q16a</div><div class="q-text">A sealed container holds 0.050 mol of ideal gas at 27 °C and 1.5 × 10⁵ Pa. Find the volume of the container.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q16b</div><div class="q-text">The container is heated to 127 °C at constant volume. Calculate the new pressure, and explain in terms of molecular motion why it increases.</div><div class="q-mark">[4]</div></div>
+          <div class="q-box"><div class="q-num">Q16c</div><div class="q-text">Show that the root-mean-square speed of nitrogen molecules (M = 0.028 kg mol⁻¹) at 300 K is approximately 516 m s⁻¹. State one assumption of the kinetic model you used.</div><div class="q-mark">[4]</div></div>
+          <button class="reveal-btn" onclick="tog('gas-hint')">Show hint for Q16c ↓</button>
+          <div class="hidden-content" id="gas-hint">
+            <div class="worked-ex">
+              <div class="we-label">Hint</div>
+              <div class="step">Use <span class="math">c_rms = √(3RT/M)</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t16" onchange="updateProgress()"><label for="t16">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">17. Specific heat capacity — home experiment</span>
+          <span class="type-badge t-investigate">Investigative</span>
+        </div>
+        <div class="task-body">
+          <p>You need: a kettle (or saucepan), a thermometer, a known mass of water, and a timer.</p>
+          <ul>
+            <li>Measure how long it takes to heat 0.5 kg of water from room temperature to 60 °C.</li>
+            <li>Use the kettle's rated power (printed on the base, usually 2000–3000 W) to calculate the energy supplied.</li>
+            <li>Calculate the specific heat capacity of water from your data. Compare with 4200 J kg⁻¹ K⁻¹.</li>
+            <li>Your value will likely be too high. Explain why, and suggest two ways to improve the experiment.</li>
+          </ul>
+          <div class="worked-ex">
+            <div class="we-label">Key equation</div>
+            <div class="step"><span class="math">Q = mcΔθ</span> and <span class="math">Q = Pt</span> → <span class="math">c = Pt / mΔθ</span></div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t17" onchange="updateProgress()"><label for="t17">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">18. Internal energy and the first law — past paper style</span>
+          <span class="type-badge t-pastpaper">Past paper style</span>
+        </div>
+        <div class="task-body">
+          <div class="q-box"><div class="q-num">Q18a</div><div class="q-text">State what is meant by the internal energy of a gas.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q18b</div><div class="q-text">1.5 × 10⁻³ m³ of gas at 2.0 × 10⁵ Pa expands at constant pressure to 4.0 × 10⁻³ m³. During this process, 300 J of thermal energy is added to the gas. Calculate (i) the work done by the gas and (ii) the change in internal energy.</div><div class="q-mark">[5]</div></div>
+          <div class="q-box"><div class="q-num">Q18c</div><div class="q-text">For an ideal gas at constant temperature (isothermal expansion), state what happens to the internal energy and explain your answer using molecular theory.</div><div class="q-mark">[3]</div></div>
+          <button class="reveal-btn" onclick="tog('firstlaw-hint')">Show hints ↓</button>
+          <div class="hidden-content" id="firstlaw-hint">
+            <div class="worked-ex">
+              <div class="we-label">Hints</div>
+              <div class="step">Work done by gas: <span class="math">W = pΔV</span></div>
+              <div class="step">First law: <span class="math">ΔU = Q − W</span></div>
+              <div class="step">For an ideal gas, internal energy depends only on temperature.</div>
+            </div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t18" onchange="updateProgress()"><label for="t18">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- QUANTUM -->
+    <div id="m2-quantum" class="section">
+      <p class="section-header">Quantum physics and nuclear</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">19. Photoelectric effect — worked example then you try</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <div class="worked-ex">
+            <div class="we-label">Worked example</div>
+            <div class="step">Light of wavelength 250 nm hits a metal with work function 3.0 eV.</div>
+            <div class="step">Energy of photon: <span class="math">E = hc/λ = (6.63×10⁻³⁴ × 3×10⁸) / (250×10⁻⁹) = 4.97 eV</span></div>
+            <div class="step">Max KE: <span class="math">KE_max = hf − φ = 4.97 − 3.0 = 1.97 eV</span></div>
+          </div>
+          <div class="q-box"><div class="q-num">Q19a</div><div class="q-text">Light of frequency 8.2 × 10¹⁴ Hz hits a surface with work function 2.8 eV. Calculate the maximum kinetic energy of emitted photoelectrons in joules.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q19b</div><div class="q-text">Explain why increasing the intensity of light below the threshold frequency produces no photoelectrons, however long you wait.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q19c</div><div class="q-text">In a stopping potential experiment, the stopping voltage is 1.4 V for light of wavelength 350 nm. Use these values to calculate the Planck constant, and comment on any assumptions you make.</div><div class="q-mark">[5]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t19" onchange="updateProgress()"><label for="t19">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">20. Energy levels and spectra — reading and reflection</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <p>Look up a diagram of the hydrogen energy levels (the Bohr model). You'll find one in your textbook or at HyperPhysics.</p>
+          <ul>
+            <li>Explain why emission spectra consist of discrete lines rather than a continuous spread of colours.</li>
+            <li>The Lyman series (transitions to n = 1) produces UV, while the Balmer series (to n = 2) produces visible light. Explain why, using the energy level diagram.</li>
+            <li>Calculate the wavelength of the photon emitted when an electron in hydrogen falls from n = 3 to n = 2. Use E₃ = −1.51 eV and E₂ = −3.40 eV.</li>
+            <li>Stretch: why does the emission spectrum of helium look different from hydrogen's, even though helium also emits visible light?</li>
+          </ul>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t20" onchange="updateProgress()"><label for="t20">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">21. Radioactive decay — data analysis</span>
+          <span class="type-badge t-pastpaper">Past paper style</span>
+        </div>
+        <div class="task-body">
+          <div class="q-box"><div class="q-num">Q21a</div><div class="q-text">Define the decay constant λ and state its SI unit.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q21b</div><div class="q-text">A sample initially contains 5.0 × 10¹⁸ atoms of a radioisotope with half-life 6.0 hours. Calculate (i) the decay constant, (ii) the initial activity, (iii) the number of atoms remaining after 24 hours.</div><div class="q-mark">[6]</div></div>
+          <div class="q-box"><div class="q-num">Q21c</div><div class="q-text">Explain why it is not possible to say when a specific nucleus will decay, yet the decay of a large sample follows a precise exponential law.</div><div class="q-mark">[3]</div></div>
+          <button class="reveal-btn" onclick="tog('decay-ans')">Show answer to Q21b ↓</button>
+          <div class="hidden-content" id="decay-ans">
+            <div class="worked-ex">
+              <div class="we-label">Q21b answer</div>
+              <div class="step">(i) <span class="math">λ = ln2 / t½ = 0.693 / (6 × 3600) = 3.21 × 10⁻⁵ s⁻¹</span></div>
+              <div class="step">(ii) <span class="math">A₀ = λN₀ = 3.21×10⁻⁵ × 5.0×10¹⁸ = 1.61×10¹⁴ Bq</span></div>
+              <div class="step">(iii) 24 hours = 4 half-lives → <span class="math">N = 5.0×10¹⁸ / 2⁴ = 3.1×10¹⁷</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t21" onchange="updateProgress()"><label for="t21">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">22. Wave-particle duality — investigative reading</span>
+          <span class="type-badge t-investigate">Investigative</span>
+        </div>
+        <div class="task-body">
+          <p>Research the double-slit experiment with electrons (Jönsson, 1961) and with single electrons (Tonomura, 1989).</p>
+          <ul>
+            <li>Describe what is observed and why it is surprising.</li>
+            <li>Calculate the de Broglie wavelength of an electron accelerated through 50 V. Compare this to the wavelength of visible light.</li>
+            <li>Explain what this tells us about the nature of electrons.</li>
+            <li>Reflection: in what sense can a single electron "interfere with itself"? What does this imply about the meaning of the wavefunction?</li>
+          </ul>
+          <div class="info-box">This is one of the deepest results in physics — you are not expected to resolve the philosophical puzzle, just to engage with it carefully.</div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t22" onchange="updateProgress()"><label for="t22">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- FIELDS -->
+    <div id="m2-fields" class="section">
+      <p class="section-header">Electric and magnetic fields</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">23. Electric fields — worked example then you try</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <div class="worked-ex">
+            <div class="we-label">Worked example — field between parallel plates</div>
+            <div class="step">Two plates separated by 4.0 mm have a p.d. of 200 V between them.</div>
+            <div class="step">Field strength: <span class="math">E = V/d = 200 / 4.0×10⁻³ = 5.0×10⁴ V m⁻¹</span></div>
+            <div class="step">Force on charge q = 3.2×10⁻¹⁹ C: <span class="math">F = qE = 1.6×10⁻¹⁴ N</span></div>
+          </div>
+          <div class="q-box"><div class="q-num">Q23a</div><div class="q-text">Two point charges, +4.0 μC and −4.0 μC, are separated by 0.12 m in vacuum. Calculate the force between them and state its direction.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q23b</div><div class="q-text">An electron (m = 9.11×10⁻³¹ kg, q = 1.6×10⁻¹⁹ C) enters a uniform electric field of 3.0×10³ V m⁻¹ perpendicular to the field lines at 2.0×10⁶ m s⁻¹. Treating it like a projectile, find its deflection after travelling 50 mm horizontally.</div><div class="q-mark">[5]</div></div>
+          <div class="q-box"><div class="q-num">Q23c</div><div class="q-text">Sketch the electric field pattern (i) around a single positive point charge and (ii) between two oppositely charged parallel plates. Mark any regions of uniform field.</div><div class="q-mark">[4]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t23" onchange="updateProgress()"><label for="t23">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">24. Magnetic fields and the motor effect — past paper style</span>
+          <span class="type-badge t-pastpaper">Past paper style</span>
+        </div>
+        <div class="task-body">
+          <div class="q-box"><div class="q-num">Q24a</div><div class="q-text">State Fleming's left-hand rule and explain what each finger represents.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q24b</div><div class="q-text">A wire of length 0.15 m carrying a current of 4.0 A lies perpendicular to a magnetic field of flux density 0.30 T. Calculate the force on the wire.</div><div class="q-mark">[2]</div></div>
+          <div class="q-box"><div class="q-num">Q24c</div><div class="q-text">A proton (m = 1.67×10⁻²⁷ kg, q = 1.6×10⁻¹⁹ C) moves at 3.0×10⁶ m s⁻¹ perpendicular to a magnetic field of 0.25 T. Show that it follows a circular path and find the radius of the orbit.</div><div class="q-mark">[4]</div></div>
+          <button class="reveal-btn" onclick="tog('mag-hint')">Show hint for Q24c ↓</button>
+          <div class="hidden-content" id="mag-hint">
+            <div class="worked-ex">
+              <div class="we-label">Hint</div>
+              <div class="step">Magnetic force provides centripetal force: <span class="math">Bqv = mv²/r</span></div>
+              <div class="step">Rearrange: <span class="math">r = mv / Bq</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t24" onchange="updateProgress()"><label for="t24">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">25. Comparing gravitational and electric fields — reading</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <ul>
+            <li>Write out Coulomb's law and Newton's law of gravitation side by side. Identify every similarity and every difference.</li>
+            <li>Explain why gravitational fields can only be attractive, while electric fields can be either.</li>
+            <li>Both fields follow an inverse-square law. What does this mean physically, and what does it imply about field strength at very large distances?</li>
+            <li>Stretch: look up the ratio of the electrostatic force to the gravitational force between two protons. What does this tell you about the relative importance of the two forces inside an atomic nucleus?</li>
+          </ul>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t25" onchange="updateProgress()"><label for="t25">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- MOTION 2 -->
+    <div id="m2-motion2" class="section">
+      <p class="section-header">Motion, momentum, and energy</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">26. Momentum and collisions — worked example then you try</span>
+          <span class="type-badge t-problem">Problem set</span>
+        </div>
+        <div class="task-body">
+          <div class="worked-ex">
+            <div class="we-label">Worked example — perfectly inelastic collision</div>
+            <div class="step">Mass 3.0 kg at 4.0 m s⁻¹ hits stationary mass 2.0 kg. They stick together.</div>
+            <div class="step">Conservation of momentum: <span class="math">3.0 × 4.0 = 5.0 × v</span> → <span class="math">v = 2.4 m s⁻¹</span></div>
+            <div class="step">KE before: 24 J &nbsp;·&nbsp; KE after: 14.4 J &nbsp;·&nbsp; KE lost: 9.6 J → inelastic</div>
+          </div>
+          <div class="q-box"><div class="q-num">Q26a</div><div class="q-text">A ball of mass 0.20 kg moving at 6.0 m s⁻¹ collides head-on with a ball of mass 0.30 kg moving at 2.0 m s⁻¹ in the opposite direction. After the collision the 0.20 kg ball moves at 2.0 m s⁻¹ in its original direction. Find the velocity of the 0.30 kg ball after the collision.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q26b</div><div class="q-text">Show whether the collision in Q26a is elastic or inelastic.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q26c</div><div class="q-text">Explain, using the concept of impulse, why crumple zones in cars improve passenger safety.</div><div class="q-mark">[3]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t26" onchange="updateProgress()"><label for="t26">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">27. Energy conservation — investigative</span>
+          <span class="type-badge t-investigate">Investigative</span>
+        </div>
+        <div class="task-body">
+          <p>Drop a ball from a measured height h and record how high h' it bounces using slow-motion video on your phone.</p>
+          <ul>
+            <li>Measure h and h' for at least 5 different drop heights. Tabulate your results.</li>
+            <li>Calculate the coefficient of restitution e = √(h'/h) for each trial and find the mean.</li>
+            <li>Plot h' vs h. What does the gradient represent?</li>
+            <li>Where does the "lost" energy go? Describe what you observe experimentally that supports your answer.</li>
+          </ul>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t27" onchange="updateProgress()"><label for="t27">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">28. Motion graphs — interpreting and sketching</span>
+          <span class="type-badge t-pastpaper">Past paper style</span>
+        </div>
+        <div class="task-body">
+          <div class="q-box"><div class="q-num">Q28a</div><div class="q-text">A car accelerates uniformly from rest for 8.0 s, reaching 20 m s⁻¹. It then travels at constant speed for 10 s, before braking uniformly to rest in 5.0 s. Sketch the v–t graph and calculate the total distance travelled.</div><div class="q-mark">[5]</div></div>
+          <div class="q-box"><div class="q-num">Q28b</div><div class="q-text">On the same time axis, sketch the corresponding a–t graph. Mark numerical values on both axes.</div><div class="q-mark">[3]</div></div>
+          <div class="q-box"><div class="q-num">Q28c</div><div class="q-text">A ball is thrown vertically upward with initial speed 15 m s⁻¹. Taking upward as positive, sketch the v–t and s–t graphs for the motion from launch to when it returns to the launch point. Mark key values.</div><div class="q-mark">[4]</div></div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t28" onchange="updateProgress()"><label for="t28">Task complete</label></div>
+      </div>
+    </div>
+
+    <!-- STRETCH -->
+    <div id="m2-stretch" class="section">
+      <p class="section-header">Stretch and extension tasks</p>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">29. Fermi estimation — order-of-magnitude thinking</span>
+          <span class="type-badge t-investigate">Investigative</span>
+        </div>
+        <div class="task-body">
+          <p>For each question below, make a reasoned estimate, showing your assumptions clearly. Aim for an answer within a factor of 10 of the real value.</p>
+          <div class="q-box"><div class="q-num">Q29a</div><div class="q-text">How many air molecules are in this classroom right now? State any dimensions you assume.</div></div>
+          <div class="q-box"><div class="q-num">Q29b</div><div class="q-text">Estimate the power output of the Sun, using only the fact that 1 kW m⁻² of solar radiation reaches the Earth's surface and the Earth–Sun distance (~1.5 × 10¹¹ m).</div></div>
+          <div class="q-box"><div class="q-num">Q29c</div><div class="q-text">How many heartbeats does a human have in a lifetime?</div></div>
+          <div class="q-box"><div class="q-num">Q29d</div><div class="q-text">Estimate the kinetic energy of a large cruise ship at cruising speed. Compare this to the energy stored in its fuel tank.</div></div>
+          <div class="info-box">Fermi questions appear in Paper 4 and in university physics interviews. The method — identify the key quantities, estimate each, combine — is more important than the numerical answer.</div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t29" onchange="updateProgress()"><label for="t29">Task complete</label></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-top">
+          <span class="task-title">30. Extended reading — choose your own</span>
+          <span class="type-badge t-reading">Reading</span>
+        </div>
+        <div class="task-body">
+          <p>Choose one of the following and write a one-page summary (~300–400 words) aimed at a fellow Year 12 student who has not read it.</p>
+          <ul>
+            <li><em>The Elegant Universe</em> — Ch. 1 or 2 (Brian Greene) — on the quest for a unified theory</li>
+            <li><em>Six Easy Pieces</em> — any one chapter (Richard Feynman) — on the nature of physics</li>
+            <li>A recent article from <a href="https://www.physicsworld.com" target="_blank">physicsworld.com</a> or <a href="https://www.quantamagazine.org" target="_blank">quantamagazine.org</a> of your choice</li>
+            <li>The 9702 syllabus section on any Year 13 topic you're most curious about</li>
+          </ul>
+          <p>Your summary should include: what the key idea is, one thing that surprised you, and one question it raised that you don't yet know the answer to.</p>
+          <div class="info-box">Bring your summary to the first lesson. We'll spend 10 minutes sharing the best ones.</div>
+        </div>
+        <div class="check-row"><input type="checkbox" id="t30" onchange="updateProgress()"><label for="t30">Task complete</label></div>
+      </div>
+    </div>
+
+  </div><!-- end module 2 -->
+
+  <footer class="page-footer">
+    9702 AS &amp; A Level Physics &nbsp;·&nbsp; Vijay International School, Praslin, Seychelles<br>
+    30 tasks across 10 topic areas &nbsp;·&nbsp; Progress is saved in this browser<br>
+    Bring all written work to your first physics lesson in September
+  </footer>
+
+</main>
+
+<script>
+  const TOTAL = 30;
+
+  function updateProgress() {
+    let done = 0;
+    for (let i = 1; i <= TOTAL; i++) {
+      const el = document.getElementById('t' + i);
+      if (el && el.checked) done++;
+    }
+    const pct = Math.round(done / TOTAL * 100);
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-label').textContent = done + ' / ' + TOTAL;
+    try {
+      const state = {};
+      for (let i = 1; i <= TOTAL; i++) {
+        const el = document.getElementById('t' + i);
+        if (el) state['t' + i] = el.checked;
+      }
+      localStorage.setItem('9702_visp_progress', JSON.stringify(state));
+    } catch(e) {}
+  }
+
+  function loadProgress() {
+    try {
+      const saved = localStorage.getItem('9702_visp_progress');
+      if (saved) {
+        const state = JSON.parse(saved);
+        for (const k in state) {
+          const el = document.getElementById(k);
+          if (el) el.checked = state[k];
+        }
+        updateProgress();
+      }
+    } catch(e) {}
+  }
+
+  function switchModule(n, btn) {
+    document.getElementById('module-1').style.display = n === 1 ? 'block' : 'none';
+    document.getElementById('module-2').style.display = n === 2 ? 'block' : 'none';
+    document.querySelectorAll('.mod-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function switchTab(module, section, btn) {
+    const prefix = module + '-';
+    document.querySelectorAll('[id^="' + prefix + '"]').forEach(el => el.classList.remove('active'));
+    document.getElementById(prefix + section).classList.add('active');
+    const tabBar = document.getElementById('tabs' + module.replace('m',''));
+    if (tabBar) tabBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+
+  function tog(id) {
+    const el = document.getElementById(id);
+    const btn = event.target;
+    el.classList.toggle('open');
+    if (el.classList.contains('open')) {
+      btn.textContent = btn.textContent.replace('↓', '↑').replace(/^Show/, 'Hide');
+    } else {
+      btn.textContent = btn.textContent.replace('↑', '↓').replace(/^Hide/, 'Show');
+    }
+  }
+
+  loadProgress();
+</script>
+</body>
+</html>
