@@ -35,11 +35,11 @@
 {% endfor %}
 
 {% for f in site.static_files %}
-  {% assign _parts = f.path | split: "/" %}
+  {% assign _parts = f.relative_path | split: "/" %}
   {% if _parts[1] != "classes" %}{% continue %}{% endif %}
   {% assign _fname = _parts.last %}
   {% assign _ext = _fname | split: "." | last | downcase %}
-  {% assign _url = f.path %}
+  {% assign _url = f.relative_path %}
   {% if _parts.size == 4 and _fname != "index.html" %}
     {% assign _raw = _fname | split: "." | pop | join: "." %}
     {% assign _tag = _ext | upcase %}{% if _ext == "html" or _ext == "htm" %}{% assign _tag = "" %}{% endif %}
