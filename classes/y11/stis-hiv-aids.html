@@ -1,0 +1,524 @@
+---
+title: "STIs, HIV and AIDS"
+description: "Independent 100-minute lesson on sexually transmitted infections (0654 B15.5)."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STIs, HIV and AIDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, clinical, friendly for 14–16 year olds working alone; plain facts, no scare tactics.
+   IDEA: a health-clinic information leaflet that doubles as a workbook, one panel per lesson stage.
+   PICTURE: large drawing of HIV particles meeting a lymphocyte; later a live slider chart of the immune system over time.
+   COLOUR and TYPE: white ground, deep plum ink, awareness red as the sharp accent, soft blush panels; Outfit titles, Atkinson Hyperlegible body.
+   LAYOUT: blush hero band with lesson clock, sticky stage nav, numbered stages as full-width bands, quiz and exit ticket at the end. */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#16121c);--ink:light-dark(#241a33,#efe8f6);--soft:light-dark(#5b4f6b,#b9aecb);
+--blush:light-dark(#fdecee,#2a1d27);--panel:light-dark(#f7f3fa,#211a2b);--line:light-dark(#e3dbea,#3a2f47);
+--red:light-dark(#c8102e,#ff5a6e);--plum:light-dark(#3d2a5c,#c9b5ef);--ok:light-dark(#1f7a4d,#5fd39a);--okbg:light-dark(#e5f5ec,#143224);--badbg:light-dark(#fde8ea,#3a1820)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Outfit,system-ui,sans-serif;line-height:1.08;text-wrap:balance;margin:0 0 .5em}
+h1{font-size:clamp(34px,5vw,52px);font-weight:700}h2{font-size:clamp(28px,3.4vw,38px);font-weight:600}h3{font-size:21px;font-weight:600}
+p{margin:0 0 1em;max-width:68ch}a{color:var(--red)}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+.hero{background:var(--blush)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(20px,4vw,56px);align-items:center}
+.lede{font-size:19px;color:var(--soft)}
+.fig{position:relative;min-height:340px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.clock{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 10px}
+.clock span{flex:var(--m) 1 0;min-width:52px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px;line-height:1.3}
+.clock b{display:block;font-size:15px;color:var(--plum)}
+.clock span.done{background:var(--okbg);border-color:var(--ok)}
+.note{font-size:14px;color:var(--soft)}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav .scroll{display:flex;gap:4px;padding:8px max(5vw,16px);max-width:1240px;margin:0 auto;overflow-x:auto}
+nav a{flex:none;text-decoration:none;color:var(--ink);padding:10px 14px;border-radius:999px;font-size:15px;min-height:44px;display:flex;align-items:center;gap:6px}
+nav a:hover,nav a:focus-visible{background:var(--panel)}nav a.done::after{content:"✓";color:var(--ok);font-weight:700}
+section.band:nth-of-type(even){background:var(--panel)}
+.stage{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;color:var(--red);font-weight:700;font-size:15px;margin-bottom:6px}
+.stage time{color:var(--soft);font-weight:400}
+.obj{border-left:4px solid var(--red);padding:4px 0 4px 14px;margin:0 0 22px;color:var(--soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px;align-items:start}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:20px}
+section.band:nth-of-type(odd) .card{background:var(--panel)}
+.key{background:var(--plum);color:var(--bg);border-radius:14px;padding:20px 22px;font-size:19px}
+.key b{color:inherit}
+button,select,textarea,input{font:inherit;font-size:16px;color:inherit}
+button{min-height:44px;border-radius:10px;border:1px solid var(--plum);background:var(--bg);color:var(--plum);padding:8px 16px;cursor:pointer;font-weight:700}
+button.primary{background:var(--plum);color:var(--bg)}
+button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+select,textarea{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:10px;min-height:44px;width:100%}
+textarea{min-height:130px;resize:vertical}
+details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--bg);margin-top:12px}
+summary{cursor:pointer;font-weight:700;min-height:28px}
+.mcq fieldset{border:0;padding:0;margin:0 0 18px}.mcq legend{font-weight:700;margin-bottom:8px}
+.opt{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer;background:var(--bg);min-height:44px}
+.opt input{width:20px;height:20px;accent-color:var(--plum)}
+.opt.right{background:var(--okbg);border-color:var(--ok)}.opt.wrong{background:var(--badbg);border-color:var(--red)}
+.fb{font-size:15px;margin-top:6px}
+.right-t{color:var(--ok);font-weight:700}.wrong-t{color:var(--red);font-weight:700}
+.sim{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start}
+.sim .fig{min-height:300px;background:var(--bg);border:1px solid var(--line);border-radius:14px}
+.range{width:100%;accent-color:var(--red);height:44px}
+.toggle{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+.toggle button[aria-pressed=true]{background:var(--plum);color:var(--bg)}
+.big{font-family:Outfit,sans-serif;font-size:clamp(30px,4vw,44px);font-weight:700;color:var(--plum);line-height:1}
+.status{margin-top:10px;padding:14px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.pile{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);font-weight:400;border-radius:999px;padding:8px 14px}
+.chip[aria-pressed=true]{outline:3px solid var(--red);outline-offset:1px}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.bin{border:2px dashed var(--line);border-radius:14px;padding:14px;min-height:150px;background:var(--bg)}
+.bin h3{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.bin h3 button{font-size:14px;padding:6px 12px}
+.bin .chip.right{background:var(--okbg);border-color:var(--ok)}.bin .chip.wrong{background:var(--badbg);border-color:var(--red)}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:Outfit,sans-serif;font-weight:600}
+.score{font-family:Outfit,sans-serif;font-size:24px;font-weight:700;color:var(--plum)}
+.conf{display:flex;gap:8px;flex-wrap:wrap}.conf label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;min-height:44px;cursor:pointer;background:var(--bg)}
+.conf input{accent-color:var(--plum);width:18px;height:18px}
+.plan{margin:0;padding-left:1.4em}.plan li{margin:0 0 10px}
+.tools li{margin:4px 0}
+#bkCrit .opt input{accent-color:var(--ok)}
+footer{background:var(--plum);color:var(--bg)}footer a{color:inherit}
+.tick{display:flex;align-items:center;gap:10px;margin-top:22px;font-weight:700;cursor:pointer}
+.tick input{width:22px;height:22px;accent-color:var(--ok)}
+pre,.scroll{overflow-x:auto}html{scroll-padding-top:72px;scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.spin{animation:none!important}}
+.spin{animation:drift 9s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(-14px,10px)}}
+@media(max-width:860px){.sim{grid-template-columns:1fr}}
+@media(max-width:700px){.hero .wrap{grid-template-columns:1fr}.fig.hero-fig{min-height:260px}}
+@media(max-width:600px){table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;font-weight:700}.stack td:empty{display:none}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+
+<header class="band hero">
+  <div class="wrap">
+    <div>
+      <p class="stage">Biology · Reproduction · B15.5</p>
+      <h1>Sexually transmitted infections, HIV and AIDS</h1>
+      <p class="lede">An independent 100-minute lesson. Work through each stage in order, answer the questions, and tick each stage off when you finish it.</p>
+      <div class="clock" id="clock" aria-label="Lesson timeline"></div>
+      <p class="note">This is a health topic that can feel personal. Everything here is about the biology. If anything raises a question you'd rather ask privately, speak to Mr Rowing or the school counsellor.</p>
+    </div>
+    <div class="fig hero-fig" aria-hidden="true">
+      <svg viewBox="0 0 520 400" preserveAspectRatio="xMidYMid meet" id="heroSvg">
+        <defs>
+          <radialGradient id="cellG" cx="38%" cy="35%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e9dcf3"/></radialGradient>
+          <radialGradient id="nucG" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#8f6fc0"/><stop offset="1" stop-color="#3d2a5c"/></radialGradient>
+          <radialGradient id="virG" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ff8a98"/><stop offset="1" stop-color="#a50d25"/></radialGradient>
+          <g id="virus"><g id="spikes"></g><circle r="22" fill="url(#virG)"/><path d="M-6 -9 L6 -9 L2 10 L-2 10 Z" fill="#fde3a7" opacity=".9"/></g>
+        </defs>
+        <ellipse cx="300" cy="352" rx="150" ry="18" fill="#3d2a5c" opacity=".12"/>
+        <circle cx="300" cy="205" r="140" fill="url(#cellG)" stroke="#c9b5ef" stroke-width="3"/>
+        <circle cx="292" cy="210" r="104" fill="url(#nucG)"/>
+        <path d="M232 150 a90 90 0 0 1 70 -38" stroke="#fff" stroke-width="6" fill="none" opacity=".35" stroke-linecap="round"/>
+        <g class="spin"><use href="#virus" x="92" y="96"/><use href="#virus" x="70" y="250" transform="scale(1)"/></g>
+        <use href="#virus" x="168" y="86"/>
+        <use href="#virus" x="420" y="84"/>
+        <rect x="16" y="18" width="150" height="30" rx="15" fill="#c8102e"/><text x="91" y="38" text-anchor="middle" font-family="Outfit,sans-serif" font-size="15" fill="#fff" font-weight="600">HIV (a virus)</text>
+        <line x1="91" y1="48" x2="92" y2="70" stroke="#c8102e" stroke-width="2"/>
+        <rect x="350" y="356" width="160" height="30" rx="15" fill="#3d2a5c"/><text x="430" y="376" text-anchor="middle" font-family="Outfit,sans-serif" font-size="15" fill="#fff" font-weight="600">Lymphocyte</text>
+        <rect x="190" y="194" width="200" height="26" rx="13" fill="#ffffff" opacity=".92"/><text x="290" y="212" text-anchor="middle" font-family="Outfit,sans-serif" font-size="14" fill="#3d2a5c" font-weight="600">large nucleus</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="Lesson stages"><div class="scroll" id="navlinks"></div></nav>
+
+<main>
+<section class="band" id="stis" data-stage="1">
+ <div class="wrap">
+  <div class="stage">Stage 1 <time>12 minutes</time></div>
+  <h2>What is a sexually transmitted infection?</h2>
+  <p class="obj">Objective: define an STI and state that HIV is a pathogen that causes one (B15.5.1, B15.5.2).</p>
+  <div class="grid2">
+   <div>
+    <div class="key">A <b>sexually transmitted infection (STI)</b> is an infection that is transmitted through <b>sexual contact</b>.</div>
+    <p style="margin-top:18px">STIs are caused by <strong>pathogens</strong> – microorganisms that cause disease. The pathogen is passed from one person to another in <strong>body fluids</strong> such as semen, vaginal fluid and blood, or by contact between the moist linings of the reproductive organs.</p>
+    <p><strong>HIV</strong> stands for <strong>human immunodeficiency virus</strong>. HIV is a pathogen – a virus – that causes an STI.</p>
+    <p>Other STIs are caused by bacteria, for example chlamydia, gonorrhoea and syphilis. Bacterial STIs can be treated with antibiotics. Antibiotics do <em>not</em> work against viruses such as HIV.</p>
+    <p>Many STIs cause no symptoms at first, so a person can be infected, and pass the infection on, without knowing. This is one reason testing matters.</p>
+    <h3>Write it down</h3>
+    <p>In your notes, write the definition of an STI in your own words, then write one sentence stating what type of pathogen HIV is.</p>
+   </div>
+   <div class="card mcq" data-mcq="m1">
+    <h3>Quick check</h3>
+    <div class="qs"></div>
+    <button class="primary" data-check>Check my answers</button>
+    <p class="fb" aria-live="polite"></p>
+   </div>
+  </div>
+  <label class="tick"><input type="checkbox" data-done="1"> I've finished Stage 1</label>
+ </div>
+</section>
+
+<section class="band" id="aids" data-stage="2">
+ <div class="wrap">
+  <div class="stage">Stage 2 <time>20 minutes</time></div>
+  <h2>How HIV infection may lead to AIDS</h2>
+  <p class="obj">Objective: state that HIV infection may lead to AIDS (B15.5.3).</p>
+  <div class="grid2" style="margin-bottom:24px">
+   <div>
+    <p>HIV infects and destroys <strong>lymphocytes</strong>, a type of white blood cell. Lymphocytes make antibodies and are central to the immune system.</p>
+    <p>Inside a lymphocyte, HIV makes copies of itself. New virus particles are released and infect more lymphocytes. Over several years the number of lymphocytes falls.</p>
+    <p>When there are too few lymphocytes, the body can no longer fight off other pathogens. The person catches infections a healthy immune system would normally defeat, such as tuberculosis and pneumonia. This condition is <strong>AIDS</strong>: <strong>acquired immune deficiency syndrome</strong>.</p>
+   </div>
+   <div>
+    <div class="key">HIV infection <b>may</b> lead to AIDS.</div>
+    <p style="margin-top:18px">Why <em>may</em>? Without treatment, most people with HIV eventually develop AIDS. <strong>Antiretroviral drugs</strong> stop the virus from multiplying. They do not cure HIV, but a person who takes them every day can keep a healthy number of lymphocytes, never develop AIDS, and live a long life.</p>
+    <p>People with AIDS do not usually die from HIV itself, but from the other infections their immune system can no longer fight.</p>
+   </div>
+  </div>
+
+  <h3>Explore: the immune system over time</h3>
+  <div class="sim">
+   <div class="fig" id="chart" role="img" aria-label="Line chart of lymphocyte count over twelve years since HIV infection, with and without treatment"><svg></svg></div>
+   <div>
+    <div class="toggle" role="group" aria-label="Treatment">
+     <button id="tNo" aria-pressed="true">No treatment</button>
+     <button id="tYes" aria-pressed="false">Treatment from year 1</button>
+    </div>
+    <label for="yr"><strong>Years since infection: <span id="yrOut">0</span></strong></label>
+    <input class="range" type="range" id="yr" min="0" max="12" step="0.25" value="0">
+    <div class="big"><span id="cd">1000</span> <span style="font-size:17px;font-weight:500">lymphocytes per mm³ (approx.)</span></div>
+    <div class="status" id="stat" aria-live="polite"></div>
+    <p class="note" style="margin-top:10px">Simplified illustration of the pattern only. Real timings and numbers vary a lot from person to person. Doctors use a count of about 200 as one sign of AIDS.</p>
+   </div>
+  </div>
+  <div class="card mcq" data-mcq="m2" style="margin-top:22px">
+   <h3>Use the model</h3>
+   <div class="qs"></div>
+   <button class="primary" data-check>Check my answers</button>
+   <p class="fb" aria-live="polite"></p>
+  </div>
+  <label class="tick"><input type="checkbox" data-done="2"> I've finished Stage 2</label>
+ </div>
+</section>
+
+<section class="band" id="transmission" data-stage="3">
+ <div class="wrap">
+  <div class="stage">Stage 3 <time>15 minutes</time></div>
+  <h2>How HIV is transmitted</h2>
+  <p class="obj">Objective: describe the methods of transmission of HIV (B15.5.4).</p>
+  <div class="grid2">
+   <div>
+    <p>HIV is carried in certain <strong>body fluids</strong>: blood, semen, vaginal fluid and breast milk. It is passed on when one of these fluids from an infected person gets into another person's bloodstream or touches the moist linings of their body.</p>
+    <p>HIV does not survive long outside the body, and it is <strong>not</strong> spread through saliva, sweat, tears, air, water or insects.</p>
+   </div>
+   <table class="stack">
+    <thead><tr><th>Method</th><th>How the virus passes</th></tr></thead>
+    <tbody>
+     <tr><td>Unprotected sexual intercourse</td><td>Semen or vaginal fluid carrying HIV contacts the linings of the vagina, anus or penis</td></tr>
+     <tr><td>Sharing needles</td><td>Blood left in a needle or syringe used by an infected person enters the next user's blood, e.g. when injecting drugs</td></tr>
+     <tr><td>Transfusion of infected blood</td><td>Blood from an infected donor is put directly into the bloodstream; now rare where blood is screened</td></tr>
+     <tr><td>Mother to baby</td><td>Across the placenta during pregnancy, through blood during birth, or in breast milk</td></tr>
+    </tbody>
+   </table>
+  </div>
+  <h3 style="margin-top:28px">Sorting task</h3>
+  <p>Select a card, then press <strong>Put here</strong> on the correct box. When every card is placed, check your answers.</p>
+  <div class="pile" id="pile"></div>
+  <div class="bins">
+   <div class="bin" data-bin="yes"><h3>Can transmit HIV <button data-put="yes">Put here</button></h3><div class="pile"></div></div>
+   <div class="bin" data-bin="no"><h3>Cannot transmit HIV <button data-put="no">Put here</button></h3><div class="pile"></div></div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="primary" id="sortCheck">Check sorting</button><button id="sortReset">Start again</button></div>
+  <p class="fb" id="sortFb" aria-live="polite"></p>
+  <details><summary>Find out: HIV in Seychelles</summary>
+   <p>Use a search engine to find one recent fact about HIV in Seychelles from a reliable source, such as the Ministry of Health, WHO or UNAIDS. Note which method of transmission your source says is most important locally and what is being done about it. Record the source's name and date.</p>
+  </details>
+  <label class="tick"><input type="checkbox" data-done="3"> I've finished Stage 3</label>
+ </div>
+</section>
+
+<section class="band" id="control" data-stage="4">
+ <div class="wrap">
+  <div class="stage">Stage 4 <time>15 minutes</time></div>
+  <h2>Controlling the spread of STIs</h2>
+  <p class="obj">Objective: explain how the spread of STIs is controlled (B15.5.5).</p>
+  <p>In an exam, “explain” means say <strong>what</strong> is done and <strong>how</strong> it reduces spread. Match each method to the reason it works.</p>
+  <div class="card">
+   <table class="stack" id="matchT"><thead><tr><th>Method</th><th>How it reduces spread</th><th>Result</th></tr></thead><tbody></tbody></table>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="primary" id="matchCheck">Check matches</button></div>
+   <p class="fb" id="matchFb" aria-live="polite"></p>
+  </div>
+  <h3 style="margin-top:28px">Exam-style practice</h3>
+  <div class="grid2">
+   <div>
+    <p><strong>Explain how the spread of HIV can be controlled.</strong> [4]</p>
+    <label for="exam" class="note">Write your answer here, then compare it with the mark scheme.</label>
+    <textarea id="exam" placeholder="Start each point with a method, then say how it works…"></textarea>
+    <p class="note" id="saved"></p>
+   </div>
+   <details><summary>Mark scheme (open after you've written your answer)</summary>
+    <p>Any four of these, 1 mark each. Each method needs its reason.</p>
+    <ul>
+     <li>use condoms; barrier stops body fluids passing between partners</li>
+     <li>fewer sexual partners; fewer people the virus could pass to or from</li>
+     <li>testing and contact tracing; infected people and their partners found, treated and can avoid passing it on</li>
+     <li>antiretroviral treatment; lowers amount of virus in body fluids so less likely to be transmitted</li>
+     <li>do not share needles / use needle exchange; no infected blood passed between users</li>
+     <li>screen donated blood; infected blood not used in transfusions</li>
+     <li>treatment for HIV-positive mothers / avoid breastfeeding where safe alternatives exist; reduces transfer to the baby</li>
+     <li>education; people know the risks and how to protect themselves</li>
+    </ul>
+    <p>A method with no explanation scores nothing. Check your answer against the list and mark it out of 4.</p>
+   </details>
+  </div>
+  <label class="tick"><input type="checkbox" data-done="4"> I've finished Stage 4</label>
+ </div>
+</section>
+
+<section class="band" id="booklet" data-stage="5">
+ <div class="wrap">
+  <div class="stage">Stage 5 <time>23 minutes</time></div>
+  <h2>Make an information booklet: staying safe from STIs</h2>
+  <p class="obj">Objective: use what you've learned to explain how people can protect themselves and others (B15.5.3–B15.5.5).</p>
+  <div class="grid2">
+   <div>
+    <p>You may also hear STIs called <strong>STDs</strong> (sexually transmitted diseases), an older name for the same thing.</p>
+    <p>Make an <strong>eight-page information booklet for Year 9 students</strong> on staying safe from STIs. Use an online tool you can share, for example:</p>
+    <ul class="tools">
+     <li><a href="https://www.canva.com" target="_blank" rel="noopener">Canva</a> – search the templates for "booklet" or "brochure"</li>
+     <li><a href="https://slides.google.com" target="_blank" rel="noopener">Google Slides</a> – one slide per page; set the page size to A5 portrait</li>
+     <li><a href="https://docs.google.com" target="_blank" rel="noopener">Google Docs</a> – one page each, with page breaks</li>
+    </ul>
+    <p>Write in your own words, keep every fact accurate, and use a calm, respectful tone. Use the plan on the right.</p>
+    <div class="card">
+     <h3>Timing guide</h3>
+     <table><tbody>
+      <tr><td>3 min</td><td>Open your tool, choose a template, add a title</td></tr>
+      <tr><td>15 min</td><td>Write pages 2–7</td></tr>
+      <tr><td>3 min</td><td>Add images and a back-cover message</td></tr>
+      <tr><td>2 min</td><td>Check against the criteria, then share it with Mr Rowing</td></tr>
+     </tbody></table>
+    </div>
+   </div>
+   <div class="card">
+    <h3>Page plan</h3>
+    <ol class="plan" id="bkPlan"></ol>
+   </div>
+  </div>
+  <div class="grid2" style="margin-top:22px">
+   <div class="card">
+    <h3>Success criteria</h3>
+    <p class="note">Tick each one when your booklet <em>explains</em> it, not just mentions it.</p>
+    <div id="bkCrit"></div>
+   </div>
+   <div class="card">
+    <h3>Design tips</h3>
+    <ul>
+     <li>One main idea per page, with a clear heading.</li>
+     <li>Short sentences and bullet points; aim for 40–80 words a page.</li>
+     <li>Use diagrams or icons, such as a virus or a lymphocyte. Avoid photos of real people.</li>
+     <li>Two or three colours and one easy-to-read font throughout.</li>
+     <li>Make "Myths and facts" stand out, for example as a two-column table.</li>
+    </ul>
+    <h3 style="margin-top:16px">Hand it in</h3>
+    <p>Share your booklet with Mr Rowing (view access is enough), or paste its share link where he has asked you to submit work.</p>
+   </div>
+  </div>
+  <label class="tick"><input type="checkbox" data-done="5"> I've finished Stage 5</label>
+ </div>
+</section>
+
+<section class="band" id="quiz" data-stage="6">
+ <div class="wrap">
+  <div class="stage">Stage 6 <time>10 minutes</time></div>
+  <h2>Final quiz and exit ticket</h2>
+  <p class="obj">Answer every question, then check your score. Use your result to complete the exit ticket.</p>
+  <div class="card mcq" data-mcq="m3">
+   <div class="qs"></div>
+   <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><button class="primary" data-check>Mark my quiz</button><span class="score" id="qScore"></span></div>
+   <p class="fb" aria-live="polite"></p>
+  </div>
+  <h3 style="margin-top:28px">Exit ticket</h3>
+  <div class="card">
+   <p>How confident are you with each objective?</p>
+   <div id="confs"></div>
+   <label for="still" style="display:block;margin:14px 0 6px"><strong>One thing I'm still unsure about:</strong></label>
+   <textarea id="still" style="min-height:80px"></textarea>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center"><button class="primary" id="copyT">Copy my exit ticket</button><span class="note" id="copyMsg" aria-live="polite"></span></div>
+   <p class="note" style="margin-top:8px">Paste your copied ticket where Mr Rowing has asked you to submit it.</p>
+  </div>
+  <label class="tick"><input type="checkbox" data-done="6"> I've finished Stage 6</label>
+ </div>
+</section>
+</main>
+
+<footer class="band"><div class="wrap">
+ <p><strong>Key terms:</strong> STI · pathogen · HIV · lymphocyte · AIDS · antiretroviral drugs · contact tracing</p>
+ <p class="note" style="color:inherit;opacity:.85">Cambridge IGCSE Co-ordinated Sciences, B15.5.1–B15.5.5. Your answers are kept only in this browser on this device.</p>
+</div></footer>
+
+<script>
+{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const store={get(k,d){try{const v=localStorage.getItem('stihiv-'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('stihiv-'+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* spikes on virus symbol */
+const sp=$('#spikes');let sh='';for(let i=0;i<12;i++){const a=i*Math.PI/6,x=Math.cos(a)*27,y=Math.sin(a)*27;sh+=`<line x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#a50d25" stroke-width="3"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="#fde3a7"/>`}sp.innerHTML=sh;
+
+/* stages, clock, nav */
+const stages=[['Start',5,'#top'],['What is an STI?',12,'#stis'],['HIV and AIDS',20,'#aids'],['Transmission',15,'#transmission'],['Control',15,'#control'],['Booklet',23,'#booklet'],['Quiz & exit',10,'#quiz']];
+let done=store.get('done',{});
+const renderNav=()=>{
+ $('#clock').innerHTML=stages.map((s,i)=>`<span style="--m:${s[1]}" class="${i&&done[i]?'done':''}"><b>${s[1]} min</b>${s[0]}</span>`).join('');
+ $('#navlinks').innerHTML=stages.slice(1).map((s,i)=>`<a href="${s[2]}" class="${done[i+1]?'done':''}">${i+1}. ${s[0]}</a>`).join('');
+};
+$$('[data-done]').forEach(c=>{c.checked=!!done[c.dataset.done];c.addEventListener('change',()=>{done[c.dataset.done]=c.checked;store.set('done',done);renderNav()})});
+renderNav();
+
+/* multiple-choice sets */
+const Q={
+ m1:[
+  ['What is a sexually transmitted infection?',['An infection passed on through sexual contact','Any infection of the reproductive organs','An infection caused only by bacteria','An infection passed on by sneezing'],0,'An STI is defined by how it is transmitted: through sexual contact.'],
+  ['What type of pathogen is HIV?',['Bacterium','Fungus','Virus','Protoctist'],2,'HIV is the human immunodeficiency virus.'],
+  ['Why can\'t antibiotics cure HIV?',['HIV is too small to see','Antibiotics do not work on viruses','HIV lives outside cells','Antibiotics only work on fungi'],1,'Antibiotics kill bacteria; they have no effect on viruses.']],
+ m2:[
+  ['Without treatment, what happens to the lymphocyte count over several years?',['It rises steadily','It stays the same','It falls steadily','It drops to zero in the first week'],2,'HIV destroys lymphocytes faster than the body replaces them.'],
+  ['With antiretroviral treatment, the person in the model…',['still develops AIDS by year 9','keeps a healthy lymphocyte count and does not develop AIDS','is cured of HIV','loses all their lymphocytes'],1,'Treatment controls the virus but does not remove it, so it must be taken for life.'],
+  ['Which sentence matches the syllabus best?',['HIV always leads to AIDS','HIV infection may lead to AIDS','AIDS causes HIV','HIV and AIDS are the same thing'],1,'“May” because treatment can stop HIV from progressing to AIDS.']],
+ m3:[
+  ['HIV is best described as…',['a bacterium that causes AIDS','a virus that causes an STI','a white blood cell','an antibiotic'],1,'HIV is a viral pathogen and HIV infection is an STI.'],
+  ['Which cells does HIV destroy?',['Red blood cells','Lymphocytes','Platelets','Nerve cells'],1,'Lymphocytes are white blood cells that make antibodies.'],
+  ['Why do people with AIDS get ill from infections such as tuberculosis?',['HIV turns into tuberculosis','Their immune system can no longer fight pathogens','Antiretroviral drugs cause it','Tuberculosis is an STI'],1,'Too few lymphocytes means other pathogens are not defeated.'],
+  ['Which of these does NOT transmit HIV?',['Sharing needles','Unprotected sexual intercourse','Sharing a drinking cup','Breastfeeding by an infected mother'],2,'HIV is not passed on in saliva.'],
+  ['HIV can pass from mother to baby…',['only during birth','only in breast milk','across the placenta, during birth and in breast milk','never'],2,'All three routes are possible, and treatment greatly reduces the risk.'],
+  ['How does using a condom reduce the spread of STIs?',['It kills all viruses','It is a barrier that stops body fluids passing between partners','It boosts the immune system','It replaces the need for testing'],1,'A barrier method prevents contact with semen and vaginal fluid.'],
+  ['Why is donated blood screened for HIV?',['To find the blood group','So infected blood is not used in transfusions','To increase the lymphocyte count','Because HIV is spread by mosquitoes'],1,'Screening removes transfusion as a route of transmission.'],
+  ['What is the purpose of contact tracing?',['To find and test the sexual partners of an infected person','To trace where mosquitoes travel','To count lymphocytes','To make a vaccine'],0,'Partners can be tested, treated and avoid passing the infection on.']]
+};
+let ans=store.get('ans',{});
+$$('[data-mcq]').forEach(box=>{
+ const id=box.dataset.mcq,qs=Q[id];
+ box.querySelector('.qs').innerHTML=qs.map((q,i)=>`<fieldset><legend>${i+1}. ${q[0]}</legend>${q[1].map((o,j)=>`<label class="opt"><input type="radio" name="${id}-${i}" value="${j}" ${ans[id+'-'+i]==j?'checked':''}> ${o}</label>`).join('')}<div class="fb" id="${id}-fb${i}"></div></fieldset>`).join('');
+ box.addEventListener('change',e=>{if(e.target.name){ans[e.target.name]=+e.target.value;store.set('ans',ans)}});
+ box.querySelector('[data-check]').addEventListener('click',()=>{
+  let score=0,missing=0;
+  qs.forEach((q,i)=>{
+   const picked=box.querySelector(`input[name="${id}-${i}"]:checked`),fb=box.querySelector(`#${id}-fb${i}`);
+   box.querySelectorAll(`input[name="${id}-${i}"]`).forEach(r=>r.parentElement.classList.remove('right','wrong'));
+   if(!picked){missing++;fb.innerHTML='<span class="wrong-t">Not answered yet.</span>';return}
+   const ok=+picked.value===q[2];if(ok)score++;
+   picked.parentElement.classList.add(ok?'right':'wrong');
+   fb.innerHTML=(ok?'<span class="right-t">Correct.</span> ':'<span class="wrong-t">Not quite.</span> ')+q[3];
+  });
+  const msg=`${score} out of ${qs.length} correct`+(missing?` · ${missing} not answered`:'');
+  box.querySelector(':scope > .fb').textContent=msg;
+  if(id==='m3'){$('#qScore').textContent=`${score}/${qs.length}`;store.set('quiz',`${score}/${qs.length}`)}
+ });
+});
+const qs0=store.get('quiz','');if(qs0)$('#qScore').textContent=qs0;
+
+/* HIV→AIDS model (illustrative) */
+const untreated=t=>t<.25?1000-1600*t:t<1?600+260*(t-.25)/.75:t<9?800-600*(t-1)/8:Math.max(30,200-57*(t-9));
+const treated=t=>t<1?untreated(t):Math.min(900,800+100*(t-1)/2);
+let mode='no';
+const s=$('#chart svg'),yr=$('#yr');
+const draw=()=>{
+ const W=s.clientWidth,H=s.clientHeight;if(!W||!H)return;
+ const p={l:W<520?40:56,r:16,t:20,b:W<520?36:44},iw=W-p.l-p.r,ih=H-p.t-p.b;
+ const X=t=>p.l+t/12*iw,Y=v=>p.t+ih-v/1100*ih;
+ const path=f=>{let d='';for(let t=0;t<=12;t+=.1)d+=(d?'L':'M')+X(t).toFixed(1)+' '+Y(f(t)).toFixed(1);return d};
+ const t=+yr.value,f=mode==='no'?untreated:treated;
+ let g='';
+ [0,250,500,750,1000].forEach(v=>{g+=`<line x1="${p.l}" x2="${W-p.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="currentColor" opacity=".12"/><text x="${p.l-6}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="currentColor" opacity=".7">${v}</text>`});
+ for(let k=0;k<=12;k+=(W<520?4:2))g+=`<text x="${X(k)}" y="${H-p.b+18}" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">${k}</text>`;
+ g+=`<text x="${p.l+iw/2}" y="${H-6}" text-anchor="middle" font-size="12" fill="currentColor" opacity=".8">Years since infection</text>`;
+ g+=`<rect x="${p.l}" y="${Y(200)}" width="${iw}" height="${Y(0)-Y(200)}" fill="var(--red)" opacity=".1"/><line x1="${p.l}" x2="${W-p.r}" y1="${Y(200)}" y2="${Y(200)}" stroke="var(--red)" stroke-dasharray="5 4"/><text x="${W-p.r-4}" y="${Y(200)-6}" text-anchor="end" font-size="12" fill="var(--red)" font-weight="700">AIDS below about 200</text>`;
+ const other=mode==='no'?treated:untreated;
+ g+=`<path d="${path(other)}" fill="none" stroke="currentColor" opacity=".25" stroke-width="2" stroke-dasharray="3 4"/>`;
+ g+=`<path d="${path(f)}" fill="none" stroke="var(--plum)" stroke-width="3.5" stroke-linejoin="round"/>`;
+ g+=`<line x1="${X(t)}" x2="${X(t)}" y1="${p.t}" y2="${p.t+ih}" stroke="var(--red)" opacity=".5"/><circle cx="${X(t)}" cy="${Y(f(t))}" r="8" fill="var(--red)" stroke="var(--bg)" stroke-width="3"/>`;
+ s.style.color='var(--ink)';s.innerHTML=g;
+};
+const stat=()=>{
+ const t=+yr.value,f=mode==='no'?untreated:treated,v=Math.round(f(t)/10)*10;
+ $('#yrOut').textContent=t;$('#cd').textContent=v;
+ let m;
+ if(t<.6)m='<strong>Early infection.</strong> The virus multiplies quickly and lymphocyte numbers dip. Some people get a short flu-like illness; many notice nothing.';
+ else if(mode==='yes'&&t>=1)m='<strong>On antiretroviral drugs.</strong> The virus is stopped from multiplying, so lymphocytes recover and stay high. The person does not develop AIDS, but must keep taking the drugs.';
+ else if(v>200)m='<strong>No symptoms, but damage continues.</strong> The person may feel well for years while HIV slowly destroys lymphocytes – and can pass the virus on without knowing.';
+ else m='<strong>AIDS.</strong> Too few lymphocytes remain to fight other pathogens. Infections such as tuberculosis and pneumonia take hold.';
+ $('#stat').innerHTML=m;draw();
+};
+const setMode=m=>{mode=m;$('#tNo').setAttribute('aria-pressed',m==='no');$('#tYes').setAttribute('aria-pressed',m==='yes');stat()};
+$('#tNo').addEventListener('click',()=>setMode('no'));$('#tYes').addEventListener('click',()=>setMode('yes'));
+yr.addEventListener('input',stat);
+const ro=new ResizeObserver(draw);ro.observe(s);stat();
+
+/* sorting */
+const cards=[['Unprotected sexual intercourse','yes'],['Sharing needles to inject drugs','yes'],['Transfusion of unscreened infected blood','yes'],['Across the placenta to a fetus','yes'],['Breastfeeding by an infected mother','yes'],['Mother to baby during birth','yes'],['Hugging','no'],['Sharing a cup or cutlery','no'],['Mosquito bites','no'],['Sitting on a toilet seat','no'],['Coughing and sneezing','no'],['Swimming in the same pool','no'],['Shaking hands','no']];
+let place={},sel=null;
+const order=cards.map((c,i)=>i).sort(()=>Math.random()-.5);
+const renderSort=()=>{
+ const chip=i=>`<button class="chip" data-i="${i}" aria-pressed="${sel===i}">${cards[i][0]}</button>`;
+ $('#pile').innerHTML=order.filter(i=>!place[i]).map(chip).join('')||'<span class="note">All cards placed – check your sorting.</span>';
+ $$('.bin').forEach(b=>{b.querySelector('.pile').innerHTML=order.filter(i=>place[i]===b.dataset.bin).map(chip).join('')});
+};
+document.addEventListener('click',e=>{
+ const c=e.target.closest('.chip');if(c){const i=+c.dataset.i;sel=sel===i?null:i;renderSort();return}
+ const put=e.target.closest('[data-put]');if(put){if(sel===null){$('#sortFb').textContent='Select a card first.';return}place[sel]=put.dataset.put;sel=null;$('#sortFb').textContent='';renderSort()}
+});
+$('#sortCheck').addEventListener('click',()=>{
+ const left=cards.length-Object.keys(place).length;
+ let ok=0;$$('.bin .chip').forEach(c=>{const i=+c.dataset.i,r=cards[i][1]===place[i];c.classList.add(r?'right':'wrong');if(r)ok++});
+ $('#sortFb').innerHTML=`${ok} of ${cards.length} correct.`+(left?` ${left} still to place.`:'')+(ok===cards.length?' <span class="right-t">All correct.</span> HIV needs blood, semen, vaginal fluid or breast milk to get into another person.':' Cards in red are in the wrong box: select one to move it.');
+});
+$('#sortReset').addEventListener('click',()=>{place={};sel=null;$('#sortFb').textContent='';renderSort()});
+renderSort();
+
+/* matching */
+const reasons=['Barrier stops body fluids passing between partners','Fewer people the infection could pass to or from','Partners of an infected person are found, tested and treated','Lowers the amount of virus in body fluids','No infected blood passes from one user to the next','Infected blood is never put into a patient'];
+const methods=['Using condoms','Having fewer sexual partners','Testing and contact tracing','Antiretroviral treatment','Needle exchange schemes','Screening donated blood'];
+let mt=store.get('match',{});
+$('#matchT tbody').innerHTML=methods.map((m,i)=>`<tr><td><strong>${m}</strong></td><td><select id="mt${i}" aria-label="Reason for ${m}"><option value="">Choose…</option>${reasons.map((r,j)=>`<option value="${j}" ${mt[i]==j?'selected':''}>${r}</option>`).join('')}</select></td><td id="mr${i}"></td></tr>`).join('');
+methods.forEach((m,i)=>$('#mt'+i).addEventListener('change',e=>{mt[i]=e.target.value;store.set('match',mt)}));
+$('#matchCheck').addEventListener('click',()=>{let ok=0;methods.forEach((m,i)=>{const v=$('#mt'+i).value,r=v!==''&&+v===i;if(r)ok++;$('#mr'+i).innerHTML=v===''?'<span class="wrong-t">Choose one</span>':r?'<span class="right-t">Correct</span>':'<span class="wrong-t">Try again</span>'});$('#matchFb').textContent=`${ok} of ${methods.length} matched.`+(ok===methods.length?' Now use these pairs in the exam question below.':'')});
+
+/* booklet */
+const bkPages=[['Cover','A clear title, e.g. "Know the facts: staying safe from STIs", and one image.'],
+ ['What is an STI?','Define an STI. State that HIV is a virus and give one other example of an STI.'],
+ ['HIV and AIDS','Explain how HIV destroys lymphocytes and why HIV infection may lead to AIDS.'],
+ ['How HIV is spread','Describe the four ways HIV is transmitted and which body fluids carry it.'],
+ ['Staying safe','Explain at least three ways to reduce the risk, saying how each one works.'],
+ ['Myths and facts','Correct at least two myths, e.g. "You can catch HIV from sharing a cup."'],
+ ['Testing and getting help','Why does testing matter when many STIs have no symptoms? Who can young people talk to in confidence?'],
+ ['Back cover','One key message to remember, and your name.']];
+$('#bkPlan').innerHTML=bkPages.map(p=>`<li><strong>${p[0]}</strong><br><span class="note">${p[1]}</span></li>`).join('');
+const crit=['Defines an STI as an infection passed on by sexual contact','States that HIV is a virus','Explains that HIV destroys lymphocytes, weakening the immune system','States that HIV infection may lead to AIDS','Describes transmission by sex, shared needles, blood and mother to baby','Explains how condoms work as a barrier','Explains why testing and contact tracing matter','Mentions treatment with antiretroviral drugs','Corrects at least two myths','Accurate, in my own words, and shared with Mr Rowing'];
+let bc=store.get('bkc',{});
+$('#bkCrit').innerHTML=crit.map((c,i)=>`<label class="opt"><input type="checkbox" data-bc="${i}" ${bc[i]?'checked':''}> ${c}</label>`).join('');
+$('#bkCrit').addEventListener('change',e=>{bc[e.target.dataset.bc]=e.target.checked;store.set('bkc',bc)});
+
+/* exam answer, exit ticket */
+const ex=$('#exam');ex.value=store.get('exam','');ex.addEventListener('input',()=>{store.set('exam',ex.value);$('#saved').textContent='Saved in this browser.'});
+const objs=['Define an STI; HIV is a pathogen that causes one','HIV infection may lead to AIDS; how HIV is transmitted','How the spread of STIs is controlled'];
+const lv=['Confident','Getting there','Need help'];let cf=store.get('conf',{});
+$('#confs').innerHTML=objs.map((o,i)=>`<p style="margin:12px 0 6px">${o}</p><div class="conf">${lv.map(l=>`<label><input type="radio" name="cf${i}" value="${l}" ${cf[i]===l?'checked':''}> ${l}</label>`).join('')}</div>`).join('');
+$('#confs').addEventListener('change',e=>{cf[e.target.name.slice(2)]=e.target.value;store.set('conf',cf)});
+const st=$('#still');st.value=store.get('still','');st.addEventListener('input',()=>store.set('still',st.value));
+$('#copyT').addEventListener('click',async()=>{
+ const txt=['Exit ticket – STIs, HIV and AIDS (B15.5)','Quiz score: '+($('#qScore').textContent||'not marked'),...objs.map((o,i)=>`${o}: ${cf[i]||'not rated'}`),'Still unsure about: '+(st.value.trim()||'—'),'Exam answer:',ex.value.trim()||'—'].join('\n');
+ try{await navigator.clipboard.writeText(txt);$('#copyMsg').textContent='Copied. Paste it where Mr Rowing asked.'}
+ catch(e){$('#copyMsg').textContent='Copy was blocked. Select the text below and copy it yourself.';let pre=$('#ticketPre');if(!pre){pre=document.createElement('pre');pre.id='ticketPre';pre.style.cssText='white-space:pre-wrap;background:var(--panel);padding:12px;border-radius:10px;margin-top:10px';$('#copyT').parentElement.after(pre)}pre.textContent=txt}
+});
+}
+</script>
+</body>
+</html>

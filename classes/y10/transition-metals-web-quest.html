@@ -1,0 +1,188 @@
+---
+title: "Transition Metals Web Quest"
+description: "Four missions on what transition metals have in common and how they differ from Group I metals."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Transition metals web quest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--bg:#f2f5f8;--ink:#14213d;--mut:#4a5a73;--card:#fff;--line:#c9d3e0;--ok:#1b7f4b;--bad:#b3261e;--acc:#1f4fd8;--accT:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1626;--ink:#e8eef8;--mut:#9fb0c8;--card:#16223a;--line:#2b3b58;--ok:#4fd18b;--bad:#ff8a80;--acc:#7fa4ff;--accT:#0e1626}}
+:root[data-theme="dark"]{--bg:#0e1626;--ink:#e8eef8;--mut:#9fb0c8;--card:#16223a;--line:#2b3b58;--ok:#4fd18b;--bad:#ff8a80;--acc:#7fa4ff;--accT:#0e1626}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Atkinson Hyperlegible",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 18px 64px}
+h1,h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,6vw,3rem)}
+h2{font-size:1.5rem;margin-bottom:6px}
+p{margin:.5em 0}
+.lead{color:var(--mut);max-width:60ch}
+.rack{display:flex;gap:14px;margin:26px 0 8px;flex-wrap:wrap}
+.t{width:46px;text-align:center;font-size:.85rem;color:var(--mut)}
+.tube{height:110px;border:3px solid var(--ink);border-top:none;border-radius:0 0 23px 23px;position:relative;overflow:hidden;margin-bottom:4px}
+.tube i{position:absolute;left:0;right:0;bottom:0;height:72%;background:var(--c);animation:fill 1.4s ease-out both}
+@keyframes fill{from{height:0}}
+@media(prefers-reduced-motion:reduce){.tube i{animation:none}}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;margin-top:22px}
+.go{margin:10px 0}
+.go a{color:var(--acc);font-weight:700}
+.go ul{margin:4px 0 0;padding-left:20px}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.9rem;color:var(--mut)}
+input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:6px;padding:6px 8px;max-width:100%}
+input[type=number]{width:96px}
+textarea{width:100%;min-height:90px}
+.ok{border-color:var(--ok)!important}.bad{border-color:var(--bad)!important}
+button{font:inherit;font-weight:700;background:var(--acc);color:var(--accT);border:0;border-radius:6px;padding:8px 16px;cursor:pointer;margin-top:10px}
+button.alt{background:transparent;color:var(--acc);border:2px solid var(--acc)}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.msg{margin-top:8px;font-weight:700}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.ans{display:none;margin-top:10px;padding:10px 12px;border-left:4px solid var(--acc);background:var(--bg)}
+.ans.show{display:block}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line);font-weight:700}
+.sent{margin-top:14px}
+</style>
+</head>
+<body>
+<main>
+<h1>Transition metals web quest</h1>
+<p class="lead">Iron, copper, nickel, titanium and their neighbours sit in the middle block of the periodic table. Your job is to find out what they have in common, and how they differ from metals such as sodium and magnesium. Use the websites suggested in each mission, then check your answers.</p>
+<div class="rack" aria-hidden="true" id="rack"></div>
+<div class="score" id="score" role="status">Missions complete: 0 of 4</div>
+
+<section id="m1">
+<h2>Mission 1: Heavy and hard to melt</h2>
+<p>Find the melting point (in °C) and density (in g/cm³) of each metal. Round to the nearest whole number for melting point and to 1 decimal place for density.</p>
+<div class="go">Where to look:
+<ul>
+<li><a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">Royal Society of Chemistry periodic table</a>. Click an element, then read its physical properties.</li>
+<li>Tip: some sites give melting point in kelvin. Subtract 273 to get °C.</li>
+</ul></div>
+<div class="wrap"><table><thead><tr><th>Metal</th><th>Block</th><th>Melting point (°C)</th><th>Density (g/cm³)</th></tr></thead><tbody id="t1"></tbody></table></div>
+<p class="sent">Complete the sentence. Compared with Group I metals, transition metals have
+<select id="s1a" data-a="higher"><option value="">choose</option><option>higher</option><option>lower</option></select> melting points and
+<select id="s1b" data-a="higher"><option value="">choose</option><option>higher</option><option>lower</option></select> densities.</p>
+<button id="b1">Check Mission 1</button>
+<div class="msg" id="r1"></div>
+</section>
+
+<section id="m2">
+<h2>Mission 2: Colour</h2>
+<p>Most transition metal compounds are coloured. Compounds of Group I and II metals usually are not. Search for each compound and choose its colour.</p>
+<div class="go">Where to look:
+<ul>
+<li>Search the web for the compound name plus "colour", for example <em>copper(II) oxide colour</em>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Transition_metal" target="_blank" rel="noopener">Wikipedia: Transition metal</a> has a section on coloured compounds.</li>
+<li><a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">Royal Society of Chemistry periodic table</a> lists common compounds for many elements.</li>
+</ul></div>
+<div class="wrap"><table><thead><tr><th>Compound</th><th>Colour</th></tr></thead><tbody id="t2"></tbody></table></div>
+<button id="b2">Check Mission 2</button>
+<div class="msg" id="r2"></div>
+</section>
+
+<section id="m3">
+<h2>Mission 3: More than one ion</h2>
+<p>Sodium chloride is always NaCl. Magnesium chloride is always MgCl₂. Now look at iron and copper.</p>
+<div class="go">Where to look:
+<ul>
+<li>Search for <em>iron(II) chloride formula</em> and <em>iron(III) chloride formula</em>.</li>
+<li>Search for <em>copper(I) oxide</em> and <em>copper(II) oxide</em>.</li>
+</ul></div>
+<p>Write what this tells you about the ions that iron and copper can form. Explain what the Roman numerals in the names mean.</p>
+<textarea id="a3" aria-label="Your answer for Mission 3"></textarea>
+<button id="b3">Show model answer</button>
+<div class="ans" id="r3"><strong>Model answer:</strong> Iron forms more than one ion (Fe²⁺ and Fe³⁺), and copper forms Cu⁺ and Cu²⁺. Transition metals can have variable oxidation states. The Roman numeral gives the charge on the metal ion, so iron(III) chloride contains Fe³⁺ and its formula is FeCl₃. Group I and II metals form only one ion, so they do not need a numeral.
+<br><label><input type="checkbox" id="c3"> I have compared my answer and fixed it.</label></div>
+</section>
+
+<section id="m4">
+<h2>Mission 4: Catalysts</h2>
+<p>Transition metals and their compounds are often used as catalysts. A catalyst speeds up a reaction and is not used up. Match each catalyst to the industrial process.</p>
+<div class="go">Where to look:
+<ul>
+<li>Search for the catalyst name plus "industrial use".</li>
+<li><a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">Royal Society of Chemistry periodic table</a> often mentions uses of each element.</li>
+</ul></div>
+<div class="wrap"><table><thead><tr><th>Catalyst</th><th>Process</th></tr></thead><tbody id="t4"></tbody></table></div>
+<button id="b4">Check Mission 4</button>
+<div class="msg" id="r4"></div>
+</section>
+
+<section id="ex">
+<h2>Exam practice</h2>
+<p>State <strong>three</strong> properties that are typical of transition elements but not of Group I metals.</p>
+<textarea aria-label="Your exam answer"></textarea>
+<button class="alt" id="bx">Show mark scheme</button>
+<div class="ans" id="rx"><strong>Any three from:</strong> high melting points; high densities; form coloured compounds; act as catalysts; form ions with different charges (variable oxidation states); form hard, strong metals.</div>
+</section>
+</main>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var cols=[["Cu²⁺","#2f7fd6"],["Fe²⁺","#a7c97a"],["Fe³⁺","#d9892b"],["Co²⁺","#e68aa8"],["Ni²⁺","#5fae6a"],["MnO₄⁻","#7a2a8f"]];
+$("rack").innerHTML=cols.map(function(c){return '<div class="t"><div class="tube"><i style="--c:'+c[1]+'"></i></div>'+c[0]+'</div>'}).join("");
+
+var done={};
+function mark(n,ok){done[n]=ok;var k=Object.keys(done).filter(function(x){return done[x]}).length;$("score").textContent="Missions complete: "+k+" of 4"}
+function fb(id,ok,txt){var e=$(id);e.className="msg "+(ok?"ok":"bad");e.textContent=txt}
+
+/* Mission 1 */
+var m1=[["Sodium","Group I",98,1.0],["Potassium","Group I",63,0.9],["Iron","Transition",1538,7.9],["Copper","Transition",1085,9.0],["Nickel","Transition",1455,8.9],["Titanium","Transition",1668,4.5]];
+$("t1").innerHTML=m1.map(function(r,i){return "<tr><td>"+r[0]+"</td><td>"+r[1]+'</td><td><input type="number" step="any" id="mp'+i+'" aria-label="'+r[0]+' melting point"></td><td><input type="number" step="any" id="d'+i+'" aria-label="'+r[0]+' density"></td></tr>'}).join("");
+function near(v,t){var x=parseFloat(v);return !isNaN(x)&&Math.abs(x-t)<=Math.max(Math.abs(t)*0.08,0.15)}
+$("b1").onclick=function(){
+  var good=0,tot=m1.length*2+2;
+  m1.forEach(function(r,i){
+    [["mp"+i,r[2]],["d"+i,r[3]]].forEach(function(p){var el=$(p[0]),ok=near(el.value,p[1]);el.className=ok?"ok":"bad";if(ok)good++});
+  });
+  ["s1a","s1b"].forEach(function(id){var el=$(id),ok=el.value===el.dataset.a;el.className=ok?"ok":"bad";if(ok)good++});
+  var all=good===tot;
+  fb("r1",all,all?"All correct. Nicely done.":good+" of "+tot+" correct. Check the red boxes. Typical values: Na 98 °C and 1.0 g/cm³, K 63 °C and 0.9, Fe 1538 and 7.9, Cu 1085 and 9.0, Ni 1455 and 8.9, Ti 1668 and 4.5. Small differences in your source are fine.");
+  mark(1,all);
+};
+
+/* Selector tables */
+function build(tb,rows,opts){
+  $(tb).innerHTML=rows.map(function(r,i){
+    return "<tr><td>"+r[0]+'</td><td><select data-a="'+r[1]+'" aria-label="'+r[0].replace(/<[^>]+>/g,"")+'"><option value="">choose</option>'+opts.map(function(o){return "<option>"+o+"</option>"}).join("")+"</select></td></tr>";
+  }).join("");
+}
+function check(tb,msg,n,label){
+  var sel=$(tb).querySelectorAll("select"),g=0;
+  sel.forEach(function(s){var ok=s.value===s.dataset.a;s.className=ok?"ok":"bad";if(ok)g++});
+  var all=g===sel.length;
+  fb(msg,all,all?"All correct. Nicely done.":g+" of "+sel.length+" correct. Look again at the red boxes and check your source.");
+  mark(n,all);
+}
+build("t2",[
+["Copper(II) sulfate solution","blue"],["Iron(II) sulfate solution","pale green"],["Iron(III) chloride solution","yellow-brown"],
+["Nickel(II) sulfate solution","green"],["Cobalt(II) chloride solution","pink"],["Potassium manganate(VII) solution","purple"],
+["Copper(II) oxide","black"],["Iron(III) oxide","red-brown"],["Chromium(III) oxide","green"],
+["Sodium chloride solution","colourless or white"],["Magnesium oxide","colourless or white"]
+],["blue","pale green","green","yellow-brown","pink","purple","black","red-brown","colourless or white"]);
+$("b2").onclick=function(){check("t2","r2",2)};
+
+build("t4",[
+["Iron","Haber process (making ammonia)"],["Vanadium(V) oxide","Contact process (making sulfuric acid)"],
+["Nickel","Hydrogenation of alkenes (making margarine)"],["Platinum and rhodium","Catalytic converters in car exhausts"]
+],["Haber process (making ammonia)","Contact process (making sulfuric acid)","Hydrogenation of alkenes (making margarine)","Catalytic converters in car exhausts"]);
+$("b4").onclick=function(){check("t4","r4",4)};
+
+$("b3").onclick=function(){$("r3").classList.add("show")};
+$("c3").onchange=function(){mark(3,this.checked)};
+$("bx").onclick=function(){$("rx").classList.add("show")};
+})();
+</script>
+</body>
+</html>

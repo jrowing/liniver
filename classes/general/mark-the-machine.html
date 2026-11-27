@@ -1,0 +1,513 @@
+---
+title: "Mark the Machine"
+description: "Sixth Form AI literacy: how chatbots go wrong, Cambridge rules, and crediting your AI."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mark the Machine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday learning for 16–18s: direct, a little playful, never preachy
+   IDEA an examiner marking an AI's answer with a red pen and a highlighter
+   PICTURE a chatbot answer on paper; students click suspect claims and the red pen marks them
+   COLOUR white paper, ink #15171c, red pen #d4261c, highlighter #ffe24a, slate blue #2b4c7e for the machine
+   TYPE Familjen Grotesk display + Inter text, Caveat for red-pen marks
+   LAYOUT laptop: title strip, then answer sheet (2/3) beside score + notes (1/3); phone: title, sheet, notes */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#111318);--paper:light-dark(#ffffff,#1a1d24);--tint:light-dark(#f4f5f7,#1f232c);--ink:light-dark(#15171c,#eceef2);--mute:light-dark(#555b66,#a5acb8);--rule:light-dark(#dfe2e7,#2f3440);--red:light-dark(#d4261c,#ff6b5e);--hi:light-dark(#ffe24a,#e8c93a);--hiink:#15171c;--blue:light-dark(#2b4c7e,#8fb0e6);--blueb:light-dark(#e8eef8,#1c2638);--green:light-dark(#1d7a46,#5fd08f);--amber:light-dark(#b86e00,#f2b14a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Familjen Grotesk",Inter,sans-serif;letter-spacing:-.02em;line-height:1.05;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,52px)}
+h2{font-size:clamp(28px,3.6vw,40px);margin-bottom:12px}
+h3{font-size:20px;line-height:1.2}
+p{margin:0 0 12px;max-width:68ch}
+.band{padding-block:clamp(28px,4vw,60px);padding-inline:max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.lede{color:var(--mute);font-size:17px}
+.pen{font-family:Caveat,cursive;color:var(--red);font-size:22px;line-height:1.1}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{min-height:44px;padding:0 18px;border-radius:10px;border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:hover{filter:brightness(1.15)}
+nav.scroll{display:flex;gap:6px;overflow-x:auto;padding:10px max(5vw,16px);border-bottom:1px solid var(--rule);background:var(--bg)}
+nav.scroll a{flex:none;color:var(--ink);text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:500;font-size:15px}
+nav.scroll a:hover{background:var(--tint)}
+@media(min-width:900px){nav.scroll{position:sticky;top:0;z-index:5}}
+header.band{background:var(--blue);color:#fff;padding-bottom:28px}
+:root header.band{background:light-dark(#2b4c7e,#1c2b47)}
+header .lede{color:#dbe5f5}
+.hero{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:28px;align-items:start}
+.sheet{background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:clamp(18px,3vw,34px);box-shadow:0 2px 0 var(--rule)}
+.q{display:flex;gap:12px;align-items:flex-start;margin-bottom:18px}
+.av{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px}
+.av.you{background:var(--tint);color:var(--ink)}
+.av.ai{background:var(--blue);color:#fff}
+.bubble{background:var(--tint);padding:10px 14px;border-radius:12px;font-weight:500}
+.answer{font-size:17px;line-height:1.85}
+.cl{cursor:pointer;border-radius:4px;padding:1px 2px;transition:background .2s;border-bottom:1.5px dotted color-mix(in srgb,var(--mute) 60%,transparent)}
+.cl:hover{background:var(--tint)}
+.cl.bad{background:var(--hi);color:var(--hiink);border-bottom:2px solid var(--red);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px}
+.cl.ok{border-bottom:2px solid var(--green)}
+.cl .tag{font-family:Caveat,cursive;font-size:20px;color:var(--red);text-decoration:none;display:inline-block;margin-left:4px;font-weight:700}
+.cl.ok .tag{color:var(--green)}
+.side{display:grid;gap:16px;position:sticky;top:76px}
+.score{background:var(--paper);color:var(--ink);border-radius:14px;padding:20px;border:1px solid var(--rule)}
+.big{font-family:"Familjen Grotesk",sans-serif;font-weight:700;font-size:clamp(48px,6vw,68px);line-height:1;color:var(--red)}
+.meter{height:10px;background:var(--tint);border-radius:5px;overflow:hidden;margin:12px 0}
+.meter i{display:block;height:100%;background:var(--red);width:0;transition:width .4s}
+.note{background:var(--paper);color:var(--ink);border-radius:14px;padding:18px 20px;border:1px solid var(--rule);min-height:150px}
+.note h3{margin-bottom:6px}
+.note.badn{border-left:5px solid var(--red)}
+.note.okn{border-left:5px solid var(--green)}
+.hint{font-size:14px;color:var(--mute)}
+header .hint{color:#dbe5f5}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(20px,4vw,48px);align-items:start}
+.panel{background:var(--tint);border-radius:14px;padding:clamp(16px,2.5vw,26px)}
+.prompt{font-size:20px;font-weight:600;margin-bottom:14px}
+.prompt span{background:var(--blueb);color:var(--blue);padding:2px 8px;border-radius:6px;font-family:Caveat,cursive;font-size:24px}
+.row{display:grid;grid-template-columns:7.5em minmax(0,1fr) 4em;gap:10px;align-items:center;margin:8px 0}
+.row b{font-weight:600}
+.bar{height:26px;background:var(--paper);border-radius:6px;overflow:hidden;border:1px solid var(--rule)}
+.bar i{display:block;height:100%;background:var(--blue);transition:width .35s}
+.row.wrongw .bar i{background:var(--red)}
+.row .v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px}
+input[type=range]{width:220px;accent-color:var(--blue);height:44px}
+.out{margin-top:14px;font-size:17px}
+.out mark{background:var(--hi);color:var(--hiink);padding:1px 6px;border-radius:4px}
+.tally{font-size:14px;color:var(--mute);margin-top:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:20px}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.card p{margin:0}
+.lights{display:flex;gap:8px;flex-wrap:wrap}
+.lights button{min-height:44px;flex:1 1 80px;border-radius:10px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);font-weight:600}
+.lights button[data-c=g].on{background:var(--green);border-color:var(--green);color:#fff}
+.lights button[data-c=a].on{background:var(--amber);border-color:var(--amber);color:#fff}
+.lights button[data-c=r].on{background:var(--red);border-color:var(--red);color:#fff}
+.verdict{font-size:15px;border-top:1px dashed var(--rule);padding-top:10px;display:none}
+.card.done .verdict{display:block}
+.verdict strong.g{color:var(--green)}.verdict strong.a{color:var(--amber)}.verdict strong.r{color:var(--red)}
+.sift{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.step{background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:18px}
+.step .L{font-family:"Familjen Grotesk",sans-serif;font-weight:700;font-size:56px;line-height:1;color:var(--blue)}
+.step p{font-size:15px;margin:8px 0 0}
+.gen{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;margin-top:22px;align-items:stretch}
+.machine,.runs{background:var(--paper);border:1px solid var(--rule)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chips button{min-height:44px;padding:0 16px;border-radius:22px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);font-weight:600}
+.chips button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.sent{font-family:"Familjen Grotesk",sans-serif;font-size:clamp(22px,2.8vw,30px);line-height:1.4;min-height:2.9em}
+.sent .p{color:var(--mute)}
+.sent .tk{background:var(--blueb);color:var(--blue);border-radius:6px;padding:0 3px;margin-left:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.sent .tk.bad{background:color-mix(in srgb,var(--red) 16%,var(--paper));color:var(--red);text-decoration:underline wavy var(--red);text-underline-offset:5px}
+.caret{display:inline-block;width:3px;height:1em;background:var(--blue);margin-left:4px;vertical-align:-.12em;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.vg{min-height:28px;margin:6px 0 10px}.vg .hint{display:block;margin-top:4px}
+.candh{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;font-weight:600;margin-top:8px}
+.chk{display:flex;align-items:center;gap:8px;font-weight:500;font-size:15px;min-height:44px}
+.chk input{width:20px;height:20px;accent-color:var(--red)}
+.cand{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 3.4em;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:6px;min-height:44px;color:inherit}
+.cand:hover{background:var(--tint)}
+.cand b{font-weight:600;overflow-wrap:anywhere}
+.cand .bar,.rr .bar{display:block}
+.cand.wrongw .bar i,.rr.wrongw .bar i{background:var(--red)}
+.cand.wrongw b{color:var(--red)}
+.tl{display:flex;align-items:center;gap:10px;font-weight:500;flex-wrap:wrap}
+.btn:disabled{opacity:.4;cursor:default}
+.bigf{font-family:"Familjen Grotesk",sans-serif;font-weight:700;font-size:clamp(40px,5vw,60px);line-height:1;margin:16px 0 10px}
+.bigf .u{font-size:18px;color:var(--mute);font-weight:500}
+.rr{margin:8px 0}.rs{display:flex;justify-content:space-between;gap:10px;font-size:15px}.rr .bar{height:14px}
+.rr.wrongw .rs span:first-child{color:var(--red)}
+.steps4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:22px}
+.st{background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:18px}
+.st h3{margin-bottom:8px}.st p{font-size:15px}
+.toks{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}.toks span{background:var(--blueb);color:var(--blue);border-radius:5px;padding:2px 6px;font-size:14px;white-space:pre}
+.f{font-family:"Familjen Grotesk",sans-serif;font-size:18px;background:var(--tint);border-radius:8px;padding:6px 10px;display:inline-block;margin:0}
+@media(max-width:900px){.gen{grid-template-columns:minmax(0,1fr)}.steps4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.steps4{grid-template-columns:minmax(0,1fr)}.cand{grid-template-columns:minmax(0,7.5em) minmax(0,1fr) 3em}}
+.cam{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.camc{background:var(--paper);border:1px solid var(--rule);border-top:5px solid var(--blue);border-radius:14px;padding:18px}
+.camc.ok2{border-top-color:var(--green)}.camc.no2{border-top-color:var(--red)}
+.camc h3{margin-bottom:8px}.camc p,.camc li{font-size:15px}.camc ul{margin:0;padding-left:20px;display:grid;gap:6px}
+@media(max-width:900px){.cam{grid-template-columns:minmax(0,1fr)}}
+.risks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.risk{border-top:3px solid var(--ink);padding-top:12px}
+.risk p{font-size:15px}
+.quiz{display:grid;gap:14px;margin-top:16px}
+fieldset{border:1px solid var(--rule);border-radius:14px;padding:16px 18px;margin:0;background:var(--paper)}
+legend{font-weight:600;padding:0 6px}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opts button{text-align:left;min-height:44px;padding:10px 14px;border-radius:10px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink)}
+.opts button.right{border-color:var(--green);background:color-mix(in srgb,var(--green) 14%,var(--bg))}
+.opts button.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 12%,var(--bg))}
+.why{font-size:15px;color:var(--mute);margin-top:8px;display:none}
+fieldset.done .why{display:block}
+.form{display:grid;gap:12px}
+label{font-weight:600;font-size:15px;display:grid;gap:6px}
+input[type=text],select{font:inherit;font-size:16px;min-height:44px;padding:8px 12px;border-radius:10px;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink);width:100%}
+.stmt{background:var(--paper);border:1.5px dashed var(--ink);border-radius:14px;padding:20px;font-size:17px;line-height:1.7}
+footer{border-top:1px solid var(--rule);color:var(--mute);font-size:14px}
+@media(max-width:900px){.hero,.two{grid-template-columns:minmax(0,1fr)}.side{position:static;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr)}.sift{grid-template-columns:repeat(2,minmax(0,1fr))}.risks{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.side{grid-template-columns:minmax(0,1fr)}.row{grid-template-columns:5.8em minmax(0,1fr) 3.4em}.answer{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="wrap">
+    <h1>Mark the machine</h1>
+    <p class="lede" style="margin-top:12px">AI literacy for Sixth Form: how chatbots produce answers, where they go wrong, and how to use them without handing over your thinking.</p>
+  </div>
+</header>
+<nav class="scroll" aria-label="Sections">
+  <a href="#mark">Mark the answer</a><a href="#predict">How it works</a><a href="#lights">Fair use?</a><a href="#cambridge">Cambridge rules</a><a href="#check">Check it</a><a href="#risks">Hidden costs</a><a href="#quiz">Quiz</a><a href="#credit">Credit your AI</a>
+</nav>
+
+<section class="band" id="mark">
+  <div class="wrap hero">
+    <div class="sheet">
+      <div class="q"><div class="av you">You</div><div class="bubble">Tell me some facts about the Great Wall of China. Give me a source I can cite.</div></div>
+      <div class="q"><div class="av ai">AI</div><div class="answer" id="answer"></div></div>
+    </div>
+    <aside class="side">
+      <div class="score">
+        <div class="hint">Errors found</div>
+        <div class="big"><span id="found">0</span><span style="font-size:.5em;color:var(--mute)"> / <span id="total">5</span></span></div>
+        <div class="meter"><i id="meterI"></i></div>
+        <div class="hint" id="scoreMsg">This answer sounds confident. Five sentences in it are wrong. Click any sentence you doubt.</div>
+        <div class="ctrl"><button class="btn ghost" id="resetMark">Start again</button><button class="btn ghost" id="revealMark">Show all</button></div>
+      </div>
+      <div class="note" id="note" aria-live="polite">
+        <h3>Your examiner's notes</h3>
+        <p class="hint" style="margin:0">Pick a sentence and the red pen will tell you whether it holds up, and how you could have checked.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="band" id="predict" style="background:var(--tint)">
+  <div class="wrap">
+    <h2>It predicts words. It doesn't look things up.</h2>
+    <p class="lede">A large language model writes one small piece of text at a time. At every step it scores every possible next piece, turns the scores into chances, picks one, and repeats. Nothing in that loop checks whether the result is true. Build a sentence yourself and see.</p>
+    <div class="gen">
+      <div class="panel machine">
+        <div class="chips" role="group" aria-label="Choose a prompt">
+          <button data-p="moon" class="on" aria-pressed="true">Moon landing</button><button data-p="wall" aria-pressed="false">Great Wall</button><button data-p="fish" aria-pressed="false">Goldfish</button><button data-p="cite" aria-pressed="false">Find me a source</button>
+        </div>
+        <div class="sent" id="sent" aria-live="polite"></div>
+        <div id="verdictG" class="vg"></div>
+        <div class="candh"><span id="candLabel">Next word: the model's chances</span><label class="chk" for="showBad"><input type="checkbox" id="showBad"> Highlight false words</label></div>
+        <div id="cands"></div>
+        <div class="ctrl">
+          <label for="temp" class="tl">Temperature <input type="range" id="temp" min="0" max="2" step="0.1" value="1"> <b id="tempV">1.0</b></label>
+        </div>
+        <div class="ctrl">
+          <button class="btn" id="stepB">Let it pick the next word</button>
+          <button class="btn ghost" id="finishB">Write the rest</button>
+          <button class="btn ghost" id="restartB">Start again</button>
+        </div>
+        <p class="hint" style="margin:10px 0 0">Click any bar to choose that word yourself. Simplified: real models pick from about 100,000 tokens, and their scores come from training, not from us.</p>
+      </div>
+      <div class="panel runs">
+        <h3>Ask the same question 100 times</h3>
+        <p class="hint" style="margin:6px 0 12px">Same prompt, same temperature. Each run writes a full sentence.</p>
+        <button class="btn" id="runB">Run 100 times</button>
+        <div class="bigf" id="falseP"></div>
+        <div id="runOut"><p class="hint">Try each prompt at 0, then at 1.5.</p></div>
+      </div>
+    </div>
+
+    <div class="steps4">
+      <div class="st"><h3>1. Text becomes tokens</h3><p>The model doesn't see words. It sees tokens: whole words, parts of words or punctuation.</p><div class="toks"><span>The</span><span>&nbsp;first</span><span>&nbsp;person</span><span>&nbsp;on</span><span>&nbsp;the</span><span>&nbsp;Moon</span></div><div class="toks"><span>un</span><span>believ</span><span>able</span></div></div>
+      <div class="st"><h3>2. Every token gets a score</h3><p>Training on huge amounts of text taught it which tokens tend to follow which. A score is how well a token fits <em>the pattern</em>, not how true it is.</p></div>
+      <div class="st"><h3>3. Temperature sets the risk</h3><p>Scores become chances. Low temperature makes the top choice almost certain. High temperature flattens the chances, so unlikely words get picked more often. At 0 it always picks the top one, right or wrong.</p><p class="f">chance ∝ e<sup>score ÷ temperature</sup></p></div>
+      <div class="st"><h3>4. Pick, add, repeat</h3><p>The chosen token is added to the text and the whole loop runs again. Once a wrong word is in, the model builds on it smoothly: "Buzz" makes "Aldrin" almost certain.</p></div>
+    </div>
+
+    <div class="two" style="margin-top:24px">
+      <div><h3 style="font-size:24px">Turning the temperature down doesn't make it true</h3></div>
+      <div><p>Set temperature to 0 and the model always takes its top choice. That only helps if the top choice is true. Try the other prompts at 0: the Great Wall is "visible from space" and goldfish remember for "three seconds" every time, because those myths are all over the internet, so they score highest. Ask for a source and it invents one every time, because a reference-shaped answer is the likeliest text. Low temperature makes a model <em>consistent</em>, not correct.</p><p style="margin:0">It also explains why asking the same question twice can give different answers, and why an AI that is right nine times out of ten can still be confidently wrong on the tenth.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="lights">
+  <div class="wrap">
+    <h2>Green, amber or red?</h2>
+    <p class="lede">Decide for each case, then see the reasoning. Rules differ between schools, subjects and exam boards: for coursework and anything assessed, your school's policy and your exam board's rules decide.</p>
+    <div class="hint" id="lightScore"></div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<section class="band" id="cambridge">
+  <div class="wrap">
+    <h2>What Cambridge International says</h2>
+    <p class="lede">Cambridge's policy on generative AI in coursework covers all Cambridge International qualifications. The short version: AI use is allowed in limited ways if you acknowledge it. Using it to create or improve your work without saying so can be treated as plagiarism.</p>
+    <div class="cam">
+      <div class="camc ok2">
+        <h3>Allowed, if clearly acknowledged</h3>
+        <p><strong>Initial research</strong>, like consulting a book or website. You must state the prompt or prompts you used, the AI tool and its version, and when you used it. Check any websites it gives you, and discuss how reliable the material is.</p>
+        <p style="margin:0"><strong>A brief quotation</strong> of AI-generated text in an essay, about two or three sentences (around 50 words), clearly marked as AI and then discussed critically. You only get credit for your own comments on it.</p>
+      </div>
+      <div class="camc">
+        <h3>Always</h3>
+        <ul>
+          <li>Acknowledge any AI you used to research, plan, or create text, images, sound or video, and reference what it produced.</li>
+          <li>Remember that using AI earns no extra marks, and you don't have to use it at all.</li>
+          <li>Check its sources, because AI can invent sources that don't exist.</li>
+        </ul>
+      </div>
+      <div class="camc no2">
+        <h3>Not allowed</h3>
+        <p>Using AI to create or improve your work without acknowledging it. Your teacher has to confirm that your coursework is your own original, unaided work. If they suspect inappropriate AI use, they should not sign it off. Cambridge can treat it as malpractice, investigate, and apply penalties.</p>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:18px">
+      <h3 style="margin-bottom:8px">What makes a teacher look twice</h3>
+      <p style="margin:0">Cambridge gives teachers warning signs. None of them proves AI use, but each one can prompt questions: a sudden jump in quality between drafts, writing that doesn't sound like you, unusually perfect spelling and grammar, American spelling you don't normally use, no references from after 2021, paragraphs that start "However," or "In conclusion,", and strong evidence with weak analysis.</p>
+    </div>
+    <p class="hint" style="margin-top:12px">Summarised from <a href="https://www.cambridgeinternational.org/exam-administration/cambridge-exams-officers-guide/phase-3-coursework-and-moderation/generative-ai-in-coursework/" style="color:var(--blue)">Cambridge International: The use of generative AI in coursework</a>. Subject syllabuses can add their own rules, so check with your teacher.</p>
+  </div>
+</section>
+
+<section class="band" id="check" style="background:var(--blueb)">
+  <div class="wrap">
+    <h2>Check before you trust: SIFT</h2>
+    <p class="lede" style="color:var(--ink)">A fact-checking routine designed for the web by Mike Caulfield. It works just as well on a chatbot's answer, because a chatbot isn't a source: it's a summary of who knows what.</p>
+    <div class="sift">
+      <div class="step"><div class="L">S</div><h3>Stop</h3><p>Notice how the answer makes you feel. Does it say exactly what you hoped? Is it very confident? Slow down before you copy it.</p></div>
+      <div class="step"><div class="L">I</div><h3>Investigate the source</h3><p>Ask "where does this come from?" If the AI names a paper or book, find it yourself. If you can't, treat it as invented.</p></div>
+      <div class="step"><div class="L">F</div><h3>Find better coverage</h3><p>Look for the same claim in your textbook, a specification, a reputable organisation or a peer-reviewed paper.</p></div>
+      <div class="step"><div class="L">T</div><h3>Trace claims</h3><p>Follow numbers and quotes back to the original. Check units, dates and who actually said or did it.</p></div>
+    </div>
+    <div class="two" style="margin-top:28px">
+      <div>
+        <h3 style="margin-bottom:8px">Prompts that make you think more, not less</h3>
+        <p>The best uses make AI a sparring partner. You stay the author.</p>
+      </div>
+      <div class="panel" style="background:var(--paper);border:1px solid var(--rule)">
+        <p><strong>Instead of</strong> "Write my essay on the causes of WW1."<br><strong>Try</strong> "Here's my plan for an essay on the causes of WW1. Which counter-argument have I ignored?"</p>
+        <p><strong>Instead of</strong> "Answer this past-paper question."<br><strong>Try</strong> "Ask me five questions on the topic I'm revising, one at a time, and don't give answers until I've tried."</p>
+        <p style="margin:0"><strong>Instead of</strong> "Is this true?"<br><strong>Try</strong> "What would I need to check to know if this is true, and where would I find it?"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="risks">
+  <div class="wrap">
+    <h2>What it costs that you can't see</h2>
+    <div class="risks">
+      <div class="risk"><h3>Bias</h3><p>Models learn from human text, including its stereotypes and blind spots. Ask for "a picture of a scientist" or "a typical nurse" and notice who appears. Ask whose viewpoint is missing.</p></div>
+      <div class="risk"><h3>Privacy</h3><p>What you type may be stored, reviewed or used to improve the product, depending on the tool and its settings. Don't paste other people's personal details, private messages, or anything you'd not want read aloud.</p></div>
+      <div class="risk"><h3>Your own learning</h3><p>Getting an answer isn't learning it. If AI does the struggle for you, the exam hall is where you'll find out. Use it to test yourself, explain, and give feedback, then do the work.</p></div>
+      <div class="risk"><h3>Sycophancy</h3><p>Chatbots often agree with you and praise your work. Ask "what's wrong with this?" and "argue the other side" to get something useful.</p></div>
+      <div class="risk"><h3>Deepfakes</h3><p>Realistic fake images, audio and video are easy to make. Before you share something shocking, check whether reliable news outlets are reporting it.</p></div>
+      <div class="risk"><h3>Energy and water</h3><p>Training and running large models uses a lot of electricity and data-centre cooling. Not a reason to never use AI; a reason not to use it for things a quick search or your own head can do.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="quiz" style="background:var(--tint)">
+  <div class="wrap">
+    <h2>Quick check</h2>
+    <p class="lede"><span id="qScore">Answer all five.</span></p>
+    <div class="quiz" id="qz"></div>
+  </div>
+</section>
+
+<section class="band" id="credit">
+  <div class="wrap two">
+    <div>
+      <h2>If you used it, say so</h2>
+      <p>Where AI use is allowed, being open about it is what keeps it honest. In assessed work, using AI without saying so can count as malpractice, even if the ideas were yours. Cambridge asks you to give the tool and its version, the prompts you used, and when you used it. Build a statement here, then copy it into your work.</p>
+      <div class="form">
+        <label for="tool">Tool and version<input type="text" id="tool" value="ChatGPT (GPT-5)"></label>
+        <label for="prompts">Prompts you used<input type="text" id="prompts" value="What were the main causes of the French Revolution? List sources I could check."></label>
+        <label for="purpose">What you used it for<select id="purpose">
+          <option>for initial research before I started writing</option>
+          <option>to quiz me on the topic before I wrote this</option>
+          <option>to explain a concept I then checked in my notes</option>
+          <option>to suggest counter-arguments to my plan</option>
+          <option>to give feedback on the structure of my draft</option>
+          <option>to check my spelling and grammar</option>
+        </select></label>
+        <label for="checked">How you checked it<select id="checked">
+          <option>I checked its factual claims against my textbook and class notes</option>
+          <option>I checked every source it mentioned and only cited ones I read myself</option>
+          <option>I decided which suggestions to accept and rewrote them in my own words</option>
+        </select></label>
+        <label for="when">Date<input type="text" id="when"></label>
+      </div>
+    </div>
+    <div>
+      <div class="pen" style="margin-bottom:8px">Your statement</div>
+      <div class="stmt" id="stmt"></div>
+      <div class="ctrl"><button class="btn" id="copy">Copy statement</button><span class="hint" id="copied" aria-live="polite"></span></div>
+      <p class="hint" style="margin-top:14px">Some teachers also ask for your prompts and the AI's replies. Keep a copy of the conversation in case.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="band"><div class="wrap">Mark the machine · AI literacy for Sixth Form · Check your school's AI policy and your exam board's rules before using AI in any assessed work.</div></footer>
+
+<script>
+{
+const store={get(k,d){try{return JSON.parse(localStorage.getItem('ml-'+k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem('ml-'+k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- 1. Mark the answer ---------- */
+const S=[
+ {t:"The Great Wall of China is a series of fortifications built across northern China over many centuries.",ok:1,n:"Correct. It isn't one continuous wall but many walls, built and rebuilt by different dynasties."},
+ {t:"It is the only human-made structure visible to the naked eye from space.",bad:"Popular myth",n:"Astronauts, including China's first, Yang Liwei, have said they couldn't see it with the naked eye from orbit. It's long but only a few metres wide. AI learns from the internet, so it repeats things that are widely said, not only things that are true."},
+ {t:"Most of the wall that tourists visit today was built during the Ming dynasty (1368–1644).",ok:1,n:"Correct. The well-preserved stone and brick sections near Beijing are mostly Ming."},
+ {t:"Its total length, including all branches, is about 2,100 kilometres.",bad:"Wrong by 10×",n:"A Chinese government survey published in 2012 measured all sections at about 21,000 km. A number missing a zero looks just as authoritative. Check figures against an official or reputable source."},
+ {t:"Construction of the first unified wall was ordered by the emperor Kublai Khan.",bad:"Wrong person",n:"Linking up the earlier walls is credited to Qin Shi Huang, the first emperor, in the 3rd century BC. Kublai Khan was a Mongol ruler, from the kind of northern power the walls were meant to keep out. Models often blend people and periods into one tidy story."},
+ {t:"It successfully stopped every invasion from the north.",bad:"Overclaim",n:"The Mongols conquered China in the 13th century and the Manchus in the 17th. Watch for words like \"every\", \"always\" and \"never\": sweeping claims are rarely true in history."},
+ {t:"It was made a UNESCO World Heritage Site in 1987.",ok:1,n:"Correct, and checking UNESCO's own website takes ten seconds. Real facts sit right next to false ones, so one correct sentence tells you nothing about the next."},
+ {t:"Source: Li, W. (2015) \"The Complete History of the Great Wall\", Journal of Asian Studies, 74(2), pp. 301–330.",bad:"Invented source",n:"We made this reference up for the exercise, the way chatbots do: a real journal, a plausible title and page numbers, but no such article. Never cite a source you haven't found and opened yourself."}
+];
+const nBad=S.filter(s=>s.bad).length;
+document.getElementById('total').textContent=nBad;
+let marked=new Set(store.get('marked2',[]));
+const ans=document.getElementById('answer'),note=document.getElementById('note');
+const renderAns=()=>{
+ ans.innerHTML=S.map((s,i)=>{const m=marked.has(i);const cls=m?(s.bad?'bad':'ok'):'';const tag=m?`<span class="tag">${s.bad?s.bad:'✓ fine'}</span>`:'';return `<span class="cl ${cls}" tabindex="0" role="button" data-i="${i}">${s.t}</span>${tag?'':''}${m?tag:''} `}).join('');
+ const f=[...marked].filter(i=>S[i].bad).length;
+ document.getElementById('found').textContent=f;
+ document.getElementById('meterI').style.width=(f/nBad*100)+'%';
+ document.getElementById('scoreMsg').textContent=f===nBad?'All five found. Notice that the errors sat next to true statements in the same confident voice.':f?`${nBad-f} still hiding. Look at famous "facts", numbers, names, absolute words and the source.`:'This answer sounds confident. Five sentences in it are wrong. Click any sentence you doubt.';
+ store.set('marked2',[...marked]);
+};
+const pick=i=>{marked.add(i);const s=S[i];note.className='note '+(s.bad?'badn':'okn');note.innerHTML=`<div class="pen">${s.bad?'✗ '+s.bad:'✓ This holds up'}</div><p style="margin:8px 0 0">${s.n}</p>`;renderAns()};
+ans.addEventListener('click',e=>{const c=e.target.closest('.cl');if(c)pick(+c.dataset.i)});
+ans.addEventListener('keydown',e=>{const c=e.target.closest('.cl');if(c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(+c.dataset.i)}});
+document.getElementById('resetMark').onclick=()=>{marked=new Set();note.className='note';note.innerHTML='<h3>Your examiner\'s notes</h3><p class="hint" style="margin:0">Pick a sentence and the red pen will tell you whether it holds up.</p>';renderAns()};
+document.getElementById('revealMark').onclick=()=>{S.forEach((s,i)=>s.bad&&marked.add(i));note.className='note badn';note.innerHTML='<div class="pen">Five errors</div><p style="margin:8px 0 0">A popular myth, a number out by a factor of ten, the wrong emperor, an overclaim and an invented source. Click any one for the explanation.</p>';renderAns()};
+renderAns();
+
+/* ---------- 2. Next-token prediction ---------- */
+const E=null,t=(w,l,bad,n)=>({w,l,bad:!!bad,n}),N=(...o)=>({o});
+const P={
+ moon:{p:'The first person to walk on the Moon was',fact:'Neil Armstrong, in July 1969. Buzz Aldrin stepped out second. Yuri Gagarin was the first person in space (1961), not on the Moon.',tree:N(
+  t(' Neil',3.6,0,N(
+    t(' Armstrong',4.2,0,N(t(' in',2.4,0,N(t(' 1969.',4.0,0,E),t(' 1968.',1.3,1,E),t(' 1972.',0.9,1,E))),t(', an American astronaut.',1.6,0,E),t('.',1.2,0,E))),
+    t(' Young',0.6,1,N(t(' in',2,0,N(t(' 1972.',2.5,0,E),t(' 1969.',1.8,0,E))),t('.',1.2,0,E))))),
+  t(' Buzz',1.9,1,N(t(' Aldrin',4,0,N(t(' in',2.4,0,N(t(' 1969.',3.4,0,E),t(' 1972.',0.9,0,E))),t('.',1.4,0,E))))),
+  t(' Yuri',0.9,1,N(t(' Gagarin',4,0,N(t(' in',2.4,0,N(t(' 1961.',3,0,E),t(' 1969.',1.5,0,E))),t('.',1.2,0,E))))),
+  t(' an',1.1,0,N(t(' American',3,0,N(t(' astronaut',3,0,N(t(' called Neil Armstrong.',3,0,E),t(' called Buzz Aldrin.',1.6,1,E))))),t(' engineer',1,0,N(t(' called Neil Armstrong.',3,0,E))))))},
+ fish:{p:'Goldfish can only remember things for',fact:'Experiments show goldfish remember things for months, for example learning when and where food arrives. The three-second memory is a myth, and myths are common in training text.',tree:N(
+  t(' three',3.2,1,N(t(' seconds.',4,0,E))),
+  t(' a',2.0,0,N(t(' few seconds.',2.5,1,E),t(' few months.',1.8,0,E))),
+  t(' months.',1.6,0,E),
+  t(' about',1.2,0,N(t(' 30 seconds.',2,1,E),t(' five months.',1.2,0,E))))},
+ cite:{p:'A study I can cite on goldfish memory is',fact:'These authors and papers were invented for this demo, the way a model invents them when it has no real answer. It never says "I don\'t know" unless that is the likeliest text. Find real studies in a library database or Google Scholar.',tree:N(
+  t(' Smith',2.6,1,N(t(', J. (2004)',3,0,N(t(' in the Journal of Fish Biology.',3,0,E),t(' in Nature.',1.8,0,E))))),
+  t(' Brown',2.2,1,N(t(', A. (2009)',3,0,N(t(' in Animal Cognition.',3,0,E))))),
+  t(' one',0.8,0,N(t(' you should find in a library database.',2.5,0,E))),
+  t(' something',0.6,0,N(t(' I can\'t verify, so please search for it.',2.5,0,E))))},
+ wall:{p:'The Great Wall of China is',fact:'It is about 21,000 km long including all its branches, and it is not visible to the naked eye from space: astronauts have said so.',tree:N(
+  t(' visible',3.0,0,N(
+    t(' from',4,0,N(t(' space.',3.2,1,E),t(' the Moon.',1.6,1,E),t(' the air.',1.9,0,E),t(' nearby hills.',1.0,0,E))),
+    t(' on',1.2,0,N(t(' satellite photos.',2.8,0,E))))),
+  t(' over',2.0,0,N(t(' 20,000',2.6,0,N(t(' km long.',3.5,0,E))),t(' 2,000',1.7,1,N(t(' km long.',3.5,0,E))),t(' 2,000 years old.',2.0,0,E))),
+  t(' a',1.6,0,N(t(' UNESCO World Heritage Site.',2.4,0,E),t(' single continuous wall.',1.5,1,E),t(' wonder of the world.',1.4,0,E))))}
+};
+let cur='moon',path=[];
+const temp=document.getElementById('temp'),cands=document.getElementById('cands'),showBad=document.getElementById('showBad');
+const T=()=>+temp.value;
+const probs=(o,Tv)=>{if(Tv<=0){const m=Math.max(...o.map(k=>k.l));const i=o.findIndex(k=>k.l===m);return o.map((k,j)=>j===i?1:0)}const e=o.map(k=>Math.exp(k.l/Tv));const z=e.reduce((a,b)=>a+b,0);return e.map(x=>x/z)};
+const sampleIdx=(p)=>{let r=Math.random(),i=0;while(i<p.length-1&&(r-=p[i])>0)i++;return i};
+const nodeAt=()=>{let n=P[cur].tree;for(const k of path)n=k.n;return n};
+const esc2=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const drawGen=()=>{
+ document.getElementById('tempV').textContent=T().toFixed(1);
+ const n=nodeAt(),done=!n,bad=path.some(k=>k.bad);
+ document.getElementById('sent').innerHTML=`<span class="p">${P[cur].p}</span>`+path.map(k=>`<span class="tk ${(done||showBad.checked)&&k.bad?'bad':''}">${esc2(k.w)}</span>`).join('')+(done?'':'<span class="caret" aria-hidden="true"></span>');
+ document.getElementById('verdictG').innerHTML=done?`<span class="pen" style="color:${bad?'var(--red)':'var(--green)'}">${bad?'✗ False, written just as fluently':'✓ True this time'}</span> <span class="hint">${P[cur].fact}</span>`:'';
+ document.getElementById('candLabel').textContent=done?'Sentence finished':'Next word: the model\'s chances';
+ if(done){cands.innerHTML='';}else{const p=probs(n.o,T());cands.innerHTML=n.o.map((k,i)=>`<button class="cand ${showBad.checked&&k.bad?'wrongw':''}" data-i="${i}"><b>${esc2(k.w.trim()||k.w)}</b><span class="bar"><i style="width:${(p[i]*100).toFixed(1)}%"></i></span><span class="v">${p[i]<0.005&&p[i]>0?'<1':(p[i]*100).toFixed(0)}%</span></button>`).join('')}
+ document.getElementById('stepB').disabled=done;document.getElementById('finishB').disabled=done;
+};
+const choose=i=>{const n=nodeAt();if(!n)return;path.push(n.o[i]);drawGen()};
+const step=()=>{const n=nodeAt();if(n)choose(sampleIdx(probs(n.o,T())))};
+let timer=null;
+const finish=()=>{clearInterval(timer);const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce){while(nodeAt())step();return}timer=setInterval(()=>{if(!nodeAt()){clearInterval(timer);return}step()},450)};
+const restart=()=>{clearInterval(timer);path=[];drawGen()};
+cands.addEventListener('click',e=>{const b=e.target.closest('.cand');if(b){clearInterval(timer);choose(+b.dataset.i)}});
+document.getElementById('stepB').onclick=()=>{clearInterval(timer);step()};
+document.getElementById('finishB').onclick=finish;
+document.getElementById('restartB').onclick=restart;
+showBad.addEventListener('change',drawGen);
+temp.addEventListener('input',()=>{drawGen();document.getElementById('runOut').innerHTML='<p class="hint">Temperature changed. Run again to compare.</p>';document.getElementById('falseP').innerHTML=''});
+document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{cur=b.dataset.p;document.querySelectorAll('.chips button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});document.getElementById('runOut').innerHTML='<p class="hint">New prompt. Run it to see the spread.</p>';document.getElementById('falseP').innerHTML='';restart()});
+document.getElementById('runB').onclick=()=>{
+ const tally={};let f=0;const Tv=T();
+ for(let r=0;r<100;r++){let n=P[cur].tree,s='',bad=false;while(n){const k=n.o[sampleIdx(probs(n.o,Tv))];s+=k.w;bad=bad||k.bad;n=k.n}const key=s.trim();tally[key]=tally[key]||{c:0,bad};tally[key].c++;if(bad)f++}
+ const rows=Object.entries(tally).sort((a,b)=>b[1].c-a[1].c);
+ document.getElementById('falseP').innerHTML=`<span style="color:${f?'var(--red)':'var(--green)'}">${f}</span><span class="u"> of 100 false</span>`;
+ document.getElementById('runOut').innerHTML=`<p class="hint" style="margin:0 0 8px">${Tv<=0?(f?'Temperature 0: the same answer all 100 times, and it is wrong every time. No randomness, but still a mistake.':'Temperature 0: the same answer all 100 times. Right here, but only because the top choice happens to be true. Try the other prompts.'):rows.length+' different answer'+(rows.length>1?'s':'')+' at temperature '+Tv.toFixed(1)}</p>`+rows.slice(0,8).map(([s,v])=>`<div class="rr ${v.bad?'wrongw':''}"><div class="rs"><span>…${esc2(s)}</span><span class="v">${v.c}</span></div><div class="bar"><i style="width:${v.c}%"></i></div></div>`).join('')+(rows.length>8?`<p class="hint">and ${rows.length-8} rarer answers</p>`:'');
+};
+drawGen();
+
+/* ---------- 3. Traffic lights ---------- */
+const C=[
+ {s:"You've revised for a test. You ask a chatbot to quiz you with ten exam-style questions, and you check its answers against your notes.",a:'g',r:"Testing yourself is one of the best ways to learn, and checking its answers protects you from its mistakes."},
+ {s:"You missed a lesson on supply and demand. You ask AI to explain it simply, then work through the examples in your textbook.",a:'g',r:"Good use as a tutor, with the textbook as the check. Ask it to explain differently if the first version doesn't click."},
+ {s:"You paste your essay or coursework draft in, ask AI to \"improve the writing\", and submit its version.",a:'r',r:"The work you submit for assessment must be your own. Submitting AI-written text without permission and acknowledgement is malpractice under exam board rules."},
+ {s:"You ask AI to write the personal statement for your university application, then change a few words.",a:'r',r:"University applications ask you to confirm that your statement or essays are your own work, and some application systems screen for copied text. Admissions tutors want to hear you, and you may be asked about it at interview."},
+ {s:"You ask AI which weaknesses it sees in the structure of your history essay, then decide what to change and rewrite it yourself.",a:'a',r:"Often fine for homework and practice. For Cambridge coursework, AI help that improves your work goes beyond the uses Cambridge lists as acceptable, so ask your teacher first, and acknowledge any use. The thinking and wording must stay yours."},
+ {s:"You paste a screenshot of a group chat, with classmates' names and messages, into a chatbot to ask what they meant.",a:'r',r:"That's other people's personal information, shared without their consent, with a company whose storage you don't control."},
+ {s:"AI gives you five references for your biology essay. You add them to your bibliography to save time.",a:'r',r:"References made up by AI are common. Citing sources you haven't read is dishonest even when they exist. Find and read each one."},
+ {s:"You make an image with an AI generator for a class presentation and label it \"AI-generated image\".",a:'a',r:"Usually fine and honest when labelled. Watch for stereotyped or inaccurate content, and don't use it as evidence of anything real."}
+];
+let lc=store.get('lights',{});
+const cards=document.getElementById('cards');
+const name={g:'Green',a:'Amber',r:'Red'};
+const renderCards=()=>{cards.innerHTML=C.map((c,i)=>{const v=lc[i];return `<div class="card ${v?'done':''}"><p>${c.s}</p><div class="lights" role="group" aria-label="Your verdict">${['g','a','r'].map(k=>`<button data-i="${i}" data-c="${k}" class="${v===k?'on':''}" aria-pressed="${v===k}">${name[k]}</button>`).join('')}</div><div class="verdict"><strong class="${c.a}">Our view: ${name[c.a]}.</strong> ${v===c.a?'You agreed.':v?'You said '+name[v].toLowerCase()+': worth discussing.':''} ${c.r}</div></div>`}).join('');
+ const done=Object.keys(lc).length,agree=Object.entries(lc).filter(([i,v])=>C[i].a===v).length;
+ document.getElementById('lightScore').textContent=done?`${done} of ${C.length} decided · you agreed on ${agree}. Disagreements make good discussion.`:'';
+ store.set('lights',lc)};
+cards.addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(!b)return;lc[b.dataset.i]=b.dataset.c;renderCards()});
+renderCards();
+
+/* ---------- 4. Quiz ---------- */
+const Q=[
+ {q:"Why can a chatbot produce a fake reference that looks real?",o:["It copies references from a hidden database","It generates text that fits the pattern of a reference, word by word","It's programmed to mislead students","It only happens when the internet is down"],c:1,w:"It predicts plausible text. A citation has a very predictable format, so it can be filled with invented details."},
+ {q:"An AI answer gives a figure you need for an essay. What's the best next step?",o:["Use it, AI is usually right","Ask the same AI if it's sure","Find the figure in an original or reputable source","Round it so it's less precise"],c:2,w:"Asking the same model again often just gets another confident answer. Trace the number to a source you can cite."},
+ {q:"Which use keeps you doing the thinking?",o:["Ask it to write your conclusion","Ask it to quiz you and hold back answers until you try","Ask it to paraphrase a source so it passes plagiarism checks","Ask it to complete your homework questions"],c:1,w:"Retrieval practice makes you do the recall. The others hand the thinking over."},
+ {q:"A chatbot praises your essay as \"excellent and insightful\". What does that tell you?",o:["It's ready to submit","Very little: models tend to flatter. Ask what's weakest","Your teacher will agree","It has compared it to marked essays"],c:1,w:"Sycophancy is a known tendency. Specific criticism is far more useful than praise."},
+ {q:"You used AI for feedback on assessed coursework, and your school allows it. What should you do?",o:["Nothing, it's allowed","Delete the chat so there's no record","Acknowledge it, saying what you used it for","Only mention it if asked"],c:2,w:"Being open is what makes allowed use honest. Keep the conversation in case you're asked."}
+];
+let qa=store.get('quiz',{});
+const qz=document.getElementById('qz');
+const renderQ=()=>{qz.innerHTML=Q.map((x,i)=>{const a=qa[i];return `<fieldset class="${a!=null?'done':''}"><legend>${i+1}. ${x.q}</legend><div class="opts">${x.o.map((o,j)=>`<button data-q="${i}" data-o="${j}" class="${a!=null?(j===x.c?'right':j===a?'wrong':''):''}" ${a!=null?'disabled':''}>${o}</button>`).join('')}</div><div class="why">${a===x.c?'<strong style="color:var(--green)">Right.</strong> ':'<strong style="color:var(--red)">Not quite.</strong> '}${x.w}</div></fieldset>`}).join('');
+ const n=Object.keys(qa).length,s=Object.entries(qa).filter(([i,v])=>Q[i].c===v).length;
+ document.getElementById('qScore').innerHTML=n===Q.length?`You scored ${s} out of ${Q.length}. <button class="btn ghost" id="qReset" style="margin-left:8px">Try again</button>`:n?`${s} right so far, ${Q.length-n} to go.`:'Answer all five.';
+ const r=document.getElementById('qReset');if(r)r.onclick=()=>{qa={};renderQ()};
+ store.set('quiz',qa)};
+qz.addEventListener('click',e=>{const b=e.target.closest('button[data-q]');if(!b)return;qa[b.dataset.q]=+b.dataset.o;renderQ()});
+renderQ();
+
+/* ---------- 5. Acknowledgement ---------- */
+const when=document.getElementById('when');
+when.value=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const stmtText=()=>`AI use statement: I used ${document.getElementById('tool').value.trim()||'an AI tool'} on ${when.value.trim()} ${document.getElementById('purpose').value}. Prompts used: "${document.getElementById('prompts').value.trim()}".${document.getElementById('checked').value}. All final wording and conclusions are my own.`;
+const renderS=()=>{document.getElementById('stmt').innerHTML=esc(stmtText())};
+['tool','prompts','purpose','checked','when'].forEach(id=>document.getElementById(id).addEventListener('input',renderS));
+document.getElementById('copy').onclick=async()=>{const m=document.getElementById('copied');try{await navigator.clipboard.writeText(stmtText());m.textContent='Copied.'}catch(e){m.textContent='Copy blocked here: select the text and copy it.'}};
+renderS();
+}
+</script>
+</body>
+</html>

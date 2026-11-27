@@ -1,0 +1,491 @@
+---
+title: "Next Steps Compass"
+description: "Sixth Form: find degree areas that fit you, check your A-levels against entry requirements, compare study options."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Next Steps Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, encouraging adviser; plain enough for a 17-year-old, accurate enough for a parent
+   IDEA: a navigator's chart table: one compass, four coastlines (Seychelles, UK, Malaysia, Europe)
+   PICTURE: brass compass in the header; route cards in the report
+   COLOUR and TYPE: ocean navy + lagoon teal, sun-gold accent; Outfit headings, Inter body
+   LAYOUT: short step bar + one working panel; report is one scrolling page that is also the PDF */
+:root{color-scheme:light dark;
+--bg:light-dark(#f3f8f8,#0b1a24);--paper:light-dark(#ffffff,#112634);--ink:light-dark(#122339,#e6f0f2);--muted:light-dark(#52627a,#a4b7c0);
+--teal:light-dark(#08737a,#3fb3b0);--tealbg:light-dark(#e3f5f1,#14393d);--goldbg:light-dark(#fff4dc,#3a2f14);--goldink:light-dark(#7a520c,#f6d48c);
+--rule:light-dark(#dbe5ea,#24404f);--pale:light-dark(#f4f8fa,#0f2230);--blueink:light-dark(#164d69,#9fd2e6);--warnbg:light-dark(#fff3e3,#3a2a12);--warnink:light-dark(#76470b,#f3c98d);--shadow:0 12px 34px #15334a14}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;font:16px/1.55 Inter,system-ui,-apple-system,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:clip}
+h1,h2,h3,h4{font-family:Outfit,Inter,system-ui,sans-serif;text-wrap:balance}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid #c98a12;outline-offset:2px}
+a{color:var(--teal);text-underline-offset:3px}
+.shell{max-width:1000px;margin:0 auto;padding:18px 18px 70px}
+.hero{border-radius:22px;overflow:hidden;background:linear-gradient(110deg,#0f2f4c 0%,#11576b 62%,#14807f 100%);color:#fff;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:center;box-shadow:var(--shadow)}
+.hero-copy{padding:28px 30px}
+.hero .over{font-size:.82rem;font-weight:700;color:#bfe9e3}
+.hero h1{font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.05;margin:6px 0 10px}
+.hero p{margin:0;color:#e6f4f4;max-width:54ch}
+.hero-art{height:100%;min-height:200px;position:relative}
+.hero-art svg{position:absolute;inset:0;width:100%;height:100%}
+.stepbar{display:flex;gap:6px;margin:16px 0;flex-wrap:wrap}
+.stepbar button{flex:1 1 110px;border:1px solid var(--rule);background:var(--paper);border-radius:10px;padding:9px 8px;font-size:.84rem;color:var(--muted);min-height:44px;text-align:left}
+.stepbar button b{display:block;font-family:Outfit,sans-serif;font-size:.78rem}
+.stepbar button.on{background:var(--tealbg);border-color:var(--teal);color:var(--teal);font-weight:650}
+.stepbar button.done{color:var(--ink)}
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:18px;padding:26px 28px;box-shadow:var(--shadow)}
+.panel h2{font-size:1.7rem;line-height:1.15;margin:4px 0 8px}
+.panel h3{font-size:1.2rem;margin:26px 0 8px}
+.eyebrow{font-size:.82rem;font-weight:700;color:var(--teal)}
+.lede{color:var(--muted);max-width:68ch;margin-top:4px}
+.small{font-size:.86rem;color:var(--muted)}
+.notice{border-left:4px solid var(--teal);background:var(--tealbg);border-radius:0 12px 12px 0;padding:12px 14px;margin:14px 0}
+.alert{padding:12px 15px;border-radius:11px;background:var(--warnbg);color:var(--warnink);margin:12px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--rule);background:var(--paper);border-radius:11px;padding:11px 16px;font-weight:650;font-size:.95rem;min-height:44px}
+.btn:hover{border-color:var(--teal)}
+.btn.primary{background:#086e74;border-color:#086e74;color:#fff}.btn.primary:hover{background:#06585c}
+.btn.sm{min-height:36px;padding:7px 11px;font-size:.85rem}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:24px;padding-top:18px;border-top:1px solid var(--rule)}
+.fieldgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field{margin-top:16px}.field label,.field .lab{display:block;font-weight:650;font-size:.92rem;margin-bottom:6px}
+.field input,.field select,.field textarea,.search{width:100%;padding:11px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);font-size:16px}
+.field textarea{min-height:90px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid var(--rule);border-radius:99px;padding:8px 13px;background:var(--paper);font-size:.87rem;min-height:40px}
+.chip.on{background:var(--tealbg);border-color:var(--teal);color:var(--teal);font-weight:650;box-shadow:inset 0 0 0 1px var(--teal)}
+.q{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,330px);gap:8px 18px;align-items:center;padding:12px 0;border-top:1px solid var(--rule)}
+.q:first-of-type{border-top:0}.qt{margin:0;font-weight:550}
+.opts{display:flex;gap:6px}
+.opt{flex:1 1 0;border:1px solid var(--rule);border-radius:10px;padding:8px 6px;background:var(--paper);font-size:.82rem;color:var(--muted);min-height:44px}
+.opt:hover{border-color:var(--teal)}
+.opt.sel{background:var(--tealbg);border-color:var(--teal);color:var(--teal);font-weight:650;box-shadow:inset 0 0 0 1px var(--teal)}
+.meter{height:10px;background:var(--rule);border-radius:99px;overflow:hidden}.meter span{display:block;height:100%;background:var(--teal)}
+.profile{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pbox{border:1px solid var(--rule);background:var(--pale);border-radius:12px;padding:11px 12px}
+.pbox h4{margin:0 0 6px;font-size:.92rem}.pbox p{margin:6px 0 0;font-size:.82rem;color:var(--muted)}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.jump a{border:1px solid var(--rule);border-radius:99px;padding:6px 12px;font-size:.85rem;text-decoration:none;background:var(--pale)}
+.card{border:1px solid var(--rule);border-radius:14px;margin-top:14px;overflow:hidden;background:var(--paper)}
+.card-h{padding:14px 16px;background:linear-gradient(120deg,var(--tealbg),var(--pale));display:flex;gap:14px;justify-content:space-between;align-items:flex-start}
+.card-h h4{margin:0 0 3px;font-size:1.15rem}.card-h p{margin:0}
+.card-b{padding:14px 16px}
+.dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.d{background:var(--pale);border-radius:10px;padding:11px 12px}
+.d h5{margin:0 0 4px;font-size:.88rem;color:var(--blueink);font-family:Outfit,sans-serif}.d p,.d ul{margin:0;font-size:.88rem}.d ul{padding-left:18px}
+.pill{display:inline-block;border-radius:99px;background:var(--pale);border:1px solid var(--rule);padding:3px 9px;font-size:.78rem;margin:2px 4px 2px 0}
+.pill.ok{background:var(--tealbg);border-color:transparent;color:var(--teal)}
+.pill.warn{background:var(--warnbg);border-color:transparent;color:var(--warnink)}
+.pill.gold{background:var(--goldbg);border-color:transparent;color:var(--goldink)}
+.fit{min-width:120px;text-align:right;font-size:.82rem}.fit b{display:block;font-family:Outfit,sans-serif;font-size:1rem}.fit .meter{margin-top:5px}
+.timeline{list-style:none;padding:0;margin:0}
+.timeline li{display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px;padding:10px 0;border-top:1px solid var(--rule)}
+.timeline .when{font-family:Outfit,sans-serif;font-weight:600}
+.timeline p{margin:2px 0 0;font-size:.88rem;color:var(--muted)}
+.tag{font-size:.72rem;font-weight:700;border-radius:6px;padding:2px 7px;margin-right:6px;background:var(--pale);border:1px solid var(--rule)}
+details{margin-top:12px}summary{cursor:pointer;font-weight:650;color:var(--teal);min-height:32px}
+.src{padding:6px 0;border-bottom:1px solid var(--rule);font-size:.86rem}
+.foot{margin-top:22px;text-align:center;color:var(--muted);font-size:.8rem}
+.hidden{display:none!important}
+.status{font-size:.86rem;color:var(--muted)}
+/* PDF/print copy: fixed light colours so it always prints cleanly */
+.pdf{--bg:#fff;--paper:#fff;--ink:#122339;--muted:#4d5d72;--teal:#08737a;--tealbg:#e3f5f1;--goldbg:#fff4dc;--goldink:#7a520c;--rule:#d5e0e6;--pale:#f4f8fa;--blueink:#164d69;--warnbg:#fff3e3;--warnink:#76470b;background:#fff;color:#122339;width:auto;padding:0 2px;font-size:13px}
+.pdf h1{font-size:24px;margin:0 0 4px}.pdf h3{font-size:17px;margin:20px 0 6px;border-bottom:2px solid #08737a;padding-bottom:3px}
+.pdf .profile{grid-template-columns:repeat(3,1fr)}.pdf .dgrid{grid-template-columns:1fr 1fr}.pdf .jump,.pdf .noprint{display:none!important}
+.pdf .card,.pdf .d,.pdf .pbox,.pdf .timeline li,.pdf .alert,.pdf .notice{break-inside:avoid;page-break-inside:avoid}
+.pdf .timeline li{grid-template-columns:150px 1fr}
+#pdfstage{display:none}
+#printreport{display:none}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.hero-art{min-height:150px;order:-1}.panel{padding:20px 16px}.profile,.dgrid,.fieldgrid{grid-template-columns:1fr}.q{grid-template-columns:1fr}.timeline li{grid-template-columns:1fr;gap:2px}.card-h{flex-direction:column}.fit{text-align:left}.stepbar button{flex-basis:90px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+@keyframes swing{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
+.needle{transform-origin:200px 115px;animation:swing 7s ease-in-out infinite}
+@media print{body{background:#fff}.shell{display:none!important}#printreport{display:block!important}#printreport .pdf{width:auto;padding:0}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="hero">
+    <div class="hero-copy">
+      <div class="over">Sixth Form edition · next steps after A-level</div>
+      <h1>My Future Compass</h1>
+      <p>Find degree areas that fit you, check your A-level subjects against entry requirements, and compare studying in Seychelles and around the world.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <radialGradient id="dial" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="#fdf6e3"/><stop offset="1" stop-color="#e7d6aa"/></radialGradient>
+          <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7cf72"/><stop offset="1" stop-color="#a8741c"/></linearGradient>
+        </defs>
+        <circle cx="200" cy="115" r="100" fill="none" stroke="#bfe9e3" stroke-opacity=".35"/>
+        <ellipse cx="204" cy="200" rx="70" ry="8" fill="#04212f" opacity=".35"/>
+        <circle cx="200" cy="115" r="78" fill="url(#rim)"/>
+        <circle cx="200" cy="115" r="68" fill="url(#dial)"/>
+        <polygon points="200,55 209,115 200,175 191,115" fill="#123a59" opacity=".18"/>
+        <polygon points="140,115 200,106 260,115 200,124" fill="#123a59" opacity=".18"/>
+        <g class="needle"><polygon points="200,58 208,115 192,115" fill="#c2410c"/><polygon points="200,172 208,115 192,115" fill="#123a59"/><circle cx="200" cy="115" r="6" fill="#f2b544" stroke="#7b5a1c"/></g>
+        <g font-family="Outfit,sans-serif" font-size="13" font-weight="600" fill="#fff">
+          <text x="200" y="10" text-anchor="middle" dominant-baseline="hanging">UK · Europe · Americas</text>
+          <text x="200" y="226" text-anchor="middle">Seychelles · home</text>
+          <text x="392" y="112" text-anchor="end">Asia</text><text x="392" y="128" text-anchor="end">Australia</text><text x="8" y="119">Africa</text>
+        </g>
+      </svg>
+    </div>
+  </header>
+  <nav class="stepbar" id="stepbar" aria-label="Steps"></nav>
+  <main id="main" aria-live="polite"></main>
+  <div class="foot">Independent educational tool, not a test or an offer of a place or funding. Dates checked November 2026; confirm every deadline on the official site.</div>
+</div>
+<div id="printreport"></div>
+<div id="pdfstage" aria-hidden="true"></div>
+<input type="file" id="restorefile" accept=".json,application/json" class="hidden">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+{
+'use strict';
+const SUBJECTS=['Mathematics','Further Mathematics','Physics','Chemistry','Biology','Computer Science','Information Technology','Economics','Business','Accounting','English Literature','English Language','History','Geography','Psychology','Sociology','French','Spanish','Art & Design','Design & Technology','Environmental Management','Marine Science','Law','Media Studies','Travel & Tourism','Music','Physical Education','Global Perspectives'];
+const RN={R:'Making & doing',I:'Investigating & analysing',A:'Creating & expressing',S:'Helping & teaching',E:'Leading & persuading',C:'Organising & checking'};
+const RDESC={R:'Hands-on work with equipment, materials and the outdoors.',I:'Asking why, analysing evidence and solving hard problems.',A:'Original ideas, design, writing and performance.',S:'Supporting, teaching and caring for people.',E:'Starting things, persuading people and leading teams.',C:'Accuracy, systems, data and making things run well.'};
+const INTERESTS=[
+['R','Work on real equipment: engines, circuits, boats or lab kit.'],['I','Design an experiment or analyse data to answer a question.'],['A','Write, design, film or make something original.'],['S','Explain a difficult idea to someone younger.'],['E','Argue a case in a debate or a mock trial.'],['C','Build a spreadsheet or system that keeps things accurate.'],
+['R','Do fieldwork outdoors: surveys, sampling, measuring.'],['I','Read beyond the syllabus to understand why something works.'],['A','Design a space, product, brand or app screen.'],['S','Work in a role where people’s health or wellbeing comes first.'],['E','Start a project, society or small business and lead it.'],['C','Plan logistics: schedules, budgets and resources.']
+].map((x,i)=>({id:'i'+(i+1),code:x[0],text:x[1]}));
+const LIKE=['Not for me','Maybe','Yes','Love it'];
+const IMP=['Not important','A little','Important','Essential'];
+const ENJOY=['Dislike','It’s OK','Enjoy','Love it'];
+const VALUES=[['help','Helping people directly'],['home','Contributing to Seychelles'],['environment','Protecting nature and the ocean'],['creativity','Creating or designing things'],['income','Earning well and job security'],['challenge','Being intellectually stretched']];
+const FACTORS=[{id:'cost',text:'Keeping costs low'},{id:'family',text:'Being close enough to get home easily'},{id:'rank',text:'A globally recognised university'},{id:'intl',text:'Living in a new country and culture'},{id:'work',text:'Being able to work there after graduating'},{id:'scholar',text:'Fitting Government of Seychelles scholarship options'}];
+const COURSES=[
+{id:'med',t:'Medicine',cl:'Health',r:{I:5,S:5,R:2},ess:['Chemistry','Biology'],use:['Physics','Mathematics'],val:['help','recognition','challenge','security'],tests:'UCAT (most UK schools); some use interviews (MMI).',dl:'UK: 15 October the year before entry.',careers:'Doctor in hospital, community or public health; later surgery, GP, psychiatry, research.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Not offered in Seychelles. English-taught 6-year programmes are common in central and eastern Europe (Czechia, Hungary, Poland). Malaysia has private and branch-campus medical schools.',sc:'Most Seychellois doctors train abroad; ask the Ministry of Health about sponsored places and internship return rules.',probe:'Shadow at Baie Ste Anne Hospital or a clinic; read about a public-health issue in Seychelles such as diabetes or heart disease.'},
+{id:'dent',t:'Dentistry',cl:'Health',r:{I:5,R:4,S:4},ess:['Chemistry','Biology'],use:['Physics','Mathematics'],val:['help','security','recognition'],tests:'UCAT for most UK dental schools.',dl:'UK: 15 October the year before entry.',careers:'Dentist, orthodontist, oral surgeon, community dental health.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Trained abroad. Manual dexterity is tested at some schools.',sc:'Check national need with the Ministry of Health before choosing.',probe:'Arrange a day with a dental practice; try a fine-motor hobby (model-making, sewing, drawing).'},
+{id:'nurse',t:'Nursing & midwifery',cl:'Health',r:{S:5,I:3,R:3},ess:[],use:['Biology','Chemistry','Psychology'],val:['help','security','home'],tests:'Interview; values-based selection.',dl:'UK: 13 January main deadline.',careers:'Registered nurse (adult, child, mental health), midwife, specialist nurse, nurse educator.',av:{sc:'yes',uk:'yes',my:'yes',eu:'limited'},avn:'In Seychelles, nursing and allied health training is offered locally; check the current programme and intake with the national health training institute. UK nursing usually requires the right to work for placements; check visa conditions.',sc:'Strong local demand; local training keeps costs down.',probe:'Volunteer with the Red Cross Society of Seychelles or a care home; talk to a nurse about shifts.'},
+{id:'pharm',t:'Pharmacy',cl:'Health',r:{I:5,C:4,S:3},ess:['Chemistry'],use:['Biology','Mathematics'],val:['security','help','recognition'],tests:'Interview; some numeracy tests.',dl:'UK: 13 January.',careers:'Community or hospital pharmacist, pharmaceutical industry, regulation.',av:{sc:'no',uk:'yes',my:'yes',eu:'limited'},avn:'MPharm in the UK is 4 years. Malaysia has several MPharm/BPharm options.',sc:'Check registration rules for practising in Seychelles after an overseas degree.',probe:'Spend time in a pharmacy; read how a drug goes from trial to shelf.'},
+{id:'biomed',t:'Biomedical & biological sciences',cl:'Science',r:{I:5,R:3,C:2},ess:['Biology'],use:['Chemistry','Mathematics'],val:['learning','challenge','help'],tests:'None usually.',dl:'UK: 13 January.',careers:'Lab scientist, biomedical scientist, research, biotech, public health, graduate-entry medicine.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Many universities ask for Chemistry as well as Biology; check each course.',sc:'Lab roles in the public health laboratory, SFA and research bodies.',probe:'Read a short review article and summarise it; try an online genetics course.'},
+{id:'marine',t:'Marine biology & ocean science',cl:'Science',r:{I:5,R:4,S:2},ess:['Biology'],use:['Chemistry','Geography','Marine Science','Mathematics'],val:['environment','home','learning'],tests:'None usually.',dl:'UK: 13 January.',careers:'Marine scientist, fisheries officer, conservation manager, blue-economy policy, aquaculture.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'UniSey runs environmental and blue-economy related study; overseas options include UK coastal universities and Malaysian marine-science programmes.',sc:'Seychelles Fishing Authority, Marine Conservation Society Seychelles, Seychelles Islands Foundation, Blue Economy department.',probe:'Join a reef survey or citizen-science project (e.g. coral monitoring); learn to identify 20 local reef species.'},
+{id:'env',t:'Environmental science & sustainability',cl:'Science',r:{I:4,R:4,S:3},ess:[],use:['Biology','Geography','Chemistry','Environmental Management'],val:['environment','home','learning'],tests:'None usually.',dl:'UK: 13 January.',careers:'Environmental officer, climate adaptation, renewable energy policy, consultancy, conservation.',av:{sc:'yes',uk:'yes',my:'yes',eu:'yes'},avn:'UniSey offers a BSc in Environmental Science (check current intake).',sc:'Ministry of Agriculture, Climate Change and Environment; NGOs; tourism sustainability roles.',probe:'Measure something local (litter, beach erosion, water quality) for a month and write it up.'},
+{id:'phys',t:'Physics & astrophysics',cl:'Science',r:{I:5,R:3,C:2},ess:['Mathematics','Physics'],use:['Further Mathematics'],val:['challenge','learning'],tests:'Oxford: PAT. Cambridge Natural Sciences: ESAT.',dl:'UK: 13 January (Oxford/Cambridge 15 October).',careers:'Research, engineering, data science, finance, meteorology, teaching.',av:{sc:'no',uk:'yes',my:'limited',eu:'yes'},avn:'Further Maths is strongly recommended for top UK courses.',sc:'Physics graduates are in demand as teachers; meteorology and energy roles exist locally.',probe:'Try Isaac Physics problems; read one popular-science book and note three questions it raised.'},
+{id:'chem',t:'Chemistry & chemical sciences',cl:'Science',r:{I:5,R:3,C:3},ess:['Chemistry'],use:['Mathematics','Physics','Biology'],val:['challenge','learning','security'],tests:'Cambridge Natural Sciences: ESAT.',dl:'UK: 13 January.',careers:'Analytical chemist, materials, pharmaceuticals, water quality, forensic science, teaching.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Maths is essential at many universities.',sc:'Public Utilities Corporation water quality, public health laboratory, teaching.',probe:'Enter the Chemistry Olympiad; investigate how desalinated water is treated.'},
+{id:'maths',t:'Mathematics, statistics & actuarial science',cl:'Numbers',r:{I:5,C:4},ess:['Mathematics'],use:['Further Mathematics','Physics','Economics'],val:['challenge','income','security'],tests:'TMUA or STEP at many top UK universities.',dl:'UK: 13 January (Cambridge 15 October).',careers:'Actuary, statistician, analyst, quantitative finance, teaching, research.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Further Maths is expected at the most selective universities.',sc:'Central Bank, National Bureau of Statistics, insurance, teaching.',probe:'Try UKMT or TMUA past papers; read about how insurers price risk.'},
+{id:'cs',t:'Computer science & software engineering',cl:'Digital',r:{I:5,R:3,C:3},ess:['Mathematics'],use:['Computer Science','Further Mathematics','Physics'],val:['income','challenge','independence'],tests:'TMUA at some UK universities; Oxford MAT.',dl:'UK: 13 January.',careers:'Software developer, systems engineer, cybersecurity, game developer, AI engineer.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Malaysia has a large range of English-taught computing degrees. Check whether a course really needs Maths at A-level (most good ones do).',sc:'Growing demand in banking, telecoms, government digital services and tourism tech.',probe:'Build a small project (an app, a website, a game) and put the code on GitHub.'},
+{id:'data',t:'Data science & AI',cl:'Digital',r:{I:5,C:4,E:2},ess:['Mathematics'],use:['Further Mathematics','Computer Science','Economics'],val:['income','challenge','learning'],tests:'TMUA at some universities.',dl:'UK: 13 January.',careers:'Data analyst, data scientist, machine-learning engineer, business intelligence.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Often a pathway within maths or computing degrees.',sc:'Banks, the Central Bank, NBS and tourism operators increasingly hire analysts.',probe:'Analyse a public dataset in a spreadsheet or Python and write one paragraph about what you found.'},
+{id:'eng',t:'Engineering (mechanical, civil, electrical)',cl:'Engineering',r:{R:5,I:5,C:2},ess:['Mathematics','Physics'],use:['Further Mathematics','Design & Technology','Chemistry'],val:['security','income','challenge'],tests:'ESAT at Cambridge and Imperial; TMUA at some.',dl:'UK: 13 January (Cambridge 15 October).',careers:'Civil engineer, mechanical engineer, electrical engineer, project engineer, consultant.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Accredited degrees (e.g. by the UK Engineering Council) matter for chartership. Germany and the Netherlands have strong English-taught engineering at some universities.',sc:'SIT offers technical diplomas; engineers needed for PUC, ports, construction and roads.',probe:'Build and test something (a bridge model, a circuit, a robot) and record your design changes.'},
+{id:'renew',t:'Renewable energy & marine engineering',cl:'Engineering',r:{R:5,I:4,C:2},ess:['Mathematics','Physics'],use:['Chemistry','Design & Technology'],val:['environment','home','security'],tests:'As for engineering.',dl:'UK: 13 January.',careers:'Solar and wind engineer, energy systems, naval architect, offshore and port engineering.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Northern European universities are strong in offshore and renewable engineering.',sc:'Seychelles Energy Commission and PUC renewable targets; port expansion.',probe:'Estimate how much solar would power your house; visit a solar installation.'},
+{id:'arch',t:'Architecture',cl:'Design',r:{A:5,R:3,I:3},ess:[],use:['Art & Design','Mathematics','Physics','Design & Technology'],val:['creativity','recognition','challenge'],tests:'Portfolio and often interview.',dl:'UK: 13 January.',careers:'Architect (long training: degree plus practice and further study), urban planner, landscape designer.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Professional registration takes several years after the first degree; check how a degree is recognised in Seychelles.',sc:'Tourism and housing construction create demand for architects and planners.',probe:'Sketch and redesign a local building or space; start a portfolio now.'},
+{id:'design',t:'Design (graphic, product, UX, fashion)',cl:'Design',r:{A:5,R:3,E:2},ess:[],use:['Art & Design','Design & Technology','Computer Science','Media Studies'],val:['creativity','independence'],tests:'Portfolio.',dl:'UK: 13 January (some art schools later).',careers:'Graphic designer, product designer, UX/UI designer, brand designer, freelance creative.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'A strong portfolio usually matters more than grades. A foundation diploma in art is a common first step.',sc:'Tourism marketing, media and the creative industries; local art and design training exists at certificate/diploma level.',probe:'Redesign a local brand or menu and ask three people for feedback.'},
+{id:'media',t:'Media, film & journalism',cl:'Creative',r:{A:5,E:3,S:3},ess:[],use:['English Literature','English Language','Media Studies','French'],val:['creativity','recognition','independence'],tests:'Portfolio sometimes.',dl:'UK: 13 January.',careers:'Journalist, producer, content creator, communications officer, filmmaker.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Build a portfolio of published or broadcast work while studying.',sc:'SBC, Seychelles Nation, NATION/online media, tourism and government communications.',probe:'Write or film three short pieces about Praslin and publish them on a school blog.'},
+{id:'eng_lit',t:'English, literature & creative writing',cl:'Humanities',r:{A:5,I:3,S:2},ess:['English Literature'],use:['History','French','English Language'],val:['creativity','learning'],tests:'Oxford: ELAT-style written work (check current).',dl:'UK: 13 January.',careers:'Publishing, journalism, teaching, law conversion, communications, civil service.',av:{sc:'limited',uk:'yes',my:'limited',eu:'yes'},avn:'Most English courses ask for English Literature at A-level.',sc:'Teaching (high demand), communications, tourism writing.',probe:'Read two novels outside the syllabus and compare them in a short essay.'},
+{id:'lang',t:'Languages & translation',cl:'Humanities',r:{A:4,S:3,E:3},ess:[],use:['French','Spanish','English Literature'],val:['travel','learning','creativity'],tests:'Sometimes a short language test.',dl:'UK: 13 January.',careers:'Translator, interpreter, diplomat, tourism, international business, teaching.',av:{sc:'limited',uk:'yes',my:'limited',eu:'yes'},avn:'Your French and Kreol are real advantages; many courses expect an A-level in at least one language you will study.',sc:'Tourism, foreign affairs, international organisations in the region.',probe:'Translate a short article from French into English and ask a teacher to check it.'},
+{id:'hist',t:'History, politics & international relations',cl:'Humanities',r:{I:4,E:4,A:3},ess:[],use:['History','Global Perspectives','Geography','Economics','Sociology'],val:['learning','home','recognition'],tests:'Oxford HAT for History.',dl:'UK: 13 January.',careers:'Civil service, diplomacy, policy research, journalism, law conversion, NGOs.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'International relations is widely taught in English across the Netherlands, Germany and Scandinavia.',sc:'Department of Foreign Affairs, government policy units, regional organisations (IOC, SADC, AU).',probe:'Follow one Indian Ocean issue (piracy, fishing rights, climate) for a month and summarise the positions.'},
+{id:'law',t:'Law',cl:'Law & business',r:{E:5,I:4,C:3},ess:[],use:['History','English Literature','Economics','Global Perspectives','Law'],val:['recognition','income','challenge','security'],tests:'LNAT at many UK universities.',dl:'UK: 13 January (Oxford/Cambridge 15 October).',careers:'Attorney, legal adviser, judiciary, compliance, policy, business.',av:{sc:'limited',uk:'yes',my:'yes',eu:'limited'},avn:'Seychelles law draws on English common law and French civil law; a UK LLB is a common route, and University of London LLBs are taught in Malaysia. Law in most of Europe is national law taught in the local language. Check how you would qualify to practise in Seychelles.',sc:'Ask whether UniSey currently offers an LLB; local qualification to practise has its own requirements.',probe:'Watch a session at the Supreme Court; read a judgment and summarise the reasoning.'},
+{id:'econ',t:'Economics',cl:'Law & business',r:{I:4,E:4,C:4},ess:['Mathematics'],use:['Economics','Further Mathematics'],val:['income','challenge','recognition'],tests:'TMUA at several top UK universities.',dl:'UK: 13 January.',careers:'Economist, policy analyst, banking, consulting, development work.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Top courses expect Maths and value Further Maths; Economics A-level is useful but not always required.',sc:'Central Bank of Seychelles, Ministry of Finance, banks, regional development bodies.',probe:'Read the Central Bank’s latest monetary policy statement and explain one decision.'},
+{id:'acc',t:'Accounting & finance',cl:'Law & business',r:{C:5,E:3,I:3},ess:[],use:['Mathematics','Accounting','Economics','Business'],val:['security','income'],tests:'None usually.',dl:'UK: 13 January.',careers:'Accountant, auditor, financial analyst, tax adviser, banking.',av:{sc:'yes',uk:'yes',my:'yes',eu:'yes'},avn:'Professional qualifications (ACCA, CIMA, ICAEW) can be started locally or after a degree, and some degrees give exemptions.',sc:'Professional accounting study is available locally (e.g. through the Seychelles Business Studies Academy and ACCA providers); strong local demand.',probe:'Keep the accounts for a club or small business for a term.'},
+{id:'bus',t:'Business & management',cl:'Law & business',r:{E:5,C:3,S:3},ess:[],use:['Business','Economics','Mathematics','Accounting'],val:['income','independence','recognition'],tests:'None usually.',dl:'UK: 13 January.',careers:'Manager, entrepreneur, marketing, HR, operations, consultancy.',av:{sc:'yes',uk:'yes',my:'yes',eu:'yes'},avn:'Very widely available; look for placement years and accreditation (AACSB, AMBA, EQUIS).',sc:'Business degrees are offered at UniSey; many local employers value business graduates.',probe:'Run a small enterprise project; interview a local business owner about their biggest challenge.'},
+{id:'tour',t:'Tourism, hospitality & events management',cl:'Law & business',r:{E:4,S:5,C:3},ess:[],use:['Travel & Tourism','Business','French','Geography'],val:['home','travel','independence'],tests:'None usually.',dl:'UK: 13 January.',careers:'Hotel manager, resort operations, events, destination marketing, eco-tourism.',av:{sc:'yes',uk:'yes',my:'yes',eu:'yes'},avn:'Malaysia (e.g. Taylor’s) and Switzerland/Netherlands have well-known hospitality schools.',sc:'Seychelles Tourism Academy trains locally; tourism is the largest employer in Seychelles.',probe:'Do a placement in a Praslin hotel or dive centre; compare two resorts’ guest reviews.'},
+{id:'psych',t:'Psychology',cl:'People',r:{I:4,S:5,C:2},ess:[],use:['Psychology','Biology','Mathematics','Sociology'],val:['help','learning','challenge'],tests:'None usually.',dl:'UK: 13 January.',careers:'Clinical or educational psychologist (needs further training), counselling, HR, research, UX research.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Look for BPS-accredited UK degrees if you may become a psychologist. Many Dutch psychology bachelors are numerus fixus (15 January deadline).',sc:'Demand in schools, health and social services.',probe:'Read about a famous experiment and critique its method; try a free intro psychology course.'},
+{id:'edu',t:'Education & teaching',cl:'People',r:{S:5,A:3,E:3},ess:[],use:['your teaching subject'],val:['help','home','security','learning'],tests:'Interview.',dl:'Varies.',careers:'Primary or secondary teacher, early years, education officer, school leader.',av:{sc:'yes',uk:'yes',my:'yes',eu:'limited'},avn:'You can study a subject degree first and train afterwards, or take a teaching degree directly.',sc:'Government guidance has stated that students choosing teaching receive full sponsorship. UniSey offers teacher education.',probe:'Help in a primary class or run a revision club for younger students.'},
+{id:'social',t:'Social work, sociology & public health',cl:'People',r:{S:5,I:3,E:3},ess:[],use:['Sociology','Psychology','Biology','Global Perspectives'],val:['help','home'],tests:'Interview for social work.',dl:'UK: 13 January.',careers:'Social worker, youth worker, public health officer, community development, NGO roles.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Social work degrees usually involve placements; check visa and placement rules abroad.',sc:'Ministry of Family and social services, NGOs, community health.',probe:'Volunteer with a community or youth organisation; read about a social issue in Seychelles.'},
+{id:'sport',t:'Sport science & physiotherapy',cl:'Health',r:{S:4,R:4,I:4},ess:[],use:['Biology','Physical Education','Chemistry','Psychology'],val:['help','independence','balance'],tests:'Interview for physiotherapy.',dl:'UK: 13 January.',careers:'Physiotherapist, sport scientist, coach, strength and conditioning, rehabilitation.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Physiotherapy usually requires Biology and is very competitive.',sc:'National Sports Council, hospitals, hotels and wellness tourism.',probe:'Shadow a physiotherapist; coach a junior team and log their progress.'},
+{id:'vet',t:'Veterinary science & animal science',cl:'Health',r:{I:5,R:4,S:3},ess:['Chemistry','Biology'],use:['Physics','Mathematics'],val:['environment','help','challenge'],tests:'Work experience with animals is required.',dl:'UK: 15 October the year before entry.',careers:'Vet, wildlife vet, animal welfare, livestock and fisheries health.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Hours of animal-related work experience are expected.',sc:'Veterinary services, conservation (tortoises, birds, turtles) and agriculture.',probe:'Volunteer at an animal clinic or with a conservation project.'},
+{id:'agri',t:'Agriculture & food science',cl:'Science',r:{R:4,I:4,C:3},ess:[],use:['Biology','Chemistry','Geography'],val:['home','environment','security'],tests:'None usually.',dl:'UK: 13 January.',careers:'Agronomist, food scientist, food safety officer, aquaculture, agribusiness.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'Netherlands (Wageningen) and Malaysia are strong in agricultural and tropical science.',sc:'Food security is a national priority; local horticulture and agriculture training exists at certificate/diploma level.',probe:'Grow something with a measured method; investigate how much of Seychelles’ food is imported.'},
+{id:'maritime',t:'Maritime, nautical & ports',cl:'Engineering',r:{R:5,C:4,E:3},ess:[],use:['Physics','Mathematics','Geography'],val:['travel','security','home'],tests:'Medical fitness; sea time.',dl:'Varies.',careers:'Deck officer, marine engineer, port manager, maritime logistics, coastguard.',av:{sc:'yes',uk:'yes',my:'yes',eu:'yes'},avn:'Maritime careers often combine college study with sea time towards certificates of competency.',sc:'Seychelles Maritime Academy trains locally; Seychelles Ports Authority and fishing fleets employ graduates.',probe:'Talk to a skipper or port officer; learn basic navigation and VHF radio.'},
+{id:'geo',t:'Geography, GIS & urban planning',cl:'Science',r:{I:4,R:3,C:3},ess:[],use:['Geography','Environmental Management','Mathematics','Economics'],val:['environment','home','learning'],tests:'None usually.',dl:'UK: 13 January.',careers:'GIS analyst, planner, disaster risk officer, environmental consultant, surveyor.',av:{sc:'limited',uk:'yes',my:'yes',eu:'yes'},avn:'GIS skills are portable and in demand.',sc:'Planning Authority, land registry, climate adaptation and coastal management.',probe:'Map something on Praslin using free GIS (QGIS) or Google Earth.'},
+{id:'aviation',t:'Aviation & aerospace',cl:'Engineering',r:{R:5,I:3,C:4},ess:['Mathematics','Physics'],use:['Further Mathematics'],val:['travel','income','challenge'],tests:'Pilot aptitude and medical tests for flight training.',dl:'Varies.',careers:'Pilot, aircraft engineer, air traffic controller, airport operations.',av:{sc:'no',uk:'yes',my:'yes',eu:'yes'},avn:'Flight training is expensive; airline cadet schemes and sponsored routes are worth researching early.',sc:'Air Seychelles, Seychelles Civil Aviation Authority, airport operations.',probe:'Visit the airport or an air traffic control open day; try a flight simulator and research cadet schemes.'}
+];
+const DESTS={
+sc:{name:'Seychelles',sub:'University of Seychelles and national professional centres',attr:{cost:5,family:5,intl:1,rank:2,english:4,work:5,scholar:5,range:2,familiar:5,return:5},
+ apply:'Apply directly to the University of Seychelles (UniSey) or to the professional centre. Many UniSey degrees are awarded by the University of London.',
+ where:['University of Seychelles (business, environmental science, education and more; check the current list)','Seychelles Institute of Technology (engineering and technical diplomas)','Seychelles Tourism Academy','Seychelles Maritime Academy','Seychelles Business Studies Academy (accounting and business)','National health and agriculture training institutes'],
+ money:'Government of Seychelles scholarships use a points system based on three A-level results; behaviour and participation are also considered. Full sponsorship has been linked to 28 academic points and to choosing teaching. A bonding agreement usually applies. An Educational Loan Scheme exists for students who do not get full funding or who choose a different university.',
+ lang:'English (some French).',visa:'None needed.',
+ pros:['Lowest cost; live at home','Courses linked to national priorities and local employers','You can study overseas later for a master’s (e.g. Chevening for UK master’s)'],
+ cons:['Narrower range of degrees','Fewer specialist facilities','Less international experience'],
+ ask:['Which UniSey degrees are open for my intake year?','How many points do my predicted grades give me?','What does the bonding agreement require after I graduate?']},
+uk:{name:'United Kingdom',sub:'England, Scotland, Wales and Northern Ireland',attr:{cost:1,family:1,intl:5,rank:5,english:5,work:3,scholar:3,range:5,familiar:3,return:3},
+ apply:'One UCAS application with up to five choices (four for medicine, dentistry or vet). Your application includes a personal statement written as answers to three questions, plus a teacher reference and predicted grades.',
+ where:['Russell Group research universities','Modern universities with strong placements','Scottish universities (usually 4-year degrees, broader first years)'],
+ money:'Seychellois students pay international fees, which are among the highest of these four destinations, plus UK living costs. Some universities offer international scholarships; GoS sponsorship may cover the UK for some courses.',
+ lang:'English. Check whether your Cambridge English results are accepted or whether IELTS is required.',visa:'Student visa after you firmly accept an offer and receive a CAS. The Graduate Route currently allows a period of work after graduating; its length has been under review, so check gov.uk.',
+ pros:['Widest choice and strong global recognition','Three-year degrees in England save time','Cambridge A-levels are the standard entry qualification'],
+ cons:['Highest cost','Far from home; cold climate','UK apprenticeships and many placements need the right to work'],
+ ask:['Does this university accept my English qualification?','What international scholarships are there?','Is there a placement year, and can international students take it?']},
+my:{name:'Malaysia',sub:'Branch campuses, private and public universities',attr:{cost:4,family:2,intl:4,rank:3,english:5,work:2,scholar:4,range:4,familiar:4,return:4},
+ apply:'Apply directly to each university; there is no central portal for international students. Most have more than one intake each year (often February/March and July–September).',
+ where:['UK and Australian branch campuses (e.g. Nottingham, Southampton, Heriot-Watt, Monash, Swinburne Sarawak, Curtin)','Private universities (e.g. Taylor’s, Sunway, UCSI, Asia Pacific University)','Public universities (e.g. Universiti Malaya)'],
+ money:'Usually much cheaper than the UK for a comparable degree, especially at branch campuses. Malaysia has been one of the top destinations for Seychellois scholarship students.',
+ lang:'English-taught.',visa:'Student Pass processed through Education Malaysia Global Services (EMGS); allow about six weeks before you travel, plus a medical check on arrival.',
+ pros:['UK or Australian degree at lower cost','Warm climate; large international student community','Flexible intakes if your results come late'],
+ cons:['Check accreditation (MQA) and how the degree is recognised at home','Fewer post-study work options','Quality varies widely between private institutions'],
+ ask:['Is the degree awarded by the parent university (branch campus) or locally?','Is the programme MQA-accredited?','What does the EMGS student pass cost and include?']},
+eu:{name:'Europe',sub:'Netherlands, Germany, Ireland, Sweden, France, Malta and more',attr:{cost:3,family:1,intl:5,rank:4,english:3,work:4,scholar:2,range:4,familiar:2,return:3},
+ apply:'Each country has its own system: Studielink (Netherlands), universityadmissions.se (Sweden), uni-assist or direct (Germany), direct to the university for non-EU students (Ireland), Campus France procedures (France).',
+ where:['Netherlands: hundreds of English-taught bachelors','Germany: low or no tuition at most public universities; most bachelors taught in German','Sweden and Denmark: English-taught options with fees for non-EU students','Ireland and Malta: English-speaking','France: good fit if your French is strong','Czechia, Hungary, Poland: English-taught medicine'],
+ money:'Ranges from almost free tuition (most German public universities) to fees similar to the UK. As a non-EU student you usually pay non-EU fees and must show funds for living costs.',
+ lang:'Varies. English-taught choice is good for bachelors in the Netherlands and Scandinavia; elsewhere you may need German, French or another language.',visa:'National student residence permit; check each country.',
+ pros:['Strong universities; some very low tuition','Often good post-study job-seeking rights','Your French can open France, Belgium and Switzerland'],
+ cons:['Many different systems and deadlines','Some courses only in the local language','Housing can be hard to find in Dutch and Irish cities'],
+ ask:['Is this bachelor taught fully in English?','Which A-level subjects and grades give direct admission?','What is the non-EU deadline (often earlier than for EU students)?']},
+us:{name:'United States',sub:'Colleges and universities across the USA',attr:{cost:1,family:1,intl:5,rank:5,english:5,work:3,scholar:2,range:5,familiar:2,return:3},
+ apply:'Most colleges use the Common App: one online application with essays, an activities list, teacher recommendations and your school report. You can apply to many colleges. Early Action/Early Decision deadlines are usually 1 November and Regular Decision usually 1–15 January; decisions come by April and you commit by 1 May. Many colleges are test-optional, but check whether each one wants the SAT or ACT.',
+ where:['Liberal arts colleges (small classes, broad first two years)','Large research universities','State universities (often cheaper, but fees for internationals are higher)','Community colleges as a lower-cost first two years'],
+ money:'Usually the most expensive option. A small number of colleges give generous need-based aid to international students (they normally ask for the CSS Profile), and some give merit scholarships. Early Decision is binding, so it is risky if you need aid.',
+ lang:'English. Some colleges ask for TOEFL, IELTS or Duolingo.',visa:'F-1 student visa (needs an I-20 from your college and an interview at a US embassy). Optional Practical Training (OPT) allows a period of work after study.',
+ pros:['Flexible degrees: you can try subjects before choosing a major','World-famous universities and campus life','Strong A-level grades can earn course credit at some colleges'],
+ cons:['Degrees take four years','Very expensive without aid','Medicine, dentistry, vet and law are studied after a first degree'],
+ ask:['Does this college give need-based aid to international students?','Is the SAT/ACT required, optional or not considered?','Will my A-levels earn credit?']},
+ca:{name:'Canada',sub:'Universities in English- and French-speaking provinces',attr:{cost:2,family:1,intl:5,rank:4,english:4,work:4,scholar:2,range:5,familiar:2,return:3},
+ apply:'Apply directly to each university, or through the Ontario Universities’ Application Centre (OUAC) for Ontario. Deadlines are usually between January and March for September entry.',
+ where:['Research universities such as Toronto, UBC and McGill','Quebec universities (several teach in French: your French is an advantage)','Smaller universities in the Atlantic provinces'],
+ money:'International fees are high, though often lower than the USA. You must show funds for tuition and living costs for your study permit.',
+ lang:'English, or French in Quebec.',visa:'Study permit. Canada has capped new international study permits and plans about 150,000 new international students a year in 2027–2029, so apply early.',
+ pros:['Post-graduation work permit after an eligible degree','Safe, multicultural cities','French-taught options'],
+ cons:['Study permits are harder to get than before','Very cold winters; far from home','Medicine and law are mostly studied after a first degree'],
+ ask:['Is this programme eligible for a post-graduation work permit?','What funds must I show for the study permit?','Are there entrance scholarships for international students?']},
+au:{name:'Australia & New Zealand',sub:'Universities in Australia and New Zealand',attr:{cost:2,family:2,intl:4,rank:4,english:5,work:4,scholar:2,range:5,familiar:3,return:3},
+ apply:'Apply directly to each university (many students use an approved agent). The academic year starts in February/March, with a second intake in July at many universities.',
+ where:['Group of Eight research universities (e.g. Melbourne, Sydney, Queensland, Monash)','Regional universities (often cheaper, with good visa priority)','New Zealand universities (e.g. Auckland, Otago)'],
+ money:'International fees are high; check entrance scholarships. Living costs in big Australian cities are high.',
+ lang:'English.',visa:'Student visa. For 2027 Australia has kept its planning level at 295,000 new international students; it is not a hard cap, but it affects how quickly visas are processed.',
+ pros:['Three-year degrees and strong graduate work rights','Warm climate and outdoor life; strong marine science','February start gives a natural gap after August results'],
+ cons:['High costs','Long flights home','Visa rules have been tightening'],
+ ask:['Which intake (February or July) fits my results?','Is there an international scholarship for my grades?','How long can I work after graduating?']},
+africa:{name:'Africa & Indian Ocean',sub:'Mauritius, South Africa and the region',attr:{cost:4,family:4,intl:3,rank:3,english:4,work:2,scholar:4,range:4,familiar:5,return:5},
+ apply:'Apply directly to each university. Mauritius has public universities (University of Mauritius, University of Technology Mauritius) and branch campuses of overseas universities. South African universities start in February and often close applications in the middle of the previous year.',
+ where:['Mauritius: University of Mauritius, University of Technology Mauritius, Open University, private and overseas-university campuses','South Africa: research universities such as Cape Town, Witwatersrand, Stellenbosch and Pretoria'],
+ money:'Usually much cheaper than the UK, USA or Australia. Mauritius has been one of the top three destinations for Seychellois scholarship students.',
+ lang:'English (French widely spoken in Mauritius).',visa:'Student visa or permit for each country.',
+ pros:['Close to home with a familiar culture','Lower costs','Strong South African universities for medicine, engineering and marine science'],
+ cons:['Smaller range in Mauritius','Check how degrees are recognised for professional registration','Safety advice varies by city in South Africa'],
+ ask:['When do applications close for my start date?','Is the programme accredited and recognised in Seychelles?','Does the Ministry of Education sponsor this course here?']},
+asia:{name:'Asia & Middle East',sub:'India, China, the UAE, Japan, South Korea and more',attr:{cost:4,family:3,intl:5,rank:3,english:3,work:2,scholar:4,range:4,familiar:3,return:4},
+ apply:'Apply directly to each university, or through a government scholarship scheme. India’s ICCR scholarships for Seychellois students use the Admission2Alumni (A2A) portal. China offers Chinese Government Scholarships. The UAE has branch campuses of UK, US and Australian universities.',
+ where:['India: wide choice of English-taught degrees; ICCR scholarships','China: English-taught medicine and engineering at many universities','UAE (Dubai, Abu Dhabi): UK, US and Australian branch campuses','Japan and South Korea: government scholarships (e.g. MEXT) and growing English-taught programmes'],
+ money:'Often low-cost, and several governments offer full scholarships to Seychellois students. Branch campuses in the UAE cost more.',
+ lang:'English-taught options are growing; some scholarships include a year of language study (e.g. Chinese or Japanese).',visa:'Student visa for each country.',
+ pros:['Generous government scholarships','Lower fees in India and China','A very different international experience'],
+ cons:['Quality and recognition vary: check carefully','Some courses are not taught in English','Cultural and climate adjustment'],
+ ask:['Is this degree taught fully in English?','Is it recognised for professional registration in Seychelles?','When does the scholarship portal open and close?']}
+};
+const EU_DETAIL=[
+['Netherlands','Studielink. Numerus fixus (limited-place) programmes such as psychology, medicine and international business close on 15 January; you may apply for at most two. Other bachelors often close 1 April for non-EU applicants (1 May for many others).'],
+['Germany','Three A-levels in independent subjects at grade C or above can give direct admission, with subject-specific conditions; check the DAAD and anabin rules for Cambridge International A-levels. Many applications go through uni-assist.'],
+['Sweden','universityadmissions.se. For autumn 2027 entry the first round runs 16 October 2026 to 15 January 2027; non-EU applicants must apply in this round.'],
+['Ireland','Non-EU students usually apply directly to each university rather than through CAO.'],
+['France','Most bachelors (licence) are taught in French; non-EU students normally follow Campus France procedures. Your French could be a big advantage.'],
+['Malta','English-taught public university; check its Seychelles qualification guidance.']
+];
+const SOURCES=[
+['UCAS key dates for 2027 entry','https://www.ucas.com/'],
+['Government of Seychelles: tertiary education','https://www.gov.sc/MyCitizen/TertiaryEdu.aspx'],
+['Ministry of Education, Seychelles','https://edu.gov.sc/'],
+['University of Seychelles','https://www.unisey.ac.sc/'],
+['Seychelles Institute of Technology','https://www.sit.sc/'],
+['Seychelles Maritime Academy','https://www.sma.edu.sc/'],
+['Seychelles Business Studies Academy','https://www.sbsa.edu.sc/'],
+['Education Malaysia Global Services (student pass)','https://educationmalaysia.gov.my/'],
+['Study in NL (Studielink)','https://www.studyinnl.org/study-options/how-to-apply'],
+['University Admissions in Sweden','https://www.universityadmissions.se/'],
+['DAAD: GCE A-level recognition in Germany','https://www.daad.de/en/studying-in-germany/requirements/gce/'],
+['UK Student visa','https://www.gov.uk/student-visa'],
+['Chevening in Seychelles (master’s)','https://www.chevening.org/scholarship/seychelles/']
+];
+
+
+/* availability for the wider-world destinations */
+{const grad=['med','dent','vet','law','pharm'];
+ const lim={us:[...grad,'maritime','aviation'],ca:[...grad,'maritime','aviation'],au:['maritime'],africa:['dent','aviation','maritime','lang'],asia:['law','eng_lit','lang','social']};
+ for(const c of COURSES){for(const k of ['us','ca','au','africa','asia'])c.av[k]=lim[k].includes(c.id)?'limited':'yes';
+  if(grad.includes(c.id)&&c.id!=='pharm')c.avn+=' In the USA and Canada this is studied after a first degree (e.g. pre-med or pre-law), so it takes longer.'}}
+SOURCES.push(['Common App for international students','https://www.commonapp.org/'],['Canada: study permits','https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit.html'],['Study Australia','https://www.studyaustralia.gov.au/'],['ICCR scholarships (A2A portal)','https://a2ascholarships.iccr.gov.in'],['University of Mauritius','https://www.uom.ac.mu/']);
+
+const STEPS=[['welcome','Start'],['about','About you'],['interests','Interests'],['subjects','Subjects'],['matters','What matters'],['reflect','Reflections'],['report','Your report']];
+const blank=()=>({meta:{name:'',year:'13',subjects:[],grades:'',dest:['sc','uk','my','eu','us','ca','au','africa','asia'],funding:'unsure',french:'some'},interests:{},subj:{},values:{},factors:{},reflect:{a:'',planb:''}});
+let A=blank(),step=0;
+const main=document.getElementById('main');
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const cnt=o=>Object.keys(o).length;
+
+/* ---------- scoring ---------- */
+function riasec(){const o={};for(const c of 'RIASEC'){const v=INTERESTS.filter(i=>i.code===c).map(i=>A.interests[i.id]).filter(x=>x!==undefined);o[c]=Math.round((v.length?avg(v)/3:0.5)*100)}return o}
+const rank=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]);
+function courseRanks(){const P=riasec(),have=A.meta.subjects;
+  return COURSES.map(c=>{let w=0,f=0;for(const k in c.r){w+=c.r[k];f+=c.r[k]*P[k]/100}
+    const missing=c.ess.filter(s=>!have.includes(s));
+    let subj=c.ess.length?(missing.length?0.4*(1-missing.length/c.ess.length)+0.1:0.85):0.65;
+    subj+=Math.min(0.15,c.use.filter(s=>have.includes(s)).length*0.06);
+    const enj=[...c.ess,...c.use].filter(s=>have.includes(s)).map(s=>A.subj[s]).filter(x=>x!==undefined);
+    if(enj.length)subj=subj*0.6+avg(enj)/3*0.4;
+    const vv=c.val.map(v=>A.values[v==='security'?'income':v]).filter(x=>x!==undefined);
+    let score=(f/w)*0.6+Math.min(1,subj)*0.3+(vv.length?avg(vv)/3:0.5)*0.1;
+    if(!A.meta.dest.some(d=>c.av[d]!=='no'))score*=0.9;
+    return {c,score,missing}}).sort((a,b)=>b.score-a.score)}
+function destScores(){const out=[];
+  for(const k in DESTS){const d=DESTS[k];let num=0,den=0;const why=[];
+    for(const f of FACTORS){let imp=A.factors[f.id];if(imp===undefined)imp=1.5;const at=f.id==='intl'?d.attr.intl:d.attr[f.id];num+=imp*at;den+=imp*5;
+      if(imp>=2){if(at>=4)why.push(['ok',f.text]);else if(at<=2)why.push(['warn',f.text])}}
+    let s=den?num/den:0.5;
+    if(k==='eu'&&A.meta.french==='fluent'){s+=0.04;why.push(['ok','Your French opens French-taught degrees'])}
+    if(A.meta.funding==='gos'&&(k==='sc'||k==='my'))s+=0.03;
+    if(A.meta.funding==='family-low'&&k==='uk')s-=0.06;
+    out.push({k,d,score:Math.max(0,Math.min(1,s)),why,chosen:A.meta.dest.includes(k)})}
+  return out.sort((a,b)=>(b.chosen-a.chosen)||(b.score-a.score))}
+const band=s=>s>=0.72?'Strong fit':s>=0.6?'Good fit':s>=0.5?'Worth exploring':'Weaker fit';
+const avLabel={yes:'Yes',limited:'Limited',no:'No'};
+
+/* ---------- steps ---------- */
+function stepbar(){document.getElementById('stepbar').innerHTML=STEPS.map((s,i)=>`<button type="button" class="${i===step?'on':i<step?'done':''}" data-goto="${i}" ${i===step?'aria-current="step"':''}><b>${i<step?'✓':i+1}</b>${s[1]}</button>`).join('')}
+function nav(){return `<div class="bottom"><button class="btn" data-act="prev" ${step===0?'disabled':''}>← Back</button><button class="btn primary" data-act="next">${step===STEPS.length-2?'See my report →':'Next →'}</button></div>`}
+function scale(group,id,labels){const cur=A[group][id];return `<div class="opts">${labels.map((l,i)=>`<button type="button" class="opt ${cur===i?'sel':''}" data-g="${group}" data-id="${esc(id)}" data-v="${i}" aria-pressed="${cur===i}">${l}</button>`).join('')}</div>`}
+const V={};
+V.welcome=()=>`<section class="panel"><span class="eyebrow">For Year 12 and Year 13</span><h2>Where could your A-levels take you?</h2>
+<p class="lede">Five short steps, about 10 minutes. You get a report with course areas that fit you, a check of your subjects against entry requirements, a comparison of study destinations from Seychelles and Mauritius to the UK, Europe, Malaysia, the USA, Canada and Australia, and a dated plan.</p>
+<div class="notice">Answer for what genuinely appeals to you. This is a thinking tool, not a test, and nothing you enter leaves this page.</div>
+<div class="row" style="margin-top:16px"><button class="btn primary" data-act="next">Begin →</button><button class="btn" data-act="demo">See an example report</button></div>
+<details><summary>Restore saved answers</summary><p class="small">Paste the text you saved, or choose the saved file.</p><textarea id="pastebox" class="search" style="min-height:60px" aria-label="Paste saved answers"></textarea><div class="row" style="margin-top:8px"><button class="btn sm" data-act="restoretext">Restore from text</button><button class="btn sm" data-act="restorefile">Choose file</button><span class="status" id="restoremsg"></span></div></details></section>`;
+V.about=()=>{const m=A.meta;const chip=(key,val,label)=>`<button type="button" class="chip ${m[key].includes(val)?'on':''}" data-chip="${key}" data-val="${esc(val)}" aria-pressed="${m[key].includes(val)}">${esc(label||val)}</button>`;
+ const sel=(id,key,o)=>`<select id="${id}" data-meta="${key}">${o.map(x=>`<option value="${x[0]}" ${m[key]===x[0]?'selected':''}>${x[1]}</option>`).join('')}</select>`;
+ return `<section class="panel"><span class="eyebrow">Step 1 of 5</span><h2>About you</h2>
+<div class="fieldgrid"><div class="field"><label for="f_name">First name (optional)</label><input id="f_name" data-meta="name" value="${esc(m.name)}"></div>
+<div class="field"><label for="f_year">Year group</label>${sel('f_year','year',[['13','Year 13: applying now for 2027'],['12','Year 12: applying next year for 2028']])}</div></div>
+<div class="field"><span class="lab">Your A-level subjects</span><div class="chips">${SUBJECTS.map(s=>chip('subjects',s)).join('')}</div></div>
+<div class="fieldgrid"><div class="field"><label for="f_grades">Predicted grades (optional)</label><input id="f_grades" data-meta="grades" value="${esc(m.grades)}" placeholder="e.g. A B B"></div>
+<div class="field"><label for="f_fund">Funding</label>${sel('f_fund','funding',[['unsure','Not sure yet'],['gos','Hoping for a Government of Seychelles scholarship'],['family','Family funding'],['family-low','Family funding on a tight budget'],['loan','Loan or mixed funding']])}</div>
+<div class="field"><label for="f_fr">French</label>${sel('f_fr','french',[['none','Little or none'],['some','Conversational'],['fluent','Good enough to study in French']])}</div>
+<div class="field" style="grid-column:1/-1"><span class="lab">Destinations to consider</span><div class="chips">${Object.entries(DESTS).map(([k,d])=>chip('dest',k,d.name)).join('')}</div></div></div>
+${nav()}</section>`};
+V.interests=()=>`<section class="panel"><span class="eyebrow">Step 2 of 5</span><h2>Which of these would you enjoy?</h2><p class="lede">Even if you have never tried it.</p>${INTERESTS.map(i=>`<div class="q"><p class="qt">${esc(i.text)}</p>${scale('interests',i.id,LIKE)}</div>`).join('')}${nav()}</section>`;
+V.subjects=()=>`<section class="panel"><span class="eyebrow">Step 3 of 5</span><h2>How much do you enjoy each subject?</h2><p class="lede">You will study your degree subject for three years or more, so enjoyment matters.</p>${A.meta.subjects.length?A.meta.subjects.map(s=>`<div class="q"><p class="qt">${esc(s)}</p>${scale('subj',s,ENJOY)}</div>`).join(''):'<div class="alert">Choose your subjects in Step 1 first. <button class="btn sm" data-goto="1">Go to Step 1</button></div>'}${nav()}</section>`;
+V.matters=()=>`<section class="panel"><span class="eyebrow">Step 4 of 5</span><h2>What matters to you?</h2><h3>In a future career</h3>${VALUES.map(v=>`<div class="q"><p class="qt">${esc(v[1])}</p>${scale('values',v[0],IMP)}</div>`).join('')}<h3>When choosing where to study</h3>${FACTORS.map(f=>`<div class="q"><p class="qt">${esc(f.text)}</p>${scale('factors',f.id,IMP)}</div>`).join('')}${nav()}</section>`;
+V.reflect=()=>`<section class="panel"><span class="eyebrow">Step 5 of 5</span><h2>Two quick reflections</h2><p class="lede">Optional, but they make your report much more useful when you talk it through with your Head of Sixth Form.</p>
+<div class="field"><label for="r_a">What would you love to study, and why?</label><textarea id="r_a" data-refl="a" placeholder="What first got you interested?">${esc(A.reflect.a)}</textarea></div>
+<div class="field"><label for="r_b">Your Plan B if grades or funding do not go as hoped</label><textarea id="r_b" data-refl="planb" placeholder="e.g. a local route, a foundation year, Clearing, a gap year with work">${esc(A.reflect.planb)}</textarea></div>${nav()}</section>`;
+
+/* ---------- report (same HTML on screen and in the PDF) ---------- */
+function courseCard(x){const c=x.c,have=A.meta.subjects;
+ return `<article class="card"><div class="card-h"><div><span class="small">${esc(c.cl)}</span><h4>${esc(c.t)}</h4><p class="small">${esc(c.careers)}</p></div><div class="fit"><b>${band(x.score)}</b><div class="meter"><span style="width:${Math.round(x.score*100)}%"></span></div></div></div>
+<div class="card-b"><div class="dgrid"><div class="d"><h5>Subject check</h5><p>${c.ess.length?c.ess.map(s=>`<span class="pill ${have.includes(s)?'ok':'warn'}">${have.includes(s)?'✓':'⚠'} ${esc(s)}</span>`).join('')+'<span class="small">usually essential</span>':'<span class="pill ok">No single A-level usually essential</span>'}</p><p class="small" style="margin-top:5px">Useful: ${c.use.map(esc).join(', ')}</p></div>
+<div class="d"><h5>Where you can study it</h5><p>${Object.keys(DESTS).map(k=>`<span class="pill ${c.av[k]==='yes'?'ok':c.av[k]==='limited'?'gold':'warn'}">${DESTS[k].name}: ${avLabel[c.av[k]]}</span>`).join('')}</p><p class="small" style="margin-top:5px">${esc(c.avn)}</p></div>
+<div class="d"><h5>Tests and deadlines</h5><p>${esc(c.tests)} ${esc(c.dl)}</p></div><div class="d"><h5>In Seychelles</h5><p>${esc(c.sc)}</p></div></div>
+<p style="margin:10px 0 0;font-size:.9rem"><strong>Try it first:</strong> ${esc(c.probe)}</p>${x.missing.length?`<div class="alert"><strong>Subject gap:</strong> most universities ask for ${esc(x.missing.join(' and '))}. Look for related courses that don’t, a foundation year, or check the universities you like.</div>`:''}</div></article>`}
+function destCard(x,cr){const d=x.d,k=x.k;const top=cr.slice(0,5).map(r=>r.c);
+ return `<article class="card"><div class="card-h"><div><span class="small">${x.chosen?'You selected this':'Not selected: for comparison'}</span><h4>${esc(d.name)}</h4><p class="small">${esc(d.sub)}</p></div><div class="fit"><b>${band(x.score)}</b><div class="meter"><span style="width:${Math.round(x.score*100)}%"></span></div></div></div>
+<div class="card-b">${x.why.length?`<p style="margin:0 0 8px">${x.why.map(w=>`<span class="pill ${w[0]}">${w[0]==='ok'?'✓':'⚠'} ${esc(w[1])}</span>`).join('')}</p>`:''}
+<div class="dgrid"><div class="d"><h5>Your top courses here</h5><p>${top.map(c=>`<span class="pill ${c.av[k]==='yes'?'ok':c.av[k]==='limited'?'gold':'warn'}">${esc(c.t)}${c.av[k]==='yes'?'':c.av[k]==='limited'?' (limited)':' (not offered)'}</span>`).join('')}</p></div>
+<div class="d"><h5>How to apply</h5><p>${esc(d.apply)}</p></div><div class="d"><h5>Money and funding</h5><p>${esc(d.money)}</p></div><div class="d"><h5>Language and visa</h5><p>${esc(d.lang)} ${esc(d.visa)}</p></div>
+<div class="d"><h5>Where to look</h5><ul>${d.where.map(w=>`<li>${esc(w)}</li>`).join('')}</ul></div><div class="d"><h5>Upsides · downsides</h5><ul>${d.pros.map(p=>`<li>${esc(p)}</li>`).join('')}${d.cons.map(p=>`<li style="color:var(--warnink)">${esc(p)}</li>`).join('')}</ul></div></div>
+${k==='eu'?`<div class="dgrid" style="margin-top:10px">${EU_DETAIL.map(e=>`<div class="d"><h5>${esc(e[0])}</h5><p>${esc(e[1])}</p></div>`).join('')}</div>`:''}
+<p style="margin:10px 0 0;font-size:.9rem"><strong>Ask:</strong> ${d.ask.map(esc).join(' · ')}</p></div></article>`}
+function timelineItems(){const y=A.meta.year,has=k=>A.meta.dest.includes(k);
+ const it=y==='12'?[
+  ['Now – March 2027','all','Explore','Try the “try it first” activities for your top two course areas. Keep a log: it becomes your personal statement.'],
+  ['April – July 2027','all','Research and shortlist','UCAS search for 2028 courses opens in late April. Virtual open days. Check subject requirements.'],
+  ['Summer 2027','all','Experience','Work attachment, volunteering or an online course. Register for any admissions test (UCAT, TMUA, LNAT).'],
+  has('uk')&&['Mid-October 2027 (approx.)','uk','UK early deadline','Oxford, Cambridge, medicine, dentistry, vet (2028 entry).'],
+  has('uk')&&['Mid-January 2028 (approx.)','uk','UK main deadline','Most courses. Aim to submit before the winter break.'],
+  has('eu')&&['Mid-January 2028 (approx.)','eu','Europe: early deadlines','Sweden and Dutch limited-place programmes.'],
+  has('my')&&['From late 2027','my','Malaysia','Apply directly; choose an intake after results.'],
+  has('sc')&&['Year 13','sc','Seychelles','Ministry of Education scholarship briefings and UniSey intake dates.'],
+  has('us')&&['1 August 2027','us','Common App opens','Early Action/Decision usually 1 November 2027; Regular Decision usually 1–15 January 2028. Decide whether to sit the SAT/ACT in spring or summer 2027.'],
+  has('ca')&&['Autumn 2027','ca','Canada','Apply to universities (OUAC for Ontario); most deadlines January–March 2028.'],
+  has('au')&&['From mid-2027','au','Australia & New Zealand','Apply for a February/March 2028 start, which fits after August results.'],
+  has('africa')&&['Mid-2027','africa','South Africa and Mauritius','South African applications often close mid-year for a February start; check Mauritian intakes.'],
+  has('asia')&&['Early 2028','asia','Asia scholarships','Watch for ICCR (India) and Chinese Government Scholarship rounds, which usually open early in the year.']
+ ]:[
+  ['Now','all','Lock in your shortlist','Check each course’s required subjects against your predicted grades.'],
+  has('au')&&['Now – May 2027','au','Australia & New Zealand','Apply for a July 2027 or February 2028 start. A February start gives you time after August results.'],
+  has('my')&&['December 2026 – May 2027','my','Apply to Malaysian universities','Directly to each university; pick an intake that suits your results.'],
+  has('us')&&['1–15 January 2027','us','US Regular Decision','Most colleges close Regular Decision in early January (Early Action/Decision closed around 1 November). If you need aid, submit the CSS Profile by each college’s deadline.'],
+  has('uk')&&['13 January 2027, 18:00 UK time','uk','UCAS main deadline','22:00 in Seychelles. Oxford, Cambridge, medicine, dentistry and vet closed on 15 October 2026.'],
+  has('eu')&&['15 January 2027','eu','Sweden and Dutch limited-place courses','23:59 CET (02:59 on 16 January in Seychelles). Swedish documents due 1 February.'],
+  has('ca')&&['January – March 2027','ca','Canadian deadlines','Apply directly or through OUAC (Ontario). Start the study permit as soon as you have an offer.'],
+  has('asia')&&['January – April 2027','asia','Scholarship portals','ICCR (India) and Chinese Government Scholarship applications usually run early in the year; the 2026 ICCR round closed on 15 April.'],
+  has('sc')&&['Early 2027','sc','Scholarship and UniSey','Ministry of Education briefings; prepare UniSey documents.'],
+  has('africa')&&['Early 2027','africa','Mauritius and South Africa','Mauritius: check intake dates. South Africa: most universities start in February, so 2027 entry has passed; plan for February 2028 and check when applications close.'],
+  has('eu')&&['1 April 2027','eu','Many Dutch non-EU deadlines','Check each university.'],
+  has('uk')&&['February – May 2027','uk','UCAS offers','Choose a firm and an insurance offer. Extra opens 25 February if you have none.'],
+  ['May – June 2027','all','Cambridge exams','Conditional offers depend on these grades.'],
+  ['Mid-August 2027','all','Results','If plans change: UK Clearing, later Malaysian intakes, or local routes.'],
+  A.meta.dest.some(k=>k!=='sc')&&['After you accept','all','Visa and travel','Apply for your student visa as soon as you hold an offer: UK (CAS), USA (I-20, F-1 interview), Canada (study permit), Malaysia (EMGS, about six weeks), others national permits. Check passport validity.'],
+  has('us')&&['1 May 2027','us','US decision day','Most US colleges ask you to commit by 1 May.']];
+ return it.filter(Boolean)}
+function actions(cr,ds){const out=[];
+ cr.slice(0,3).forEach(x=>{if(x.missing.length)out.push(`Subject gap for ${x.c.t}: check whether your universities accept you without ${x.missing.join(' and ')}, or find a foundation route.`)});
+ out.push(`Try this for ${cr[0].c.t}: ${cr[0].c.probe}`);
+ if(!/^None/.test(cr[0].c.tests))out.push(`Check admissions tests: ${cr[0].c.tests}`);
+ if(A.meta.dest.some(d=>d!=='sc'))out.push('Check each overseas university’s English requirement and whether you need IELTS or TOEFL.');
+ if(A.meta.dest.includes('us'))out.push('USA: check whether your colleges want the SAT/ACT and whether they give need-based aid to international students.');
+ if(A.meta.funding==='gos'||A.meta.funding==='unsure')out.push('Read the Government of Seychelles scholarship criteria and work out your likely points.');
+ out.push('Talk through money at home: tuition, living costs and flights for your top destination.');
+ out.push('Book a meeting with your Head of Sixth Form and bring this report.');
+ return out.slice(0,6)}
+function reportHTML(forPdf){const P=riasec(),top=rank(P),cr=courseRanks(),ds=destScores(),m=A.meta;const few=cnt(A.interests)<6;
+ const head=forPdf?`<h1>My Future Compass: next steps report</h1><p class="small">${esc(m.name||'Student')} · Year ${esc(m.year)} · ${esc(m.subjects.join(', ')||'subjects not given')}${m.grades?' · predicted '+esc(m.grades):''} · ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</p>`:`<span class="eyebrow">Your report</span><h2>Your compass reading${m.name?', '+esc(m.name):''}</h2><div class="jump noprint"><a href="#r-profile">Profile</a><a href="#r-courses">Courses</a><a href="#r-dest">Destinations</a><a href="#r-plan">Plan</a><a href="#r-time">Timeline</a></div>`;
+ return `${head}
+<section id="r-profile"><h3>Your profile</h3>${few?'<div class="alert noprint">You answered only a few interest questions, so this is a rough reading.</div>':''}
+<p>Your strongest interests are <strong>${RN[top[0][0]]}</strong> and <strong>${RN[top[1][0]]}</strong>. Your best-fit destination on your answers is <strong>${esc(ds[0].d.name)}</strong>.</p>
+<div class="profile">${top.map(([c,v])=>`<div class="pbox"><h4>${RN[c]}</h4><div class="meter"><span style="width:${v}%"></span></div><p>${RDESC[c]}</p></div>`).join('')}</div></section>
+<section id="r-courses"><h3>Course areas that fit you</h3><p class="small">Ranked by your interests (60%), subjects (30%) and values (10%). Requirements shown are typical, not the rules of any one university.</p>${cr.slice(0,5).map(courseCard).join('')}
+${forPdf?'':`<details class="noprint"><summary>Search all ${COURSES.length} course areas</summary><input class="search" id="search" placeholder="e.g. law, ocean, design" aria-label="Search course areas" style="margin-top:8px"><div id="searchres"></div></details>`}</section>
+<section id="r-dest"><h3>Where to study</h3><p class="small">Ranked by what you said matters when choosing where to study.${forPdf?'':' Your top four are shown in full.'}</p>${(()=>{const ch=ds.filter(x=>x.chosen),no=ds.filter(x=>!x.chosen);const main4=forPdf?ch:ch.slice(0,4),more=forPdf?[]:ch.slice(4);return main4.map(x=>destCard(x,cr)).join('')+(more.length?`<details class="noprint"><summary>${more.length} more destination${more.length>1?'s':''} you selected</summary>${more.map(x=>destCard(x,cr)).join('')}</details>`:'')+(no.length?`<p class="small" style="margin-top:12px">Not selected: ${no.map(x=>`${esc(x.d.name)} (${band(x.score).toLowerCase()})`).join(' · ')}. Add them in Step 1 to see details.</p>`:'')})()}</section>
+<section id="r-plan"><h3>Your next steps</h3><ol>${actions(cr,ds).map(a=>`<li>${esc(a)}</li>`).join('')}</ol>
+<div class="dgrid"><div class="d"><h5>What I would love to study</h5><p>${esc(A.reflect.a)||'—'}</p></div><div class="d"><h5>My Plan B</h5><p>${esc(A.reflect.planb)||'—'}</p></div></div></section>
+<section id="r-time"><h3>${m.year==='12'?'Timeline for 2028 entry (approximate)':'Key dates for 2027 entry'}</h3><ol class="timeline">${timelineItems().map(i=>`<li><span class="when">${esc(i[0])}</span><div><span class="tag">${i[1]==='all'?'All':esc(DESTS[i[1]].name)}</span><strong>${esc(i[2])}</strong><p>${esc(i[3])}</p></div></li>`).join('')}</ol></section>
+<section><h3>Check with official sources</h3>${SOURCES.map(s=>`<div class="src"><a href="${s[1]}" target="_blank" rel="noopener">${esc(s[0])}</a>${forPdf?` · ${esc(s[1])}`:''}</div>`).join('')}<p class="small">Interest questions are informed by the RIASEC (Holland) model and are not a validated test. Dates checked November 2026.</p></section>`}
+V.report=()=>`<section class="panel">${reportHTML(false)}
+<div class="bottom"><button class="btn" data-act="prev">← Change answers</button><div class="row"><button class="btn primary" data-act="pdf">Download PDF</button><button class="btn" data-act="save">Save answers</button><button class="btn" data-act="reset">Start again</button></div></div><div id="msg" class="status" style="margin-top:8px"></div><div id="savebox"></div></section>`;
+
+/* ---------- controller ---------- */
+function render(scroll){main.innerHTML=V[STEPS[step][0]]();stepbar();if(scroll)document.getElementById('stepbar').scrollIntoView({block:'start'})}
+function go(i){step=Math.max(0,Math.min(STEPS.length-1,i));render(true)}
+function demo(){A=blank();Object.assign(A.meta,{name:'Maya (fictional)',year:'13',subjects:['Biology','Chemistry','Geography','English Language'],grades:'A B B',funding:'gos',french:'fluent'});
+ const p={R:2,I:3,A:1,S:2,E:0,C:1};INTERESTS.forEach((i,k)=>A.interests[i.id]=Math.min(3,p[i.code]+(k<6?0:k%2)));
+ A.subj={Biology:3,Chemistry:1,Geography:2,'English Language':1};A.values={help:1,home:3,environment:3,creativity:1,income:2,challenge:2};A.factors={cost:3,family:1,rank:1,intl:2,work:1,scholar:3};
+ A.reflect={a:'Marine biology: I love diving and want to help protect the reefs around Praslin.',planb:'BSc Environmental Science at UniSey, then a master’s abroad.'};go(STEPS.length-1)}
+let DL=null;try{window.claude?.use?.('downloads').then(x=>{DL=x}).catch(()=>{})}catch(e){}
+const msg=t=>{const m=document.getElementById('msg');if(m)m.textContent=t};
+async function makePdf(btn){
+ const stage=document.getElementById('pdfstage');stage.innerHTML=`<div class="pdf">${reportHTML(true)}</div>`;
+ const name=`next-steps-report${A.meta.name?'-'+A.meta.name.replace(/\(fictional\)/,'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'-'):''}.pdf`;
+ if(typeof html2pdf==='undefined'||!DL){document.getElementById('printreport').innerHTML=stage.innerHTML;stage.innerHTML='';try{window.print()}catch(e){}msg('If no print window opened, open this page in its own browser tab and use Print → Save as PDF.');return}
+ btn.disabled=true;msg('Building your PDF…');
+ try{const blob=await html2pdf().set({margin:[10,10,12,10],image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',scrollX:0,scrollY:0},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css'],avoid:['.card-h','.d','.pbox','.timeline li','.alert','h3']}}).from(stage.innerHTML,'string').outputPdf('blob');
+  stage.innerHTML='';await DL.save({filename:name,data:blob});msg('PDF saved.')}
+ catch(e){stage.innerHTML='';const c=e&&e.code;msg(c==='declined'?'Download cancelled.':c==='rate_limited'?'Please wait a moment and try again.':'The PDF could not be saved here. Open this page in its own browser tab and try again.')}
+ finally{btn.disabled=false}}
+function saveBox(){const data=JSON.stringify({app:'next-steps-compass',v:2,answers:A});document.getElementById('savebox').innerHTML=`<div class="notice"><p style="margin-top:0"><strong>Keep your answers.</strong> Copy this text into a note or email to yourself, then paste it on the Start page to pick up later.</p><textarea id="savetext" class="search" style="min-height:70px" readonly>${esc(data)}</textarea><div class="row" style="margin-top:8px"><button class="btn sm" data-act="copy">Copy text</button>${DL?'<button class="btn sm" data-act="dljson">Download file</button>':''}</div></div>`}
+function restoreFrom(t){try{const o=JSON.parse(t),a=o.answers||o,b=blank();for(const k in b){if(a[k]!==undefined)b[k]=(typeof b[k]==='object'&&!Array.isArray(b[k]))?Object.assign(b[k],a[k]):a[k]}
+ if(o.v!==2){b.interests={};b.subj={};b.values={};b.factors={}}A=b;go(STEPS.length-1);return true}catch(e){return false}}
+main.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.g){A[b.dataset.g][b.dataset.id]=+b.dataset.v;b.parentElement.querySelectorAll('button').forEach(x=>{const s=x===b;x.classList.toggle('sel',s);x.setAttribute('aria-pressed',s)});return}
+ if(b.dataset.chip){const arr=A.meta[b.dataset.chip],v=b.dataset.val,i=arr.indexOf(v);if(i>=0)arr.splice(i,1);else arr.push(v);b.classList.toggle('on',i<0);b.setAttribute('aria-pressed',i<0);return}
+ if(b.dataset.goto!==undefined){go(+b.dataset.goto);return}
+ const a=b.dataset.act;
+ if(a==='next')go(step+1);else if(a==='prev')go(step-1);else if(a==='demo')demo();
+ else if(a==='pdf')makePdf(b);else if(a==='save')saveBox();
+ else if(a==='copy'){const t=document.getElementById('savetext');t.select();navigator.clipboard?.writeText(t.value).then(()=>b.textContent='Copied',()=>b.textContent='Press Ctrl/Cmd+C')}
+ else if(a==='dljson'&&DL){DL.save({filename:'my-next-steps-answers.json',data:document.getElementById('savetext').value}).catch(()=>{})}
+ else if(a==='restoretext'){if(!restoreFrom(document.getElementById('pastebox').value))document.getElementById('restoremsg').textContent='That text could not be read.'}
+ else if(a==='restorefile')document.getElementById('restorefile').click();
+ else if(a==='reset'){document.getElementById('savebox').innerHTML='<div class="alert">Clear all answers? <button class="btn sm" data-act="reset2">Yes, clear</button> <button class="btn sm" data-act="cancel">Cancel</button></div>'}
+ else if(a==='reset2'){A=blank();go(0)}else if(a==='cancel')document.getElementById('savebox').innerHTML='';
+});
+document.getElementById('stepbar').addEventListener('click',e=>{const b=e.target.closest('[data-goto]');if(b)go(+b.dataset.goto)});
+main.addEventListener('input',e=>{const t=e.target;if(t.dataset.meta)A.meta[t.dataset.meta]=t.value;if(t.dataset.refl)A.reflect[t.dataset.refl]=t.value;
+ if(t.id==='search'){const q=t.value.trim().toLowerCase(),cr=courseRanks();document.getElementById('searchres').innerHTML=q?cr.filter(x=>(x.c.t+' '+x.c.careers+' '+x.c.cl).toLowerCase().includes(q)).map(courseCard).join('')||'<p class="small">No matches.</p>':''}});
+main.addEventListener('change',e=>{if(e.target.dataset.meta)A.meta[e.target.dataset.meta]=e.target.value});
+document.getElementById('restorefile').addEventListener('change',e=>{const f=e.target.files[0];if(f)f.text().then(t=>{if(!restoreFrom(t)){const m=document.getElementById('restoremsg');if(m)m.textContent='That file could not be read.'}});e.target.value=''});
+render(false);
+}
+</script>
+</body>
+</html>

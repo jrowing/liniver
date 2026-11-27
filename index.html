@@ -143,7 +143,8 @@ layout: null
                 </div>
                 <ul class="cards">
                     {% for e in class_entries %}{% assign x = e | split: SEP %}{% if x[4] == folder %}
-                        {% include card.html title=x[0] url=x[1] desc=x[2] tag=x[3] label=folder_label %}
+                        {% assign c_title = x[0] %}{% assign c_url = x[1] %}{% assign c_desc = x[2] %}{% assign c_tag = x[3] %}
+                        {% include card.html title=c_title url=c_url desc=c_desc tag=c_tag label=folder_label %}
                     {% endif %}{% endfor %}
                 </ul>
             </section>
