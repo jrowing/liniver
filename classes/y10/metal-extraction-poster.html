@@ -1,0 +1,533 @@
+---
+title: "Metal Extraction Poster Task"
+description: "One lesson, one metal, one poster: from rock to finished product."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Metal extraction poster task</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sheet:#EDF0F2; --paper:#F8FAFB; --ink:#17222D; --ink-2:#485866; --rule:#BFC9D2;
+  --melt:#F28A2E; --melt-soft:#FBE3CC; --on-melt:#17222D;
+  --cryo:#D3E3EF; --cryo-deep:#25567A; --bauxite:#8A3B27;
+  --panel:#17222D; --panel-ink:#EDF0F2; --panel-2:#9FB2C2;
+  --display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  color-scheme: light dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --sheet:#0F161C; --paper:#18232D; --ink:#E7EDF2; --ink-2:#A4B4C1; --rule:#2C3A47;
+    --melt-soft:#3A2A1A; --cryo:#1E3345; --cryo-deep:#8FBBDA; --bauxite:#D98467;
+    --panel:#0A1015; --panel-ink:#E7EDF2; --panel-2:#8FA4B5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --sheet:#0F161C; --paper:#18232D; --ink:#E7EDF2; --ink-2:#A4B4C1; --rule:#2C3A47;
+  --melt-soft:#3A2A1A; --cryo:#1E3345; --cryo-deep:#8FBBDA; --bauxite:#D98467;
+  --panel:#0A1015; --panel-ink:#E7EDF2; --panel-2:#8FA4B5;
+}
+:root[data-theme="light"]{ color-scheme: light; }
+
+*,*::before,*::after{ box-sizing:inherit; }
+html{ scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px); }
+@media (prefers-reduced-motion: no-preference){ html{ scroll-behavior:smooth; } }
+body{
+  margin:0; background:var(--sheet); color:var(--ink);
+  font-family:var(--body); font-size:18px; line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{ font-family:var(--display); font-weight:800; line-height:.98; margin:0; color:var(--ink); }
+p{ margin:0 0 1em; }
+sub,sup{ line-height:0; }
+a{ color:var(--cryo-deep); }
+:focus-visible{ outline:3px solid var(--cryo-deep); outline-offset:2px; }
+.wrap{ max-width:1120px; margin:0 auto; padding:0 1.25rem; }
+.measure{ max-width:64ch; }
+
+/* top bar */
+.top{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:10;
+  background:var(--sheet); border-bottom:1.5px solid var(--ink);
+}
+.top .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:56px; }
+.brand{ font-family:var(--display); font-weight:900; font-size:1.35rem; white-space:nowrap; }
+.top nav{ display:flex; gap:1.1rem; overflow-x:auto; }
+.top nav a{ font-family:var(--display); font-weight:700; font-size:1.15rem; text-decoration:none; color:var(--ink); padding:.5rem 0; white-space:nowrap; }
+.top nav a:hover{ text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:4px; }
+
+/* hero */
+.hero{ padding:3.5rem 0 4rem; }
+
+.hero h1{ font-size:clamp(3.4rem,9.5vw,7.4rem); font-weight:900; text-transform:uppercase; letter-spacing:.005em; }
+.hero h1 span{ display:block; }
+.hero .lede{ font-size:1.25rem; margin-top:1.5rem; max-width:40ch; }
+
+/* generic blocks */
+.block{ padding:4.5rem 0; border-top:1.5px solid var(--ink); }
+.block > .wrap > h2, .block-head h2{ font-size:clamp(2.6rem,6vw,4.2rem); font-weight:900; }
+.block-head{ display:grid; grid-template-columns:1fr 1.4fr; gap:2.5rem; align-items:end; margin-bottom:2.5rem; }
+.block-head p{ margin:0; color:var(--ink-2); }
+
+/* brief / checklist */
+.brief-grid{ display:grid; grid-template-columns:1.5fr 1fr; gap:3rem; align-items:start; }
+.checks{ list-style:none; margin:0; padding:0; border-top:1.5px solid var(--ink); }
+.checks li{ border-bottom:1px solid var(--rule); }
+.checks label{ display:grid; grid-template-columns:34px 1fr; gap:1rem; padding:1.1rem .25rem; cursor:pointer; }
+.checks input{
+  appearance:none; -webkit-appearance:none; width:28px; height:28px; margin:2px 0 0;
+  border:2px solid var(--ink); border-radius:5px; background:var(--paper); cursor:pointer; display:grid; place-content:center;
+}
+.checks input::after{ content:""; width:14px; height:8px; border-left:3.5px solid var(--on-melt); border-bottom:3.5px solid var(--on-melt); transform:translateY(-2px) rotate(-45deg) scale(0); }
+.checks input:checked{ background:var(--melt); }
+.checks input:checked::after{ transform:translateY(-2px) rotate(-45deg) scale(1); }
+.checks strong{ display:block; font-family:var(--display); font-weight:800; font-size:1.5rem; line-height:1.05; }
+.checks span{ color:var(--ink-2); display:block; margin-top:.2rem; }
+.count{ font-family:var(--display); font-weight:800; font-size:1.3rem; margin:1rem 0 0; }
+.aim{ border:2px dashed var(--ink-2); border-radius:8px; padding:1.3rem 1.4rem; }
+.aim h3{ font-size:1.7rem; margin-bottom:.6rem; }
+.aim ul{ margin:0; padding-left:1.15rem; }
+.aim li{ margin-bottom:.5rem; }
+
+/* metal picker + sheet */
+.picker{ display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:2.5rem; }
+.pick{
+  font-family:var(--display); font-weight:800; font-size:1.5rem; line-height:1;
+  min-height:48px; padding:.55rem 1.1rem; border-radius:999px; cursor:pointer;
+  background:transparent; color:var(--ink); border:2px solid var(--ink);
+}
+.pick small{ font-family:var(--body); font-weight:400; font-size:.9rem; margin-left:.4rem; color:var(--ink-2); }
+.pick[aria-pressed="true"]{ background:var(--ink); color:var(--sheet); }
+.pick[aria-pressed="true"] small{ color:var(--sheet); opacity:.8; }
+
+.sheet-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.4rem 1.5rem; margin-bottom:2rem; }
+.sheet-head h3{ font-size:clamp(3.4rem,8vw,5.6rem); font-weight:900; }
+.sheet-head .method{ font-family:var(--display); font-weight:700; font-size:1.7rem; color:var(--cryo-deep); margin:0; line-height:1.05; }
+.sub{ margin-bottom:2.8rem; }
+.sub h4{ font-size:1.9rem; padding-bottom:.45rem; margin-bottom:1rem; border-bottom:1.5px solid var(--ink); }
+.cols{ display:grid; grid-template-columns:1.1fr 1fr; gap:3rem; }
+.ore{ display:grid; grid-template-columns:max-content 1fr; gap:.45rem 1.5rem; margin:0; }
+.ore dt{ font-weight:600; }
+.ore dd{ margin:0; }
+
+.flow{ list-style:none; margin:.8rem 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
+.flow li{ position:relative; border-top:3px solid var(--ink); padding:1.1rem 1rem 0 0; counter-increment:f; }
+.flow li::before{ content:""; position:absolute; top:-9px; left:0; width:15px; height:15px; border-radius:50%; background:var(--melt); border:2px solid var(--ink); }
+.flow li b{ display:block; font-family:var(--display); font-weight:800; font-size:1.9rem; color:var(--cryo-deep); line-height:1; }
+.flow{ counter-reset:f; }
+.flow li b::before{ content:counter(f); }
+
+.steps{ margin:0; padding:0; list-style:none; counter-reset:s; }
+.steps li{ counter-increment:s; position:relative; padding-left:2.6rem; margin-bottom:1rem; }
+.steps li::before{ content:counter(s); position:absolute; left:0; top:-.05rem; font-family:var(--display); font-weight:900; font-size:1.7rem; color:var(--cryo-deep); }
+.eq{ background:var(--paper); border-left:5px solid var(--cryo-deep); padding:.55rem .95rem .6rem; margin:0 0 .7rem; }
+.eq .lab{ display:block; font-size:.92rem; color:var(--ink-2); }
+.eq .body{ display:block; font-size:1.2rem; font-weight:600; }
+.eq .word{ display:block; font-size:.95rem; color:var(--ink-2); font-style:italic; }
+
+.why{ display:grid; grid-template-columns:270px 1fr; gap:2.5rem; align-items:start; }
+.ladder{ list-style:none; margin:0; padding:0; border:1.5px solid var(--ink); border-radius:6px; overflow:hidden; background:var(--paper); }
+.ladder li{ padding:.4rem .8rem; border-bottom:1px solid var(--rule); font-size:1rem; line-height:1.3; }
+.ladder li:last-child{ border-bottom:0; }
+.ladder .end{ background:var(--sheet); color:var(--ink-2); font-size:.9rem; }
+.ladder .mark{ background:var(--cryo); font-weight:600; font-size:.92rem; }
+.ladder .mark small{ display:block; font-weight:400; color:var(--ink-2); font-size:.85rem; }
+.ladder .on{ background:var(--melt); color:var(--on-melt); font-weight:600; }
+.callout{ border-left:5px solid var(--melt); padding:.2rem 0 .2rem 1rem; margin:0; }
+
+.uses{ list-style:none; margin:0; padding:0; }
+.uses li{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr); gap:1.5rem; padding:.85rem 0; border-bottom:1px solid var(--rule); }
+.uses strong{ font-family:var(--display); font-weight:800; font-size:1.4rem; line-height:1.05; }
+.impact{ margin:0; padding-left:1.2rem; }
+.impact li{ margin-bottom:.7rem; }
+.nums{ margin:0; display:grid; grid-template-columns:1fr; gap:0; }
+.nums div{ display:flex; justify-content:space-between; gap:1rem; padding:.55rem 0; border-bottom:1px solid var(--rule); }
+.nums dt{ color:var(--ink-2); }
+.nums dd{ margin:0; font-weight:600; text-align:right; }
+.push{ background:var(--panel); color:var(--panel-ink); border-radius:10px; padding:1.5rem 1.6rem; }
+.push h4{ color:var(--panel-ink); font-size:1.7rem; border:0; padding:0; margin-bottom:.5rem; }
+.push p{ margin:0; max-width:60ch; }
+
+/* words */
+.words{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:0 3rem; margin:0; }
+.words div{ padding:.9rem 0; border-bottom:1px solid var(--rule); }
+.words dt{ font-family:var(--display); font-weight:800; font-size:1.55rem; line-height:1.05; }
+.words dd{ margin:.15rem 0 0; }
+
+footer{ border-top:1.5px solid var(--ink); padding:2.5rem 0 3.5rem; color:var(--ink-2); font-size:.98rem; }
+footer p{ max-width:70ch; }
+
+@media (max-width: 880px){
+  .brief-grid, .cols, .why, .block-head{ grid-template-columns:1fr; }
+  .block{ padding:3.2rem 0; }
+  .why{ gap:1.5rem; }
+  .uses li{ grid-template-columns:1fr; gap:.2rem; }
+  .brand{ font-size:1.1rem; }
+}
+@media (max-width: 640px){
+  body{ font-size:17px; }
+  .ore{ grid-template-columns:1fr; gap:0; }
+  .ore dd{ margin-bottom:.6rem; }
+}
+@media print{
+  .top, .picker{ display:none; }
+  body{ background:#fff; color:#000; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="brand">Metal poster task</span>
+    <nav aria-label="Sections">
+      <a href="#brief">The brief</a>
+      <a href="#metals">Fact sheets</a>
+      <a href="#words">Key words</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <h1 id="h1"><span>One lesson.</span><span>One metal.</span><span>One poster.</span></h1>
+      <p class="lede">Take a metal from rock to finished product. Show how it is extracted, why that method works, and what the metal is used for.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="brief" aria-labelledby="brief-h">
+  <div class="wrap">
+    <div class="block-head">
+      <h2 id="brief-h">Your poster must show</h2>
+      <p>Six things. Tick each one when it is on your poster and you could point to it. Use this list again before you hand in.</p>
+    </div>
+    <div class="brief-grid">
+      <div>
+        <ul class="checks" id="checks"></ul>
+        <p class="count" id="count" aria-live="polite">0 of 6 ticked</p>
+      </div>
+      <aside class="aim">
+        <h3>Finished early? Aim higher</h3>
+        <ul>
+          <li>Compare your metal’s extraction with a second metal and explain the difference.</li>
+          <li>Put a number on the poster: energy used, cost, or tonnes produced.</li>
+          <li>Show an alloy of your metal and say why mixing helps.</li>
+          <li>Annotate an equation to show which substance is reduced and which is oxidised.</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="metals" aria-labelledby="metals-h">
+  <div class="wrap">
+    <div class="block-head">
+      <h2 id="metals-h">Fact sheets</h2>
+      <p>Choose a metal. Use the sheet to check your own research and fill gaps. Put things in your own words and note where each fact came from.</p>
+    </div>
+    <div class="picker" id="picker" role="group" aria-label="Choose a metal"></div>
+    <article id="sheet" tabindex="-1" aria-label="Metal fact sheet"></article>
+  </div>
+</section>
+
+<section class="block" id="words" aria-labelledby="words-h">
+  <div class="wrap">
+    <div class="block-head">
+      <h2 id="words-h">Words to use correctly</h2>
+      <p>Posters that use these accurately read as confident. Check each one against your own poster.</p>
+    </div>
+    <dl class="words">
+      <div><dt>Ore</dt><dd>Rock that contains enough of a metal compound to be worth mining.</dd></div>
+      <div><dt>Reduction</dt><dd>Loss of oxygen from a compound, or gain of electrons by an ion.</dd></div>
+      <div><dt>Smelting</dt><dd>Heating an ore with a reducing agent, usually carbon, to get the metal.</dd></div>
+      <div><dt>Electrolysis</dt><dd>Using electricity to break down a molten or dissolved ionic compound.</dd></div>
+      <div><dt>Electrolyte</dt><dd>The molten or dissolved compound that carries current during electrolysis.</dd></div>
+      <div><dt>Cathode</dt><dd>The negative electrode. Metal ions gain electrons here.</dd></div>
+      <div><dt>Anode</dt><dd>The positive electrode. Ions lose electrons here.</dd></div>
+      <div><dt>Slag</dt><dd>Waste made when impurities in an ore combine with limestone or silica in a furnace.</dd></div>
+      <div><dt>Alloy</dt><dd>A mixture of a metal with other elements, usually stronger than the pure metal.</dd></div>
+    </dl>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Write one line at the bottom of your poster saying where your facts came from: your textbook, your class notes, or a named organisation such as the Royal Society of Chemistry, the International Aluminium Institute, World Steel Association or the International Copper Association.</p>
+    <p>Teachers: add <b>#metal=copper</b> (or aluminium, iron, zinc, titanium) to the page link to open a particular fact sheet.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $ = function(s){ return document.querySelector(s); };
+
+  /* ---------- checklist ---------- */
+  var REQS = [
+    {id:'source', t:'Where it comes from', d:'Name the ore, the metal compound in it, and where in the world it is mined.'},
+    {id:'route', t:'How it is extracted', d:'A labelled diagram or flow chart with the steps in order, inputs and outputs marked.'},
+    {id:'chem', t:'The chemistry', d:'At least one equation for the reaction that makes the metal. Symbol equations are best; word equations are fine.'},
+    {id:'why', t:'Why this method', d:'Link the method to the metal’s place in the reactivity series, and to carbon in particular.'},
+    {id:'uses', t:'Uses and properties', d:'At least three uses, each explained by a property of the metal.'},
+    {id:'impact', t:'Impact and recycling', d:'One environmental or economic issue, and what can be done about it.'}
+  ];
+  var checks = {};
+  try { checks = JSON.parse(localStorage.getItem('metalPoster.checks') || '{}') || {}; } catch(e){ checks = {}; }
+  var checksEl = $('#checks');
+  REQS.forEach(function(r){
+    var li = document.createElement('li');
+    var lab = document.createElement('label');
+    var inp = document.createElement('input');
+    inp.type = 'checkbox'; inp.checked = !!checks[r.id];
+    inp.addEventListener('change', function(){
+      checks[r.id] = inp.checked;
+      try { localStorage.setItem('metalPoster.checks', JSON.stringify(checks)); } catch(e){}
+      countChecks();
+    });
+    var txt = document.createElement('div');
+    txt.innerHTML = '<strong>' + r.t + '</strong><span>' + r.d + '</span>';
+    lab.appendChild(inp); lab.appendChild(txt); li.appendChild(lab); checksEl.appendChild(li);
+  });
+  function countChecks(){
+    var n = REQS.filter(function(r){ return checks[r.id]; }).length;
+    $('#count').textContent = n === REQS.length ? 'All six ticked. Now check the quality of each.' : n + ' of ' + REQS.length + ' ticked';
+  }
+  countChecks();
+
+  /* ---------- fact sheets ---------- */
+  var LADDER = [['K','Potassium'],['Na','Sodium'],['Ca','Calcium'],['Mg','Magnesium'],['Al','Aluminium'],'C',['Zn','Zinc'],['Fe','Iron'],'H',['Cu','Copper']];
+
+  var METALS = {
+    aluminium:{
+      name:'Aluminium', sym:'Al', method:'Electrolysis of molten aluminium oxide', ladder:'Al',
+      ore:{name:'Bauxite', compound:'Aluminium oxide, Al<sub>2</sub>O<sub>3</sub>, mixed with iron oxide and other impurities', where:'Open-cast mines in warm, wet regions, for example Australia, Guinea and Brazil.', note:'Iron oxide gives bauxite its red-brown colour.'},
+      flow:['Mine and crush the bauxite','Purify it to get pure aluminium oxide (alumina)','Dissolve the alumina in molten cryolite','Electrolyse at about 950 °C','Tap off the molten aluminium','Cast, roll or recycle'],
+      steps:[
+        'Bauxite is dissolved in hot sodium hydroxide solution. Aluminium oxide dissolves; iron oxide does not, and is filtered off as red mud. Pure aluminium oxide is then recovered from the solution.',
+        'Aluminium oxide melts at over 2000 °C, which would waste enormous amounts of energy. Dissolving it in molten cryolite lets the cell run at about 950 °C.',
+        'The cell has a carbon lining that acts as the cathode, and large carbon blocks dipping in as the anode. Molten aluminium collects at the bottom and is tapped off.',
+        'Oxygen forms at the anode and reacts with the hot carbon to make carbon dioxide. The anodes burn away and have to be replaced regularly.'
+      ],
+      eqs:[
+        {lab:'Cathode (reduction)', body:'Al<sup>3+</sup> + 3e<sup>−</sup> → Al'},
+        {lab:'Anode (oxidation)', body:'2O<sup>2−</sup> → O<sub>2</sub> + 4e<sup>−</sup>'},
+        {lab:'Overall', body:'2Al<sub>2</sub>O<sub>3</sub> → 4Al + 3O<sub>2</sub>', word:'aluminium oxide → aluminium + oxygen'},
+        {lab:'Why the anodes wear away', body:'C + O<sub>2</sub> → CO<sub>2</sub>'}
+      ],
+      why:'Aluminium is more reactive than carbon, so carbon cannot take the oxygen away from aluminium oxide. The compound has to be split by electricity instead. That is why aluminium stayed rare and costly until cheap electricity arrived in the 1880s.',
+      uses:[
+        ['Aircraft bodies and car panels','Low density, about a third of steel, so vehicles are lighter and use less fuel. Alloys make it strong enough.'],
+        ['Drinks cans and food foil','Malleable, non-toxic, and a thin oxide layer stops it corroding.'],
+        ['Overhead power cables','Good electrical conductor for its mass. A steel core inside supplies the strength.'],
+        ['Window frames and building cladding','The oxide layer resists corrosion, so it needs little or no painting.']
+      ],
+      impact:[
+        'Smelting takes huge amounts of electricity, so smelters are often built near hydroelectric power. The carbon anodes also release carbon dioxide.',
+        'Bauxite mining clears land, and the red mud left over must be stored safely.',
+        'Recycling saves about 95% of the energy needed to make new aluminium, and it can be repeated without losing quality.'
+      ],
+      nums:[['Melting point of aluminium oxide','over 2000 °C'],['Cell temperature with cryolite','about 950 °C'],['Electricity per kg of aluminium','about 13–15 kWh'],['Energy saved by recycling','about 95%'],['Density','2.7 g/cm³']],
+      push:'Aluminium was once more valuable than gold. Use what you know about its reactivity to explain why it was so hard to extract before electrolysis.'
+    },
+    iron:{
+      name:'Iron', sym:'Fe', method:'Reduction with carbon in a blast furnace', ladder:'Fe',
+      ore:{name:'Haematite', compound:'Iron(III) oxide, Fe<sub>2</sub>O<sub>3</sub>, about 70% iron by mass', where:'Huge open pits, for example in Western Australia and Brazil.', note:'Magnetite (Fe<sub>3</sub>O<sub>4</sub>) is another important iron ore.'},
+      flow:['Mine and crush the haematite','Load ore, coke and limestone into the furnace','Blow hot air in near the bottom','Carbon monoxide reduces the iron oxide','Tap molten iron and slag separately','Turn the iron into steel'],
+      steps:[
+        'Iron ore, coke (a form of carbon) and limestone are fed in at the top of the furnace. Hot air is blown in near the bottom.',
+        'Coke burns to make heat and carbon dioxide. More carbon then turns the carbon dioxide into carbon monoxide.',
+        'Carbon monoxide takes the oxygen from iron oxide, leaving molten iron that trickles to the bottom.',
+        'Limestone breaks down, and the calcium oxide it makes reacts with sand (silicon dioxide) to form slag, which floats on the iron. Both are tapped off separately.',
+        'The iron from the furnace is brittle because of its carbon. Blowing oxygen through it removes most of the carbon and makes steel.'
+      ],
+      eqs:[
+        {lab:'Burning coke', body:'C + O<sub>2</sub> → CO<sub>2</sub>'},
+        {lab:'Making carbon monoxide', body:'CO<sub>2</sub> + C → 2CO'},
+        {lab:'Reduction of the ore', body:'Fe<sub>2</sub>O<sub>3</sub> + 3CO → 2Fe + 3CO<sub>2</sub>', word:'iron(III) oxide + carbon monoxide → iron + carbon dioxide'},
+        {lab:'Limestone breaks down', body:'CaCO<sub>3</sub> → CaO + CO<sub>2</sub>'},
+        {lab:'Slag forms', body:'CaO + SiO<sub>2</sub> → CaSiO<sub>3</sub>'}
+      ],
+      why:'Iron is less reactive than carbon, so carbon monoxide made from coke can take the oxygen from iron oxide. Heating with carbon is far cheaper than electrolysis, which is a big reason steel is affordable.',
+      uses:[
+        ['Bridges, buildings and rails','Steel is strong and cheap, and can be made in huge quantities.'],
+        ['Car bodies and appliances','Strong, and easy to press into shape.'],
+        ['Cutlery and sinks','Stainless steel is an alloy with chromium and nickel that resists rusting.'],
+        ['Cookware and manhole covers','Cast iron is hard and can be cast into shape, though it is brittle.']
+      ],
+      impact:[
+        'Blast furnaces release a lot of carbon dioxide, from burning coke and from the reduction itself.',
+        'Slag does not have to be waste. It can be used in road building and cement.',
+        'Steel is magnetic, so it is easy to sort from other scrap, and it is one of the most recycled materials in the world.'
+      ],
+      nums:[['Melting point of iron','1538 °C'],['Iron in haematite, by mass','about 70%'],['Carbon in furnace iron','about 4%'],['Carbon in most steels','below 2%']],
+      push:'Why is limestone added to a blast furnace, and what happens to it? Answer using two equations.'
+    },
+    copper:{
+      name:'Copper', sym:'Cu', method:'Smelting, then purifying by electrolysis', ladder:'Cu',
+      ore:{name:'Chalcopyrite (a sulfide ore) or malachite (a carbonate ore)', compound:'Copper iron sulfide, CuFeS<sub>2</sub>, or copper carbonate, CuCO<sub>3</sub>·Cu(OH)<sub>2</sub>', where:'Large mines in Chile, Peru and the Democratic Republic of the Congo.', note:'Ores often contain only about 1% copper or less, so huge amounts of rock are dug up.'},
+      flow:['Mine and crush the ore','Separate the copper mineral from waste rock','Smelt to make impure copper','Use it as the anode in an electrolysis cell','Pure copper builds up on the cathode','Draw into wire or cast'],
+      steps:[
+        'The ore is crushed and the copper-rich mineral is separated from waste rock by froth flotation.',
+        'The concentrated mineral is smelted with air, giving impure copper that is roughly 98–99% pure. Sulfur dioxide is released from sulfide ores and is usually captured to make sulfuric acid.',
+        'Impure copper is cast into slabs to be the anode. The cathode is a thin sheet of pure copper. The electrolyte is copper(II) sulfate solution.',
+        'Copper dissolves from the anode as Cu²⁺ ions and is deposited on the cathode as pure copper. Impurities fall to the bottom as sludge, which often contains silver and gold.',
+        'Low-grade ores can be treated with bacteria (bioleaching) or plants (phytomining) instead of smelting.'
+      ],
+      eqs:[
+        {lab:'Heating a carbonate ore', body:'CuCO<sub>3</sub> → CuO + CO<sub>2</sub>'},
+        {lab:'Reduction with carbon', body:'2CuO + C → 2Cu + CO<sub>2</sub>', word:'copper oxide + carbon → copper + carbon dioxide'},
+        {lab:'Anode in the refining cell', body:'Cu → Cu<sup>2+</sup> + 2e<sup>−</sup>'},
+        {lab:'Cathode in the refining cell', body:'Cu<sup>2+</sup> + 2e<sup>−</sup> → Cu'}
+      ],
+      why:'Copper is low in the reactivity series, so it is easy to release from its compounds by heating. The catch is purity. Even small amounts of impurity cut electrical conductivity, so smelted copper is refined by electrolysis.',
+      uses:[
+        ['Electrical wiring','Excellent electrical conductor, and ductile enough to draw into thin wire.'],
+        ['Water pipes','Resists corrosion and is easy to bend and join.'],
+        ['Pan bases','Very good conductor of heat.'],
+        ['Brass and bronze','Alloys with zinc or tin that are harder than copper and resist corrosion.']
+      ],
+      impact:[
+        'Mining moves vast amounts of rock for a small amount of metal, and leaves waste that must be managed.',
+        'Sulfur dioxide from smelting can cause acid rain if it is not captured.',
+        'Copper can be recycled again and again without losing its properties, which matters as demand for electrical wiring grows.'
+      ],
+      nums:[['Melting point','1085 °C'],['Purity of smelted copper','roughly 98–99%'],['Purity needed for wire','over 99.9%'],['Copper in a typical ore','about 1% or less']],
+      push:'Smelting already gives copper that is about 98% pure. Why bother refining it by electrolysis?'
+    },
+    zinc:{
+      name:'Zinc', sym:'Zn', method:'Roasting, then reduction with carbon', ladder:'Zn',
+      ore:{name:'Sphalerite (zinc blende)', compound:'Zinc sulfide, ZnS', where:'Mines in China, Peru and Australia, among others.', note:'Most zinc worldwide is now made by electrolysis of zinc sulfate solution. The carbon route below is the one that matches the school reactivity series.'},
+      flow:['Mine and crush the sphalerite','Concentrate the zinc sulfide','Roast in air to make zinc oxide','Heat zinc oxide with carbon','Condense the zinc vapour','Cast into ingots'],
+      steps:[
+        'The ore is crushed and the zinc sulfide is separated from waste rock.',
+        'It is roasted in air. This turns zinc sulfide into zinc oxide and releases sulfur dioxide, which is captured and turned into sulfuric acid.',
+        'Zinc oxide is heated with carbon in a furnace. Carbon takes the oxygen away, leaving zinc.',
+        'Zinc boils at 907 °C, so at furnace temperature it leaves as a vapour. The vapour is cooled and condensed into liquid zinc.'
+      ],
+      eqs:[
+        {lab:'Roasting the ore', body:'2ZnS + 3O<sub>2</sub> → 2ZnO + 2SO<sub>2</sub>'},
+        {lab:'Reduction with carbon', body:'ZnO + C → Zn + CO', word:'zinc oxide + carbon → zinc + carbon monoxide'}
+      ],
+      why:'Zinc is just below carbon in the reactivity series, so carbon can reduce zinc oxide. Zinc has a low boiling point, so it comes out of the furnace as a vapour and has to be condensed.',
+      uses:[
+        ['Galvanising steel','A zinc coat keeps air and water off the steel. If it is scratched, zinc corrodes first because it is more reactive than iron. This is sacrificial protection.'],
+        ['Brass','An alloy of copper and zinc that is hard-wearing and easy to shape.'],
+        ['Battery casings','Zinc is reactive enough to release electrons in a cell.'],
+        ['Die-cast parts','It melts at a low temperature, so it is easy to cast into detailed shapes.']
+      ],
+      impact:[
+        'Roasting produces sulfur dioxide. It must be captured or it causes acid rain.',
+        'Galvanising makes steel last far longer, which cuts the amount of new steel needed.',
+        'Zinc can be recovered from scrap galvanised steel and from brass.'
+      ],
+      nums:[['Melting point','420 °C'],['Boiling point','907 °C'],['Density','7.1 g/cm³']],
+      push:'Explain how zinc still protects a steel object after the coating has been scratched through.'
+    },
+    titanium:{
+      name:'Titanium', sym:'Ti', method:'Chlorination, then reduction with magnesium', ladder:null,
+      ore:{name:'Rutile or ilmenite', compound:'Titanium dioxide, TiO<sub>2</sub> (rutile), or iron titanium oxide, FeTiO<sub>3</sub> (ilmenite)', where:'Mineral sands, for example in Australia and South Africa.', note:'The ore is common. The metal is expensive because of how it has to be made.'},
+      flow:['Mine mineral sands','Purify to titanium dioxide','React with chlorine and carbon to make titanium chloride','Heat titanium chloride with magnesium in argon','Remove the magnesium chloride','Melt and cast into ingots'],
+      steps:[
+        'Titanium dioxide is heated with carbon in a stream of chlorine gas. This makes titanium tetrachloride, a liquid that can be purified by distillation.',
+        'The titanium chloride is added to molten magnesium in a sealed reactor at roughly 800–1000 °C. Magnesium is more reactive and takes the chlorine.',
+        'The reactor is filled with argon. Hot titanium reacts with oxygen and nitrogen in air, and argon keeps them out.',
+        'The magnesium chloride is removed, leaving a porous lump of titanium. It is melted and cast. The whole process runs in batches and is slow.'
+      ],
+      eqs:[
+        {lab:'Making titanium chloride', body:'TiO<sub>2</sub> + 2Cl<sub>2</sub> + 2C → TiCl<sub>4</sub> + 2CO'},
+        {lab:'Reduction with magnesium', body:'TiCl<sub>4</sub> + 2Mg → Ti + 2MgCl<sub>2</sub>', word:'titanium chloride + magnesium → titanium + magnesium chloride'}
+      ],
+      why:'Titanium is reactive, and hot carbon makes it brittle by forming titanium carbide. Electrolysing the oxide is not practical. So the ore is turned into titanium chloride and reduced with a more reactive metal, magnesium. Every batch is slow and uses expensive reagents, which is why titanium costs so much.',
+      uses:[
+        ['Jet engines and aircraft frames','As strong as many steels but much less dense, and it keeps its strength when hot.'],
+        ['Hip and knee replacements','Non-toxic, and it does not corrode in body fluids.'],
+        ['Ship and chemical plant parts','Resists attack by seawater and many chemicals.'],
+        ['Bike frames and sports equipment','Strong, light and springy.']
+      ],
+      impact:[
+        'The batch process is slow and energy-hungry, so titanium is only used where its performance justifies the price.',
+        'Chlorine and magnesium have to be recycled within the plant to keep costs and pollution down.',
+        'Scrap titanium from aircraft manufacture is collected and re-melted.'
+      ],
+      nums:[['Melting point','1668 °C'],['Density','4.5 g/cm³'],['Density of steel','about 7.9 g/cm³']],
+      push:'Titanium ore is common, yet the metal costs many times more than steel. Explain why.'
+    }
+  };
+
+  function ladderHTML(sym){
+    var rows = ['<li class="end">Most reactive</li>'];
+    LADDER.forEach(function(r){
+      if (r === 'C') rows.push('<li class="mark">Carbon<small>Metals above it need electrolysis. Metals below it can be reduced by carbon.</small></li>');
+      else if (r === 'H') rows.push('<li class="mark">Hydrogen<small>Reference point</small></li>');
+      else rows.push('<li' + (r[0] === sym ? ' class="on"' : '') + '>' + r[0] + ' &nbsp;' + r[1] + '</li>');
+    });
+    rows.push('<li class="end">Least reactive</li>');
+    return '<ul class="ladder" aria-label="Reactivity series">' + rows.join('') + '</ul>';
+  }
+
+  var sheetEl = $('#sheet'), pickerEl = $('#picker'), current = 'aluminium';
+  Object.keys(METALS).forEach(function(k){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'pick'; b.setAttribute('data-metal', k); b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = METALS[k].name + '<small>' + METALS[k].sym + '</small>';
+    b.addEventListener('click', function(){ showMetal(k, true); });
+    pickerEl.appendChild(b);
+  });
+
+  function showMetal(k, remember){
+    if (!METALS[k]) k = 'aluminium';
+    current = k;
+    var m = METALS[k];
+    Array.prototype.forEach.call(pickerEl.children, function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-metal') === k ? 'true' : 'false'); });
+    var ladder = m.ladder ? ladderHTML(m.ladder) : '<p class="callout">Titanium does not fit neatly on the school reactivity series. What matters is that it is reactive enough for carbon to spoil it.</p>';
+    sheetEl.innerHTML =
+      '<header class="sheet-head"><h3>' + m.name + '</h3><p class="method">' + m.method + '</p></header>' +
+      '<div class="sub"><h4>Where it comes from</h4><dl class="ore">' +
+        '<dt>Ore</dt><dd>' + m.ore.name + '</dd>' +
+        '<dt>Compound</dt><dd>' + m.ore.compound + '</dd>' +
+        '<dt>Mined in</dt><dd>' + m.ore.where + '</dd>' +
+        '<dt>Worth noting</dt><dd>' + m.ore.note + '</dd></dl></div>' +
+      '<div class="sub"><h4>The route from ore to metal</h4><ol class="flow">' + m.flow.map(function(f){ return '<li><b></b>' + f + '</li>'; }).join('') + '</ol></div>' +
+      '<div class="sub cols"><div><h4>What happens, step by step</h4><ol class="steps">' + m.steps.map(function(s){ return '<li>' + s + '</li>'; }).join('') + '</ol></div>' +
+        '<div><h4>The chemistry</h4>' + m.eqs.map(function(e){
+          return '<div class="eq"><span class="lab">' + e.lab + '</span><span class="body">' + e.body + '</span>' + (e.word ? '<span class="word">In words: ' + e.word + '</span>' : '') + '</div>';
+        }).join('') + '</div></div>' +
+      '<div class="sub"><h4>Why this method</h4><div class="why">' + ladder + '<p class="measure">' + m.why + '</p></div></div>' +
+      '<div class="sub"><h4>Uses, and the property behind each</h4><ul class="uses">' + m.uses.map(function(u){ return '<li><strong>' + u[0] + '</strong><span>' + u[1] + '</span></li>'; }).join('') + '</ul></div>' +
+      '<div class="sub cols"><div><h4>Impact and recycling</h4><ul class="impact">' + m.impact.map(function(i){ return '<li>' + i + '</li>'; }).join('') + '</ul></div>' +
+        '<div><h4>Numbers you can put on the poster</h4><dl class="nums">' + m.nums.map(function(n){ return '<div><dt>' + n[0] + '</dt><dd>' + n[1] + '</dd></div>'; }).join('') + '</dl></div></div>' +
+      '<div class="push"><h4>Push further</h4><p>' + m.push + '</p></div>';
+    if (remember){
+      try { history.replaceState(null, '', '#metal=' + k); } catch(e){}
+    }
+  }
+
+  var startMetal = 'aluminium';
+  try {
+    var h = (location.hash || '').match(/metal=([a-z]+)/i);
+    if (h){
+      var want = h[1].toLowerCase();
+      if (want === 'aluminum') want = 'aluminium';
+      if (METALS[want]) startMetal = want;
+    }
+  } catch(e){}
+  showMetal(startMetal, false);
+})();
+</script>
+</body>
+</html>

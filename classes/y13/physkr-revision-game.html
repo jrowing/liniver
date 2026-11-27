@@ -1,0 +1,288 @@
+---
+title: "Physkr: Physics Revision Conquest"
+description: "Conquer the map by answering A-level physics questions."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Physkr – Physics Revision Conquest</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#9bd6f2;--fg:#12263a;--card:#fff;--mut:#3d5a70;--line:#7fb3d1}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17465f;--fg:#e8f1f7;--card:#1f3a4d;--mut:#a9c3d4;--line:#3f6a85}}
+:root[data-theme="dark"]{--bg:#17465f;--fg:#e8f1f7;--card:#1f3a4d;--mut:#a9c3d4;--line:#3f6a85}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding:10px 12px}
+h1{font-size:22px;margin:2px 0 6px}
+.sub{color:var(--mut);font-size:13px;margin:6px 0}
+.bar,.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.pill{background:var(--card);border-radius:20px;padding:3px 11px;border:2px solid var(--line);font-weight:600;font-size:13px}
+.pill i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+svg{width:100%;height:auto;display:block;touch-action:manipulation}
+text{text-anchor:middle;dominant-baseline:central;pointer-events:none}
+#msg,.pn{background:var(--card);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px}
+#msg{min-height:40px}
+button{font:inherit;border:0;border-radius:10px;padding:9px 13px;background:#3b8fd9;color:#fff;cursor:pointer;font-weight:600}
+button:disabled{opacity:.4;cursor:default}
+button.g{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+.buy{background:var(--bg);color:var(--fg);border:2px solid var(--line);padding:6px 9px;font-size:13px;line-height:1.2}
+.buy.on{border-color:#e8a400;background:#fff3c4;color:#12263a}
+.buy small{font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.chips label{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:3px 10px;font-size:13px}
+summary{cursor:pointer;font-size:14px;font-weight:600}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:14px;z-index:9}
+#box{background:var(--card);border-radius:14px;padding:16px;max-width:520px;width:100%;max-height:90%;overflow:auto}
+.tag{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+.opt.ok{background:#2e9e5b;color:#fff}.opt.no{background:#d9503b;color:#fff}
+.ex{font-size:14px;color:var(--mut);margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}td{padding:3px 4px;border-bottom:1px solid var(--line)}
+</style></head><body><main>
+<h1>⚛️ Physkr</h1>
+<div class="bar" id="hd"></div>
+<svg id="bd" viewBox="-235 -215 470 430"></svg>
+<div id="msg"></div>
+<div class="pn" id="pn"></div>
+<div class="row"><button id="rv">⚛ Revise for coins</button><button id="et" class="g">End turn ➜</button></div>
+<details><summary>Topics &amp; new game</summary><div class="chips" id="tp"></div><button class="g" id="nw">New game</button></details>
+<p class="sub"><b>How to play:</b> every green tile in a connected province earns 🪙1 per turn; units cost upkeep. A unit captures a tile only if its strength beats the tile's defence (towns defend neighbours at 1, castles at 2, units at their level). Drop a unit onto a friendly one to merge them. Destroy every rival town to win. Answer a physics question each turn to bank bonus coins.</p>
+</main>
+<div id="ov"><div id="box"></div></div>
+<script>
+const TOPICS=["Mechanics","Waves","Electricity","Thermal","Fields","Quantum & nuclear"];
+// [topic, question, correct, wrong1, wrong2, wrong3, explanation]
+const Q=[
+["Mechanics","A car accelerates uniformly from rest to 20 m/s in 5.0 s. How far does it travel?","50 m","100 m","25 m","4.0 m","s = ½(u+v)t = ½ × 20 × 5.0 = 50 m."],
+["Mechanics","Which of these is a vector quantity?","Displacement","Distance","Speed","Energy","Displacement has magnitude and direction; the others are scalars."],
+["Mechanics","A net force of 6.0 N acts on a 2.0 kg mass. What is its acceleration?","3.0 m s⁻²","12 m s⁻²","0.33 m s⁻²","4.0 m s⁻²","a = F/m = 6.0/2.0 = 3.0 m s⁻²."],
+["Mechanics","An object is dropped from rest (negligible air resistance). Its speed after 2.0 s is closest to:","20 m s⁻¹","10 m s⁻¹","40 m s⁻¹","5.0 m s⁻¹","v = u + at = 0 + 9.81 × 2.0 ≈ 20 m s⁻¹."],
+["Mechanics","What is the kinetic energy of a 0.50 kg ball moving at 4.0 m s⁻¹?","4.0 J","8.0 J","2.0 J","1.0 J","Ek = ½mv² = ½ × 0.50 × 16 = 4.0 J."],
+["Mechanics","Linear momentum of a system is conserved when:","No resultant external force acts","Kinetic energy is conserved","The collision is elastic","The objects stick together","Conservation of momentum needs zero resultant external force, whatever type of collision."],
+["Mechanics","A motor lifts a 50 kg load through 4.0 m in 10 s. The useful power output is about:","200 W","2000 W","20 W","50 W","P = mgh/t = 50 × 9.81 × 4.0 / 10 ≈ 196 W."],
+["Mechanics","A falling object reaches terminal velocity when:","The resultant force is zero","Its weight becomes zero","Drag is zero","Its acceleration equals g","Drag balances weight, so the resultant force and acceleration are zero."],
+["Mechanics","A 10 N force acts perpendicular to a spanner at 0.30 m from the nut. The moment is:","3.0 N m","33 N m","0.030 N m","10 N m","Moment = force × perpendicular distance = 10 × 0.30."],
+["Waves","A wave has period 0.020 s. Its frequency is:","50 Hz","0.020 Hz","5.0 Hz","500 Hz","f = 1/T = 1/0.020 = 50 Hz."],
+["Waves","Sound travels at 340 m s⁻¹. What is the wavelength at 170 Hz?","2.0 m","0.50 m","58 000 m","170 m","λ = v/f = 340/170 = 2.0 m."],
+["Waves","Which of these can be polarised?","Light","Sound in air","Any longitudinal wave","Pressure waves","Only transverse waves can be polarised; light is transverse."],
+["Waves","Two coherent sources interfere constructively when the path difference is:","nλ","(n + ½)λ","λ/4","Always zero","A whole number of wavelengths gives waves in phase."],
+["Waves","In a stationary wave, adjacent nodes are separated by:","λ/2","λ","λ/4","2λ","Node-to-node distance on a stationary wave is half a wavelength."],
+["Electricity","A 12 V supply is connected across a 4.0 Ω resistor. The current is:","3.0 A","48 A","0.33 A","8.0 A","I = V/R = 12/4.0 = 3.0 A."],
+["Electricity","Two 6.0 Ω resistors are connected in parallel. Their combined resistance is:","3.0 Ω","12 Ω","6.0 Ω","1.5 Ω","1/R = 1/6 + 1/6 = 1/3, so R = 3.0 Ω."],
+["Electricity","A current of 2.0 A flows through a 5.0 Ω resistor. The power dissipated is:","20 W","10 W","40 W","2.5 W","P = I²R = 4.0 × 5.0 = 20 W."],
+["Electricity","A current of 3.0 A flows for 20 s. The charge passed is:","60 C","6.7 C","23 C","0.15 C","Q = It = 3.0 × 20 = 60 C."],
+["Electricity","A cell of emf 6.0 V and internal resistance 1.0 Ω supplies 2.0 A. The terminal pd is:","4.0 V","6.0 V","8.0 V","2.0 V","V = E − Ir = 6.0 − 2.0 × 1.0 = 4.0 V."],
+["Thermal","Energy to raise 2.0 kg of water by 5.0 K (c = 4200 J kg⁻¹ K⁻¹)?","42 000 J","8400 J","2100 J","21 000 J","Q = mcΔθ = 2.0 × 4200 × 5.0 = 42 000 J."],
+["Thermal","27 °C expressed in kelvin is:","300 K","246 K","27 K","273 K","T/K = θ/°C + 273 = 300 K."],
+["Thermal","At constant temperature the volume of a fixed mass of ideal gas is halved. Its pressure:","Doubles","Halves","Stays the same","Quadruples","Boyle's law: pV = constant."],
+["Thermal","The internal energy of an ideal gas is:","The total random kinetic energy of its molecules","Kinetic plus potential energy of molecules","Zero at all temperatures","Equal to its pressure × volume only","Ideal gas molecules have no intermolecular forces, so no potential energy."],
+["Fields","Gravitational field strength is defined as:","Force per unit mass","Mass per unit force","Energy per unit mass","Force per unit volume","g = F/m, measured in N kg⁻¹."],
+["Fields","200 V is applied across parallel plates 0.020 m apart. The field strength is:","10 000 V m⁻¹","4.0 V m⁻¹","10 V m⁻¹","0.0001 V m⁻¹","E = V/d = 200/0.020 = 1.0 × 10⁴ V m⁻¹."],
+["Fields","The distance between two point charges is doubled. The force between them becomes:","¼ of the original","½ of the original","Double","4 times","Coulomb's law is an inverse square law."],
+["Fields","The magnetic force on a current-carrying wire is zero when the wire is:","Parallel to the field","Perpendicular to the field","At 45° to the field","Carrying a large current","F = BIL sinθ, which is zero when θ = 0°."],
+["Fields","The orbital speed of a satellite in a circular orbit depends on:","The orbital radius","The satellite's mass","The satellite's shape","Its launch speed only","v = √(GM/r): independent of the satellite's mass."],
+["Quantum & nuclear","A photon's frequency is doubled. Its energy:","Doubles","Halves","Is unchanged","Quadruples","E = hf, so E is proportional to f."],
+["Quantum & nuclear","Above the threshold frequency, increasing light intensity increases:","The number of photoelectrons per second","Their maximum kinetic energy","The threshold frequency","The work function","More photons per second means more electrons, but each photon's energy is unchanged."],
+["Quantum & nuclear","A sample has a half-life of 8 days. 80 g remains after 24 days as how much?","10 g","40 g","20 g","27 g","24 days is 3 half-lives: 80 → 40 → 20 → 10 g."],
+["Quantum & nuclear","In alpha decay the nucleus loses:","2 protons and 2 neutrons","1 proton and 1 neutron","2 protons only","4 protons","An alpha particle is a helium-4 nucleus: nucleon number −4, proton number −2."]
+];
+const $=id=>document.getElementById(id);
+const R=5,S=24,SQ=Math.sqrt(3);
+const COL=["#e8e2cc","#80d36c","#ee7f76","#f4d160"],DK=["#c9c2a4","#4fa83f","#c4504a","#cda533"],FN=["","You","Red","Gold"];
+const UP=[0,1,2,4,8],COST=[0,10,20,30,40],CC=15;
+const NM=["","Electron","Magnet","Collider","Reactor"],IC=["","⚡","🧲","💥","☢️"];
+const DIRS=[[1,0],[1,-1],[0,-1],[-1,0],[-1,1],[0,1]];
+let Z,G;
+const K=(q,r)=>q+","+r;
+const nb=t=>DIRS.map(d=>Z[K(t.q+d[0],t.r+d[1])]).filter(Boolean);
+const dist=(q,r)=>Math.max(Math.abs(q),Math.abs(r),Math.abs(q+r));
+const count=f=>Object.values(Z).filter(t=>t.o===f).length;
+const alive=f=>Object.values(Z).some(t=>t.o===f&&t.t);
+function gen(){
+  Z={};
+  for(let q=-R;q<=R;q++)for(let r=Math.max(-R,-q-R);r<=Math.min(R,-q+R);r++){
+    const d=dist(q,r);
+    if((d===R&&Math.random()<.35)||(d===R-1&&Math.random()<.12))continue;
+    Z[K(q,r)]={k:K(q,r),q,r,o:0,u:0,m:false,t:false,c:0,b:false};
+  }
+  [[1,-3,3],[2,3,0],[3,0,-3]].forEach(([f,q,r])=>{
+    const s=Z[K(q,r)];s.o=f;s.t=true;s.c=10;const own=[s];
+    while(own.length<11){
+      const fr=[...new Set(own.flatMap(nb))].filter(t=>!t.o);if(!fr.length)break;
+      const t=fr[Math.floor(Math.random()*fr.length)];t.o=f;own.push(t);
+    }
+  });
+}
+function comp(s){const seen=new Set([s.k]),a=[s],st=[s];while(st.length){const t=st.pop();nb(t).forEach(n=>{if(n.o===s.o&&!seen.has(n.k)){seen.add(n.k);a.push(n);st.push(n)}})}return a}
+function provs(f){const seen=new Set(),res=[];Object.values(Z).forEach(t=>{if(t.o===f&&!seen.has(t.k)){const c=comp(t);c.forEach(x=>seen.add(x.k));res.push(c)}});return res}
+function fix(){
+  const seen=new Set(),cs=[],has={};
+  Object.values(Z).forEach(t=>{if(t.o&&!seen.has(t.k)){const c=comp(t);c.forEach(x=>seen.add(x.k));cs.push(c);if(c.some(x=>x.t))has[t.o]=1}});
+  cs.forEach(c=>{
+    const ts=c.filter(x=>x.t);
+    if(ts.length>1)ts.slice(1).forEach(x=>{ts[0].c+=x.c;x.t=false;x.c=0});
+    else if(!ts.length){
+      if(c.length<2||!has[c[0].o])c.forEach(x=>{x.o=0;x.u=0;x.b=false});
+      else{const x=c.find(y=>!y.u)||c[0];x.t=true;x.c=0}
+    }
+  });
+}
+const val=t=>Math.max(t.u,t.t?1:0,t.b?2:0);
+const def=t=>Math.max(val(t),...nb(t).filter(n=>n.o===t.o).map(val));
+function targets(c,L,src){
+  const own=new Set(c.map(x=>x.k)),out=new Set();
+  c.forEach(t=>{
+    if(t!==src&&(!t.u||t.u+L<=4))out.add(t.k);
+    nb(t).forEach(n=>{if(!own.has(n.k)&&def(n)<L)out.add(n.k)});
+  });
+  return out;
+}
+const castleT=c=>new Set(c.filter(t=>!t.b&&!t.t).map(t=>t.k));
+function put(L,d,f,mv){
+  if(d.o===f){d.u+=L;d.m=d.m||mv}
+  else{d.o=f;d.u=L;d.m=true;d.t=false;d.c=0;d.b=false}
+  fix();
+}
+const upk=c=>c.reduce((a,x)=>a+UP[x.u]+(x.b?1:0),0);
+function start(f){
+  provs(f).forEach(c=>{
+    const t=c.find(x=>x.t);if(!t)return;
+    t.c+=c.length;const up=upk(c);
+    if(t.c>=up)t.c-=up;else{t.c=0;c.forEach(x=>x.u=0);if(f===1)G.lost=1}
+  });
+  Object.values(Z).forEach(t=>{if(t.o===f)t.m=false});
+}
+function best(L,c,f){
+  const own=new Set(c.map(x=>x.k));let bt=null,bs=-1;
+  c.forEach(t=>nb(t).forEach(n=>{
+    if(!own.has(n.k)&&def(n)<L){const s=(n.t?6:0)+(n.o?3:0)+(n.o===1?1:0)+Math.random()*2;if(s>bs){bs=s;bt=n}}
+  }));
+  return bt;
+}
+function ai(f){
+  start(f);
+  for(let i=0;i<40;i++){
+    let a=false;
+    for(const c of provs(f)){
+      const s=c.find(x=>x.u&&!x.m&&best(x.u,c,f));
+      if(s){const g=best(s.u,c,f),L=s.u;s.u=0;put(L,g,f,true);a=true;break}
+      const T=c.find(x=>x.t);if(!T)continue;
+      const up=upk(c);
+      for(let L=1;L<=4;L++){
+        if(T.c<COST[L]||c.length-up-UP[L]<1)continue;
+        const g=best(L,c,f);
+        if(g){T.c-=COST[L];put(L,g,f,true);a=true;break}
+      }
+      if(a)break;
+    }
+    if(!a)break;
+  }
+}
+function say(t){$("msg").textContent=t}
+function pvc(){return G.pv&&Z[G.pv]&&Z[G.pv].o===1?comp(Z[G.pv]):null}
+function render(){
+  const pv=pvc(),sel=G.sel&&Z[G.sel];let tg=new Set();
+  if(pv){if(G.buy)tg=G.buy==="C"?castleT(pv):targets(pv,G.buy,null);else if(sel&&sel.u&&!sel.m&&sel.o===1)tg=targets(pv,sel.u,sel)}
+  let h="";
+  Object.values(Z).sort((a,b)=>a.r-b.r||a.q-b.q).forEach(t=>{
+    const x=S*SQ*(t.q+t.r/2),y=S*1.5*t.r;
+    const pts=dy=>[0,1,2,3,4,5].map(i=>{const a=(60*i-30)*Math.PI/180;return (x+S*Math.cos(a)).toFixed(1)+","+(y+dy+S*Math.sin(a)).toFixed(1)}).join(" ");
+    const isT=tg.has(t.k),inP=pv&&pv.includes(t),isS=sel&&sel===t;
+    h+=`<polygon points="${pts(5)}" fill="${DK[t.o]}" pointer-events="none"/><polygon data-k="${t.k}" points="${pts(0)}" fill="${COL[t.o]}" stroke="${isT?"#12263a":isS?"#ffe066":inP?"#fff":"rgba(0,0,0,.08)"}" stroke-width="${isT||inP||isS?2.5:1}"${isT?' stroke-dasharray="4 3"':""}/>`;
+    const bi=t.t?"🏠":t.b?"🏰":"";
+    if(t.u){
+      if(bi)h+=`<text x="${x-9}" y="${y+9}" font-size="11">${bi}</text>`;
+      h+=`<text x="${x+(bi?3:0)}" y="${y-1}" font-size="17" opacity="${t.o===1&&t.m?.5:1}">${IC[t.u]}</text>`;
+    }else if(bi)h+=`<text x="${x}" y="${y-3}" font-size="17">${bi}</text>`;
+    if(t.t&&t.o===1)h+=`<text x="${x}" y="${y+13}" font-size="9" font-weight="700" fill="#12263a">${t.c}</text>`;
+  });
+  $("bd").innerHTML=h;
+  $("hd").innerHTML=`<span class="pill">Round ${G.round}</span>`+[1,2,3].map(f=>`<span class="pill" style="border-color:${DK[f]}"><i style="background:${COL[f]}"></i>${FN[f]} ${count(f)}${alive(f)?"":" ✖"}</span>`).join("")+`<span class="pill">🔥 ${G.streak}</span>`;
+  $("rv").disabled=!!G.rev;$("rv").textContent=G.rev?"⚛ Revised ✔":"⚛ Revise for coins";
+  if(!pv){$("pn").innerHTML=`<span class="sub">Tap one of your green tiles to select its province, then buy units or tap a unit to move it.</span>`;return}
+  const T=pv.find(x=>x.t),up=upk(pv),net=pv.length-up;
+  $("pn").innerHTML=`<b>🪙 ${T.c}</b> · income +${pv.length} · upkeep −${up} · <b>net ${net>=0?"+":""}${net}</b><div class="row">`+
+    [1,2,3,4].map(L=>`<button class="buy${G.buy===L?" on":""}" data-b="${L}" ${T.c<COST[L]?"disabled":""}>${IC[L]} ${NM[L]}<br><small>${COST[L]} 🪙 · str ${L}</small></button>`).join("")+
+    `<button class="buy${G.buy==="C"?" on":""}" data-b="C" ${T.c<CC?"disabled":""}>🏰 Castle<br><small>${CC} 🪙 · str 2</small></button></div>`;
+}
+$("pn").onclick=e=>{const b=e.target.closest(".buy");if(!b||G.over)return;const v=b.dataset.b==="C"?"C":+b.dataset.b;G.buy=G.buy===v?0:v;G.sel=null;render()};
+$("bd").onclick=e=>{
+  if(G.over||G.modal)return;
+  const k=e.target.dataset&&e.target.dataset.k;if(!k)return;
+  const t=Z[k],pv=pvc(),sel=G.sel&&Z[G.sel];
+  if(pv&&G.buy){
+    const ok=G.buy==="C"?castleT(pv):targets(pv,G.buy,null);
+    if(ok.has(k)){
+      const T=pv.find(x=>x.t);
+      if(G.buy==="C"){t.b=true;T.c-=CC}else{T.c-=COST[G.buy];put(G.buy,t,1,false)}
+      G.buy=0;G.pv=k;say("Placed.");
+    }else say("Can't place that there. Dashed tiles are valid.");
+  }else if(pv&&sel&&sel.u&&!sel.m&&targets(pv,sel.u,sel).has(k)){
+    const L=sel.u;sel.u=0;put(L,t,1,true);G.sel=null;G.pv=k;say("Moved.");
+  }else if(t.o===1){G.pv=k;G.sel=t.u&&!t.m?k:null;G.buy=0}
+  else{G.sel=null;G.buy=0;say(t.o?`That tile is defended at strength ${def(t)}. Bring a stronger unit.`:"Select a unit first, or buy one.")}
+  render();
+  if(!alive(2)&&!alive(3))fin("win");
+};
+$("et").onclick=()=>{
+  if(G.over||G.modal)return;
+  G.sel=null;G.buy=0;G.lost=0;const b=count(1);
+  [2,3].forEach(f=>{if(alive(f))ai(f)});
+  if(!alive(1))return fin("lose");
+  if(!alive(2)&&!alive(3))return fin("win");
+  G.round++;G.rev=false;
+  if(G.round>40)return fin("time");
+  start(1);const a=count(1);
+  say((a<b?`Rivals captured ${b-a} of your tiles! `:"Your turn. ")+(G.lost?"Unpaid units deserted!":""));
+  render();
+};
+$("rv").onclick=()=>{if(G.rev||G.over||G.modal)return;G.modal=1;ask()};
+function active(){const a=[...document.querySelectorAll("#tp input:checked")].map(i=>i.value);return a.length?a:TOPICS}
+function pick(){
+  const a=active();let p=Q.map((q,i)=>i).filter(i=>a.includes(Q[i][0])&&!G.used.has(i));
+  if(!p.length){Q.forEach((q,i)=>{if(a.includes(q[0]))G.used.delete(i)});p=Q.map((q,i)=>i).filter(i=>a.includes(Q[i][0]))}
+  const i=p[Math.floor(Math.random()*p.length)];G.used.add(i);return i;
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function open(h){$("box").innerHTML=h;$("ov").style.display="flex"}
+function ask(){
+  const i=pick(),q=Q[i];G.cur=i;G.ans=false;G.opts=shuffle([0,1,2,3]);
+  open(`<div class="tag">${q[0]} · right answer = bonus coins</div><p><b>${q[1]}</b></p>`+G.opts.map((o,n)=>`<button class="opt" data-n="${n}">${q[2+o]}</button>`).join(""));
+}
+function bonusTown(){const pv=pvc()||provs(1).sort((a,b)=>b.length-a.length)[0];return pv&&pv.find(x=>x.t)}
+$("box").onclick=e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.n!==undefined&&!G.ans)answer(+b.dataset.n);
+  else if(b.id==="cn"){$("ov").style.display="none";G.modal=0;render()}
+  else if(b.id==="ag")newGame();
+};
+function answer(n){
+  G.ans=true;const q=Q[G.cur],ok=G.opts[n]===0,st=G.st[q[0]];st[1]++;if(ok)st[0]++;
+  document.querySelectorAll(".opt").forEach((el,i)=>{el.disabled=true;if(G.opts[i]===0)el.classList.add("ok");else if(i===n)el.classList.add("no")});
+  let b;
+  if(ok){G.streak++;const bn=8+Math.min(G.streak-1,4),T=bonusTown();if(T)T.c+=bn;b=`+${bn} 🪙 added to your province treasury.`}
+  else{G.streak=0;b="Streak reset. No bonus this time."}
+  G.rev=true;
+  $("box").insertAdjacentHTML("beforeend",`<p><b>${ok?"Correct!":"Not quite."}</b> ${b}</p><p class="ex">${q[6]}</p><button id="cn">Continue</button>`);
+}
+function fin(res){
+  G.over=res;G.modal=1;render();
+  const p=count(1),r=count(2)+count(3);
+  const t=res==="win"?"🏆 You destroyed every rival town!":res==="lose"?"💀 Your last town has fallen.":p>r?"🏆 Time's up: you hold the most land.":"Time's up: the rivals hold more land.";
+  const rows=TOPICS.filter(x=>G.st[x][1]).map(x=>{const[c,n]=G.st[x];return{t:x,c,n,pc:Math.round(100*c/n)}}).sort((a,b)=>a.pc-b.pc);
+  const weak=rows.filter(x=>x.pc<70);
+  open(`<h2>${t}</h2><p>Round ${G.round}</p><div class="tag">Your revision report</div><table>`+rows.map(x=>`<tr><td>${x.t}</td><td>${x.c}/${x.n}</td><td>${x.pc}%</td></tr>`).join("")+`</table><p class="ex">${rows.length?(weak.length?"Revisit: "+weak.map(x=>x.t).join(", ")+".":"Strong across every topic you attempted."):"You didn't revise any questions this game. Try the ⚛ button next time."}</p><button id="ag">Play again</button>`);
+}
+function newGame(){
+  gen();fix();
+  G={round:1,pv:null,sel:null,buy:0,rev:false,modal:0,streak:0,over:0,lost:0,used:new Set(),st:{}};
+  TOPICS.forEach(t=>G.st[t]=[0,0]);$("ov").style.display="none";
+  say("You are green, in the bottom-left. Select your province, buy an ⚡ Electron, and capture neutral tiles.");
+  render();
+}
+$("tp").innerHTML=TOPICS.map(t=>`<label><input type="checkbox" value="${t}" checked> ${t}</label>`).join("");
+$("nw").onclick=newGame;
+newGame();
+</script></body></html>

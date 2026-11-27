@@ -1,0 +1,767 @@
+---
+title: "Juggling Physics Lab"
+description: "Juggling patterns thrown under real projectile motion: change gravity and tempo."
+layout: null
+---
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Juggling Physics Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a wide ruled "lab notebook" stage with the juggler, controls in a narrow side column that drops under the stage on phones. */
+:root{
+  --bg:#E8EDF2; --panel:#F6F8FA; --stage:#F1F5F9; --ink:#12233A; --ink2:#506378;
+  --line:#C7D2DE; --grid:#DDE5ED; --grid2:#BFCCDA;
+  --accent:#0B7A75; --accent-ink:#FFFFFF; --bad:#B42E2A;
+  --figure:#3C5169; --vec:#1F6FD1; --wt:#6D7C8D;
+  --b0:#E5484D; --b1:#F2A900; --b2:#2F7DE1; --b3:#8E5BE8; --b4:#E5378E; --b5:#3FA34D; --b6:#F2762E; --b7:#17B8C5; --b8:#8B6B4A;
+  --f-display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --f-body:'Figtree','Segoe UI',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1828; --panel:#10253C; --stage:#0D2038; --ink:#E7EFF8; --ink2:#93A9C0;
+    --line:#25405C; --grid:#15304B; --grid2:#2A4C6C;
+    --accent:#4CD0C4; --accent-ink:#06222A; --bad:#FF8A84;
+    --figure:#7C9BBA; --vec:#6FB1FF; --wt:#93A9C0;
+    --b0:#FF6B70; --b1:#FFC531; --b2:#5AA2FF; --b3:#AE86FF; --b4:#FF5FAE; --b5:#5CCB6D; --b6:#FF9150; --b7:#3AD3E0; --b8:#C29A6C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1828; --panel:#10253C; --stage:#0D2038; --ink:#E7EFF8; --ink2:#93A9C0;
+  --line:#25405C; --grid:#15304B; --grid2:#2A4C6C;
+  --accent:#4CD0C4; --accent-ink:#06222A; --bad:#FF8A84;
+  --figure:#7C9BBA; --vec:#6FB1FF; --wt:#93A9C0;
+  --b0:#FF6B70; --b1:#FFC531; --b2:#5AA2FF; --b3:#AE86FF; --b4:#FF5FAE; --b5:#5CCB6D; --b6:#FF9150; --b7:#3AD3E0; --b8:#C29A6C;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:15px/1.5 var(--f-body);
+  padding-block:22px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.wrap{max-width:1200px;margin-inline:auto}
+h1{font:800 clamp(1.8rem,4.2vw,2.7rem)/1.02 var(--f-display);letter-spacing:-.02em;margin:0 0 6px;text-wrap:balance}
+.lede{margin:0 0 18px;color:var(--ink2);max-width:64ch}
+.grid{
+  display:grid; gap:16px; align-items:start;
+  grid-template-columns:minmax(0,1fr) 340px;
+  grid-template-areas:"stage controls" "graph controls" "table controls";
+}
+@media (max-width:900px){
+  .grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "controls" "graph" "table"}
+}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;min-width:0}
+.stage-card{grid-area:stage;overflow:hidden}
+.controls{grid-area:controls}
+.graph-card{grid-area:graph}
+.table-card{grid-area:table}
+.pad{padding:14px 16px}
+.sep{border-top:1px solid var(--line)}
+.card h2{font:600 .72rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--ink2);margin:0 0 12px}
+#stage{display:block;width:100%;height:clamp(340px,64vh,580px);background:var(--stage)}
+.transport{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+.btn{font:500 .9rem var(--f-body);padding:7px 14px;border-radius:4px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:hover{opacity:.88}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.speed{display:flex;align-items:center;gap:10px;flex:1 1 220px;min-width:0}
+.speed label{font-size:.85rem;font-weight:600;white-space:nowrap}
+.speed input{flex:1;min-width:80px}
+.val{font:500 .85rem var(--f-mono);font-variant-numeric:tabular-nums}
+.clock{color:var(--ink2);margin-left:auto}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.field label{font-weight:600;font-size:.88rem}
+.hint{font-size:.78rem;color:var(--ink2);min-height:1.2em}
+input[type=range]{width:100%;accent-color:var(--accent);margin:0}
+input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;margin:0}
+.check{display:flex;align-items:center;gap:9px;font-size:.9rem;margin-bottom:8px;cursor:pointer}
+#pattern{width:100%;font:500 1.6rem var(--f-mono);letter-spacing:.18em;padding:6px 12px;background:var(--stage);color:var(--ink);border:1px solid var(--line);border-radius:4px}
+#pattern[aria-invalid="true"]{border-color:var(--bad)}
+#patStatus.err{color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+#presets{display:grid;gap:10px}
+.gl{font:600 .68rem/1 var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);margin-bottom:6px}
+.help{font-size:.82rem;color:var(--ink2)}
+.help summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.help p{margin:8px 0 0}
+.chip{font:500 .82rem var(--f-mono);padding:4px 9px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:4px;cursor:pointer}
+.chip:hover{border-color:var(--ink2)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{padding:5px 13px;font-size:.84rem;font-weight:500;cursor:pointer;border-right:1px solid var(--line)}
+.seg label:last-of-type{border-right:0}
+.seg input:checked+label{background:var(--ink);color:var(--bg)}
+.seg input:focus-visible+label{outline:2px solid var(--accent);outline-offset:-2px}
+#graph{display:block;width:100%;height:230px;background:var(--stage);border:1px solid var(--line);border-radius:4px}
+.caption{margin:10px 0 0;font-size:.85rem;color:var(--ink2);max-width:70ch}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th{font:600 .68rem/1.2 var(--f-body);text-transform:uppercase;letter-spacing:.07em;color:var(--ink2);text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{font:400 .86rem var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+td:first-child{font-weight:500;font-size:1rem}
+td.mut{color:var(--ink2);text-align:left;font-family:var(--f-body)}
+.eqs{margin:14px 0 0;padding:12px 14px;border:1px solid var(--line);border-radius:4px;background:var(--stage);font:400 .84rem/1.9 var(--f-mono);overflow-x:auto}
+.eqs span{color:var(--ink2);font-family:var(--f-body);margin-left:10px}
+.note{margin:10px 0 0;font-size:.8rem;color:var(--ink2)}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<main class="wrap">
+  <header>
+    <h1>Juggling Physics Lab</h1>
+    <p class="lede">Siteswap patterns thrown under real projectile motion, with hands that catch, scoop and throw. Change gravity, tempo and dwell time, then read the consequences off the throw table.</p>
+  </header>
+
+  <div class="grid">
+    <section class="card stage-card" aria-label="Simulation">
+      <canvas id="stage" role="img" aria-label="A juggler throwing balls in the chosen siteswap pattern"></canvas>
+      <div class="transport">
+        <button class="btn" id="play" type="button">Pause</button>
+        <button class="btn ghost" id="restart" type="button">Restart</button>
+        <div class="speed">
+          <label for="speed">Slow motion</label>
+          <input id="speed" type="range" min="0.05" max="1" step="0.05" value="1">
+          <span class="val" id="speedOut">1.00×</span>
+        </div>
+        <span class="clock val" id="clock"></span>
+      </div>
+    </section>
+
+    <aside class="card controls" aria-label="Controls">
+      <div class="pad">
+        <h2>Pattern</h2>
+        <div class="field">
+          <input id="pattern" type="text" autocomplete="off" spellcheck="false" maxlength="12" value="3" aria-label="Siteswap pattern" aria-describedby="patStatus">
+          <div id="patStatus" class="hint" role="status"></div>
+          <div id="presets" role="group" aria-label="Preset patterns"></div>
+          <div><button class="btn ghost" id="random" type="button">Random pattern</button></div>
+          <details class="help">
+            <summary>How siteswap works</summary>
+            <p>Each digit is how many beats later that throw lands. Hands alternate, right hand on even beats, so an odd throw crosses to the other hand and an even throw returns to the same hand.</p>
+            <p>The average of the digits is the number of balls. A 0 is an empty hand and a 2 is a held ball. Letters a to f stand for 10 to 15. The state shows which of the next beats already have a ball arriving.</p>
+          </details>
+        </div>
+      </div>
+      <div class="pad sep">
+        <h2>Physics</h2>
+        <div class="field">
+          <div class="row"><label for="grav">Gravity</label><span class="val" id="gravOut"></span></div>
+          <input id="grav" type="range" min="1" max="26" step="0.01" value="9.81">
+          <div class="chips" id="gravChips" role="group" aria-label="Gravity presets"></div>
+        </div>
+        <div class="field">
+          <div class="row"><label for="tau">Beat time</label><span class="val" id="tauOut"></span></div>
+          <input id="tau" type="range" min="100" max="450" step="5" value="270">
+          <div class="hint" id="tauHint"></div>
+        </div>
+        <div class="field">
+          <div class="row"><label for="dwell">Dwell time</label><span class="val" id="dwellOut"></span></div>
+          <input id="dwell" type="range" min="0.2" max="1.9" step="0.05" value="0.75">
+          <div class="hint" id="dwellHint"></div>
+        </div>
+        <div class="field">
+          <div class="row"><label for="width">Hand width</label><span class="val" id="widthOut"></span></div>
+          <input id="width" type="range" min="0.16" max="0.5" step="0.01" value="0.30">
+          <div class="hint">Catches happen at this distance from the centre line, throws from about a third of it.</div>
+        </div>
+      </div>
+      <div class="pad sep">
+        <h2>Show</h2>
+        <label class="check"><input type="checkbox" id="optPaths"> Throw paths</label>
+        <label class="check"><input type="checkbox" id="optTrails" checked> Ball trails</label>
+        <label class="check"><input type="checkbox" id="optVec"> Velocity and gravity vectors</label>
+      </div>
+    </aside>
+
+    <section class="card graph-card pad" aria-label="Graph">
+      <h2>Ball data</h2>
+      <div class="seg" role="radiogroup" aria-label="Graph quantity">
+        <input type="radio" name="gmode" id="gm-h" value="h" checked><label for="gm-h">Height</label>
+        <input type="radio" name="gmode" id="gm-v" value="v"><label for="gm-v">Velocity</label>
+        <input type="radio" name="gmode" id="gm-e" value="e"><label for="gm-e">Energy</label>
+      </div>
+      <canvas id="graph" role="img" aria-label="Live graph of ball motion over the last twelve beats"></canvas>
+      <p class="caption" id="graphCaption"></p>
+    </section>
+
+    <section class="card table-card pad" aria-label="Throw table">
+      <h2>Throw table</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th>Throw</th><th>Path</th><th>Flight</th><th>Peak above hand</th><th>Release speed</th><th>Angle</th><th>Hand force</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="eqs" id="eqs">
+        <div>t = (n − D)·τ<span>flight time of a throw n</span></div>
+        <div>H = g·t² / 8<span>peak height above the hand</span></div>
+        <div>v<sub>y</sub> = g·t / 2<span>vertical release speed</span></div>
+        <div>F ≈ n·m·g / D<span>average hand force during the dwell</span></div>
+      </div>
+      <p class="note" id="tableNote"></p>
+    </section>
+  </div>
+</main>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+var F_DISPLAY="'Bricolage Grotesque','Trebuchet MS',sans-serif";
+var F_MONO="'JetBrains Mono',ui-monospace,Menlo,monospace";
+var GROUPS=[
+  ['Cascades and fountains',[['3','Three-ball cascade'],['4','Four-ball fountain'],['5','Five-ball cascade'],['6','Six-ball fountain'],['7','Seven-ball cascade']]],
+  ['Three balls',[['51','Shower'],['441','441'],['531','531'],['423','423'],['612','612'],['522','522'],['504','504'],['450','450'],['360','360'],['801','801'],['50505','50505'],['55500','55500'],['7131','7131'],['60','Three balls, one hand']]],
+  ['Four balls',[['53','53'],['71','Four-ball shower'],['534','534'],['552','552'],['633','633'],['723','723'],['741','741'],['5551','5551'],['55550','55550'],['7531','7531'],['80','Four balls, one hand']]],
+  ['Five balls and more',[['91','Five-ball shower'],['645','645'],['663','663'],['744','744'],['64','64'],['97531','97531'],['86','Seven-ball 86'],['867','867']]],
+  ['Crossed-arm patterns',[['3','Mills Mess','mills'],['52233',"Rubenstein's Revenge",'ruben']]]
+];
+var NAMES={'2':'Two balls held'};
+GROUPS.forEach(function(g){g[1].forEach(function(p){if(!p[2])NAMES[p[0]]=p[1];});});
+var GRAV=[['Earth',9.81],['Moon',1.62],['Mars',3.71],['Jupiter',24.79]];
+var BALL_R=0.033, MASS=0.1;
+var P={g:9.81,tau:0.27,D:0.75,wOut:0.30,S:[3],L:1,maxS:3,balls:3,str:'3',maxH:0,choreo:null,choreoKey:null};
+var beat=0, playing=true, speed=1, dirty=true, gmode='h';
+var chains=[], evCache=[null,null];
+var view={scale:300,init:false};
+var gr={min:0,max:1,init:false};
+var tokens={balls:[]};
+
+/* ---------- pattern maths ---------- */
+function S(j){var L=P.L;return P.S[((j%L)+L)%L];}
+function handOf(j){return ((j%2)+2)%2;}
+function sgn(h){return h===0?-1:1;} /* hand 0 = right hand, drawn on the viewer's left */
+function xIn(h){return sgn(h)*P.wOut*0.35;}
+function xOut(h){return sgn(h)*P.wOut;}
+/* Crossed-arm choreographies: siteswap timing is exact, hand positions are a simplified
+   reading of written descriptions. Each row is [throw x, throw y, catch x, catch y] in metres
+   for one beat; the second half of the cycle is the mirror image with the hands swapped. */
+var CHOREO={
+  mills:{name:'Mills Mess',str:'3',base:[[-0.30,0.075,0.025,0.025],[0.30,-0.075,0,-0.075],[0.30,0.025,-0.025,0.075]]},
+  ruben:{name:"Rubenstein's Revenge",str:'52233',base:[[0.28,-0.08,-0.20,0],[null,null,0.25,0],[null,null,-0.05,0.02],[-0.20,-0.06,null,null],[-0.10,0,null,null]]}
+};
+function buildChoreo(key){
+  var b=CHOREO[key].base,h=b.length,T=[],k,e;
+  for(k=0;k<h;k++)T.push(b[k]);
+  for(k=0;k<h;k++){e=b[k];T.push([e[0]===null?null:-e[0],e[1],e[2]===null?null:-e[2],e[3]]);}
+  return {n:2*h,T:T};
+}
+function nameOf(){return P.choreoKey?CHOREO[P.choreoKey].name:(NAMES[P.str]||'');}
+function choreoRow(k){var c=P.choreo,n=c.n;return c.T[((k%n)+n)%n];}
+function posThrow(k){
+  if(P.choreo){var e=choreoRow(k);if(e[0]!==null)return {x:e[0]*P.wOut/0.30,y:e[1]};}
+  return {x:xIn(handOf(k)),y:0};
+}
+function posCatch(k){
+  if(P.choreo){var e=choreoRow(k);if(e[2]!==null)return {x:e[2]*P.wOut/0.30,y:e[3]};}
+  return {x:xOut(handOf(k)),y:0};
+}
+function tparams(s,j){
+  var h=handOf(j),hl=handOf(j+s),tf=(s-P.D)*P.tau,r=posThrow(j),c=posCatch(j+s);
+  return {s:s,h:h,hl:hl,tf:tf,xr:r.x,yr:r.y,xc:c.x,yc:c.y,vx:(c.x-r.x)/tf,vy:(c.y-r.y+0.5*P.g*tf*tf)/tf};
+}
+function beatList(){var m=P.choreo?P.choreo.n:2*P.L,a=[],k;for(k=0;k<m;k++)a.push(k);return a;}
+function arrivalFrom(k){
+  for(var j=k-P.maxS;j<k;j++){var s=S(j);if(s>0&&j+s===k)return j;}
+  return null;
+}
+function parsePattern(raw){
+  var str=raw.trim().toLowerCase();
+  if(!str)return {ok:false,msg:'Type a siteswap such as 3, 441 or 531.'};
+  if(str.length>12)return {ok:false,msg:'Keep it to 12 throws or fewer.'};
+  var arr=[];
+  for(var i=0;i<str.length;i++){
+    var v=parseInt(str.charAt(i),36);
+    if(isNaN(v)||v>15)return {ok:false,msg:'Use digits 0 to 9 and letters a to f (10 to 15).'};
+    arr.push(v);
+  }
+  var sum=arr.reduce(function(a,b){return a+b;},0), L=arr.length;
+  if(sum===0)return {ok:false,msg:'A pattern needs at least one ball.'};
+  if(sum%L!==0)return {ok:false,msg:'The average throw is '+(sum/L).toFixed(2)+', so the ball count is not a whole number.'};
+  var seen={};
+  for(var q=0;q<L;q++){var m=(q+arr[q])%L;if(seen[m])return {ok:false,msg:'Two balls would land on the same beat.'};seen[m]=1;}
+  return {ok:true,S:arr,L:L,balls:sum/L,str:str};
+}
+function randomPattern(){
+  for(var n=0;n<600;n++){
+    var L=2+Math.floor(Math.random()*4),a=[],i;
+    for(i=0;i<L;i++)a.push(Math.floor(Math.random()*10));
+    var str=a.join(''),p=parsePattern(str);
+    if(p.ok&&p.balls>=3&&p.balls<=6&&str!==P.str&&a.some(function(v){return v!==a[0];}))return str;
+  }
+  return '441';
+}
+function autoTempo(b){return Math.max(0.12,Math.round((0.27-0.0175*Math.max(0,b-3))*200)/200);}
+function initChains(){
+  var B0=-(P.maxS+16);
+  chains=[];
+  for(var j=B0-P.maxS;j<B0;j++){var s=S(j);if(s>0&&j+s>=B0)chains.push([j]);}
+}
+function segJ(i,tb){
+  var c=chains[i], last=c[c.length-1];
+  while(last+S(last)<=tb){last+=S(last);c.push(last);}
+  var lo=0,hi=c.length-1;
+  while(lo<hi){var mid=(lo+hi+1)>>1;if(c[mid]<=tb)lo=mid;else hi=mid-1;}
+  return c[lo];
+}
+
+/* ---------- hands ---------- */
+function herm(p0,m0,p1,m1,s){
+  var s2=s*s,s3=s2*s;
+  return (2*s3-3*s2+1)*p0+(s3-2*s2+s)*m0+(-2*s3+3*s2)*p1+(s3-s2)*m1;
+}
+function buildEvents(h,kmid){
+  var span=P.maxS+22, ev=[], k0=kmid-span;
+  if(handOf(k0)!==h)k0++;
+  for(var k=k0;k<=kmid+span;k+=2){
+    var sk=S(k); if(sk===0)continue;
+    var j=arrivalFrom(k);
+    if(j!==null&&S(j)!==2){
+      var a=tparams(S(j),j),pc=posCatch(k);
+      ev.push({t:(k-P.D)*P.tau,x:pc.x,y:pc.y,vx:a.vx,vy:a.vy-P.g*a.tf,type:'c',k:k});
+    }
+    if(sk!==2){
+      var b=tparams(sk,k),pt=posThrow(k);
+      ev.push({t:k*P.tau,x:pt.x,y:pt.y,vx:b.vx,vy:b.vy,type:'t',k:k});
+    }
+  }
+  return ev;
+}
+function getEvents(h,t){
+  var kq=Math.floor(t/P.tau), c=evCache[h];
+  if(c&&Math.abs(kq-c.k)<=15)return c.ev;
+  var ev=buildEvents(h,kq);
+  evCache[h]={k:kq,ev:ev};
+  return ev;
+}
+function handState(h,t){
+  var ev=getEvents(h,t), n=ev.length;
+  if(n===0)return {x:sgn(h)*(P.wOut*0.35+P.wOut)/2,y:0};
+  if(t<=ev[0].t)return {x:ev[0].x,y:ev[0].y};
+  if(t>=ev[n-1].t)return {x:ev[n-1].x,y:ev[n-1].y};
+  var lo=0,hi=n-1;
+  while(hi-lo>1){var mid=(lo+hi)>>1;if(ev[mid].t<=t)lo=mid;else hi=mid;}
+  var a=ev[lo],b=ev[hi],T=b.t-a.t,s=(t-a.t)/T;
+  var dwell=(a.type==='c'&&b.type==='t'&&a.k===b.k);
+  var ky=dwell?1:0.5;
+  return {x:herm(a.x,a.vx*T,b.x,b.vx*T,s),y:herm(a.y,a.vy*T*ky,b.y,b.vy*T*ky,s)};
+}
+function handVel(h,t){
+  var e=0.002,a=handState(h,t-e),b=handState(h,t+e);
+  return {vx:(b.x-a.x)/(2*e),vy:(b.y-a.y)/(2*e)};
+}
+
+/* ---------- balls ---------- */
+function ballState(i,t,needVel){
+  var tb=t/P.tau, j=segJ(i,tb), s=S(j), tj=j*P.tau, p, v, h;
+  if(s===2){
+    h=handOf(j); p=handState(h,t); v=needVel?handVel(h,t):{vx:0,vy:0};
+    return {x:p.x,y:p.y,vx:v.vx,vy:v.vy,held:true};
+  }
+  var tp=tparams(s,j), tc=tj+tp.tf;
+  if(t<tc){
+    var u=t-tj;
+    return {x:tp.xr+tp.vx*u,y:tp.yr+tp.vy*u-0.5*P.g*u*u,vx:tp.vx,vy:tp.vy-P.g*u,held:false};
+  }
+  p=handState(tp.hl,t); v=needVel?handVel(tp.hl,t):{vx:0,vy:0};
+  return {x:p.x,y:p.y,vx:v.vx,vy:v.vy,held:true};
+}
+
+/* ---------- canvases ---------- */
+var cv=$('stage'), ctx=cv.getContext('2d'), gv=$('graph'), gctx=gv.getContext('2d');
+var cw=600,ch=400,gw=600,gh=230,dpr=1;
+function fit(){
+  dpr=Math.min(window.devicePixelRatio||1,2);
+  var r=cv.getBoundingClientRect();cw=Math.max(200,r.width);ch=Math.max(200,r.height);
+  cv.width=Math.round(cw*dpr);cv.height=Math.round(ch*dpr);
+  r=gv.getBoundingClientRect();gw=Math.max(200,r.width);gh=Math.max(120,r.height);
+  gv.width=Math.round(gw*dpr);gv.height=Math.round(gh*dpr);
+  dirty=true;
+}
+function readTokens(){
+  var cs=getComputedStyle(document.documentElement);
+  function g(n){return cs.getPropertyValue(n).trim();}
+  tokens={stage:g('--stage'),ink:g('--ink'),ink2:g('--ink2'),line:g('--line'),grid:g('--grid'),grid2:g('--grid2'),
+    accent:g('--accent'),figure:g('--figure'),vec:g('--vec'),wt:g('--wt'),bad:g('--bad'),balls:[]};
+  for(var i=0;i<9;i++)tokens.balls.push(g('--b'+i));
+  dirty=true;
+}
+function arrow(c,x1,y1,x2,y2,color,w){
+  var dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy);
+  if(l<3)return;
+  c.strokeStyle=color;c.fillStyle=color;c.lineWidth=w;c.setLineDash([]);
+  c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+  var a=Math.atan2(dy,dx),hd=Math.min(7,l*0.5);
+  c.beginPath();c.moveTo(x2,y2);
+  c.lineTo(x2-hd*Math.cos(a-0.45),y2-hd*Math.sin(a-0.45));
+  c.lineTo(x2-hd*Math.cos(a+0.45),y2-hd*Math.sin(a+0.45));
+  c.closePath();c.fill();
+}
+function elbowFor(sx,sy,hx,hy,side){
+  var L1=0.35,L2=0.35,dx=hx-sx,dy=hy-sy,d=Math.hypot(dx,dy)||0.001;
+  var dm=Math.min(d,L1+L2-0.004), a=(dm*dm+L1*L1-L2*L2)/(2*dm), hh=Math.sqrt(Math.max(0,L1*L1-a*a));
+  var ux=dx/d,uy=dy/d,px=-uy,py=ux;
+  var e1={x:sx+ux*a+px*hh,y:sy+uy*a+py*hh}, e2={x:sx+ux*a-px*hh,y:sy+uy*a-py*hh};
+  var s1=-e1.y+0.6*side*e1.x, s2=-e2.y+0.6*side*e2.x;
+  return s1>=s2?e1:e2;
+}
+
+function render(){
+  var t=beat*P.tau, c=ctx;
+  c.setTransform(dpr,0,0,dpr,0,0);
+  c.fillStyle=tokens.stage;c.fillRect(0,0,cw,ch);
+  var top=Math.max(0.95,P.maxH+0.3);
+  var target=Math.min((ch-26)/(top+1.0),(cw-80)/1.9);
+  if(!view.init){view.scale=target;view.init=true;}
+  view.scale+=(target-view.scale)*0.18;
+  if(Math.abs(target-view.scale)>0.4)dirty=true;
+  var sc=view.scale, ox=46+(cw-46)/2, oy=14+top*sc;
+  function X(x){return ox+x*sc;}
+  function Y(y){return oy-y*sc;}
+
+  /* grid */
+  var steps=[0.1,0.25,0.5,1],minor=1,i;
+  for(i=0;i<steps.length;i++){if(steps[i]*sc>=14){minor=steps[i];break;}}
+  var xmin=(0-ox)/sc,xmax=(cw-ox)/sc,ymin=(oy-ch)/sc,ymax=oy/sc;
+  var pm=new Path2D(),pM=new Path2D(),v;
+  for(v=Math.ceil(xmin/minor)*minor;v<=xmax;v+=minor){
+    var isM=Math.abs(v-Math.round(v))<1e-6,px=Math.round(X(v))+0.5;
+    (isM?pM:pm).moveTo(px,0);(isM?pM:pm).lineTo(px,ch);
+  }
+  for(v=Math.ceil(ymin/minor)*minor;v<=ymax;v+=minor){
+    var isM2=Math.abs(v-Math.round(v))<1e-6,py=Math.round(Y(v))+0.5;
+    (isM2?pM:pm).moveTo(0,py);(isM2?pM:pm).lineTo(cw,py);
+  }
+  c.lineWidth=1;c.strokeStyle=tokens.grid;c.stroke(pm);
+  c.strokeStyle=tokens.grid2;c.stroke(pM);
+
+  /* floor */
+  var fy=Y(-1.0);
+  c.globalAlpha=0.35;c.fillStyle=tokens.grid2;c.fillRect(0,fy,cw,ch-fy);c.globalAlpha=1;
+  c.strokeStyle=tokens.ink2;c.lineWidth=1.5;c.beginPath();c.moveTo(0,fy);c.lineTo(cw,fy);c.stroke();
+
+  /* peak line */
+  if(P.maxH>0.06){
+    c.setLineDash([6,5]);c.strokeStyle=tokens.accent;c.lineWidth=1;
+    c.beginPath();c.moveTo(46,Y(P.maxH));c.lineTo(cw,Y(P.maxH));c.stroke();c.setLineDash([]);
+    c.fillStyle=tokens.accent;c.font='500 11px '+F_MONO;c.textAlign='right';c.textBaseline='bottom';
+    c.fillText('highest peak '+P.maxH.toFixed(2)+' m above the hands',cw-10,Y(P.maxH)-4);
+  }
+
+  /* hands + figure */
+  var hs=[handState(0,t),handState(1,t)];
+  c.save();c.lineCap='round';c.lineJoin='round';c.strokeStyle=tokens.figure;c.fillStyle=tokens.figure;
+  c.globalAlpha=0.16;c.lineWidth=0.24*sc;c.beginPath();c.moveTo(X(0),Y(0.44));c.lineTo(X(0),Y(-0.38));c.stroke();
+  c.globalAlpha=1;c.lineWidth=Math.max(1.5,0.022*sc);
+  c.beginPath();c.arc(X(0),Y(0.78),0.1*sc,0,Math.PI*2);c.stroke();
+  c.beginPath();c.moveTo(X(-0.07),Y(-0.38));c.lineTo(X(-0.13),Y(-1.0));c.moveTo(X(0.07),Y(-0.38));c.lineTo(X(0.13),Y(-1.0));
+  c.moveTo(X(-0.19),Y(0.5));c.lineTo(X(0.19),Y(0.5));c.stroke();
+  for(var h=0;h<2;h++){
+    var side=sgn(h),shx=side*0.19,shy=0.5,hx=hs[h].x,hy=hs[h].y-0.043;
+    var el=elbowFor(shx,shy,hx,hy,side);
+    c.lineWidth=Math.max(2,0.034*sc);
+    c.beginPath();c.moveTo(X(shx),Y(shy));c.lineTo(X(el.x),Y(el.y));c.lineTo(X(hx),Y(hy));c.stroke();
+    c.lineWidth=Math.max(3,0.03*sc);
+    c.beginPath();c.moveTo(X(hx-0.045),Y(hy));c.lineTo(X(hx+0.045),Y(hy));c.stroke();
+  }
+  c.font='600 11px '+F_MONO;c.textAlign='center';c.textBaseline='bottom';c.fillStyle=tokens.ink2;
+  c.fillText('R',X(-0.19),Y(0.5)-8);c.fillText('L',X(0.19),Y(0.5)-8);
+  c.restore();
+
+  /* throw paths */
+  if($('optPaths').checked){
+    c.save();c.setLineDash([4,5]);c.lineWidth=1.2;c.strokeStyle=tokens.wt;c.globalAlpha=0.7;
+    beatList().forEach(function(k){
+      var s=S(k);
+      if(s===0||s===2)return;
+      var tp=tparams(s,k);c.beginPath();
+      for(var n=0;n<=28;n++){
+        var u=tp.tf*n/28,px2=tp.xr+tp.vx*u,py2=tp.yr+tp.vy*u-0.5*P.g*u*u;
+        if(n===0)c.moveTo(X(px2),Y(py2));else c.lineTo(X(px2),Y(py2));
+      }
+      c.stroke();
+    });
+    c.restore();
+  }
+
+  /* balls */
+  var rpx=Math.max(BALL_R*sc,4.5), vec=$('optVec').checked, trails=$('optTrails').checked, sts=[];
+  for(i=0;i<chains.length;i++){
+    var col=tokens.balls[i%9];
+    if(trails){
+      var N=16,dtT=0.018,prev=null;
+      c.lineCap='round';
+      for(var n2=0;n2<=N;n2++){
+        var st=ballState(i,t-n2*dtT,false);
+        if(prev){
+          c.globalAlpha=0.42*(1-n2/N);c.strokeStyle=col;c.lineWidth=rpx*1.5*(1-n2/(N+4));
+          c.beginPath();c.moveTo(X(prev.x),Y(prev.y));c.lineTo(X(st.x),Y(st.y));c.stroke();
+        }
+        prev=st;
+      }
+      c.globalAlpha=1;
+    }
+    sts.push(ballState(i,t,vec));
+  }
+  for(i=0;i<sts.length;i++){
+    var s2=sts[i];
+    c.fillStyle=tokens.balls[i%9];c.strokeStyle='rgba(8,18,32,0.5)';c.lineWidth=1.2;
+    c.beginPath();c.arc(X(s2.x),Y(s2.y),rpx,0,Math.PI*2);c.fill();c.stroke();
+    c.fillStyle='rgba(255,255,255,0.4)';c.beginPath();c.arc(X(s2.x)-rpx*0.3,Y(s2.y)-rpx*0.3,rpx*0.28,0,Math.PI*2);c.fill();
+  }
+  if(vec){
+    for(i=0;i<sts.length;i++){
+      var b=sts[i],bx=X(b.x),by=Y(b.y);
+      arrow(c,bx,by,bx+b.vx*0.06*sc,by-b.vy*0.06*sc,tokens.vec,2);
+      if(!b.held)arrow(c,bx,by,bx,by+P.g*0.012*sc,tokens.wt,2);
+    }
+    c.font='500 11px '+F_MONO;c.textAlign='right';c.textBaseline='top';
+    c.fillStyle=tokens.vec;c.fillText('blue: velocity (1 m/s = 6 cm)',cw-10,10);
+    c.fillStyle=tokens.wt;c.fillText('grey: gravity (g = '+P.g.toFixed(2)+' m/s²)',cw-10,26);
+  }
+
+  /* ruler */
+  c.fillStyle=tokens.stage;c.globalAlpha=0.9;c.fillRect(0,0,46,ch);c.globalAlpha=1;
+  c.strokeStyle=tokens.ink2;c.lineWidth=1;c.beginPath();c.moveTo(46.5,0);c.lineTo(46.5,ch);c.stroke();
+  var tk=sc>=110?0.5:1;
+  c.font='500 10px '+F_MONO;c.textAlign='right';c.textBaseline='middle';
+  for(v=Math.ceil(ymin/tk)*tk;v<=ymax;v+=tk){
+    if(v<-1.0-1e-6)continue;
+    var ty=Y(v);
+    c.strokeStyle=tokens.ink2;c.beginPath();c.moveTo(38,ty);c.lineTo(46,ty);c.stroke();
+    c.fillStyle=tokens.ink2;
+    c.fillText(Math.abs(v)<1e-6?'hands':(Math.abs(v+1)<1e-6?'floor':v.toFixed(1)+' m'),35,ty);
+  }
+
+  /* heading */
+  c.textAlign='left';c.textBaseline='top';
+  c.fillStyle=tokens.ink;c.font='800 36px '+F_DISPLAY;c.fillText(P.str,60,12);
+  var tw=c.measureText(P.str).width;
+  c.font='500 12px '+F_MONO;c.fillStyle=tokens.ink2;
+  c.fillText(P.balls+(P.balls===1?' ball':' balls')+' · period '+P.L+(P.L===1?' beat':' beats')+' · '+(1/P.tau).toFixed(1)+' throws/s',60,54);
+  var nm=nameOf();
+  if(nm&&nm!==P.str){c.font='500 13px '+F_MONO;c.fillText(nm,60+tw+12,24);}
+}
+
+function niceTicks(a,b,n){
+  var span=b-a,raw=span/n,p=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/p;
+  var step=(f<1.5?1:f<3?2:f<7?5:10)*p,out=[];
+  for(var v=Math.ceil(a/step)*step;v<=b+1e-9;v+=step)out.push(Math.round(v/step)*step);
+  return {ticks:out,step:step};
+}
+function drawGraph(){
+  var c=gctx;
+  c.setTransform(dpr,0,0,dpr,0,0);
+  c.fillStyle=tokens.stage;c.fillRect(0,0,gw,gh);
+  var l=50,r=14,tp=16,bt=26,pw=gw-l-r,ph=gh-tp-bt;
+  var tNow=beat*P.tau,win=12*P.tau,t0=tNow-win,N=Math.max(60,Math.floor(pw/3)),series=[],mn=Infinity,mx=-Infinity,i,n;
+  var nb=gmode==='e'?1:chains.length;
+  for(i=0;i<nb;i++){
+    var arr=[],arr2=[],arr3=[];
+    for(n=0;n<=N;n++){
+      var ts=t0+win*n/N,st=ballState(i,ts,gmode!=='h');
+      if(gmode==='h'){arr.push(st.y);mn=Math.min(mn,st.y);mx=Math.max(mx,st.y);}
+      else if(gmode==='v'){arr.push(st.vy);mn=Math.min(mn,st.vy);mx=Math.max(mx,st.vy);}
+      else{
+        var ke=0.5*MASS*(st.vx*st.vx+st.vy*st.vy),pe=MASS*P.g*st.y,e=ke+pe;
+        arr.push(ke);arr2.push(pe);arr3.push(e);
+        mn=Math.min(mn,ke,pe,e);mx=Math.max(mx,ke,pe,e);
+      }
+    }
+    series.push([arr,arr2,arr3]);
+  }
+  if(gmode==='h'||gmode==='e')mn=Math.min(mn,0);
+  var sp=(mx-mn)||1;mn-=sp*0.07;mx+=sp*0.09;
+  if(!gr.init){gr.min=mn;gr.max=mx;gr.init=true;}
+  else{gr.min+=(mn-gr.min)*0.15;gr.max+=(mx-gr.max)*0.15;if(Math.abs(mn-gr.min)+Math.abs(mx-gr.max)>1e-3*sp)dirty=true;}
+  function GX(tt){return l+(tt-t0)/win*pw;}
+  function GY(vv){return tp+ph-(vv-gr.min)/(gr.max-gr.min)*ph;}
+  var nt=niceTicks(gr.min,gr.max,4),dec=Math.max(0,-Math.floor(Math.log10(nt.step)));
+  c.font='500 10px '+F_MONO;c.textAlign='right';c.textBaseline='middle';c.lineWidth=1;
+  nt.ticks.forEach(function(vv){
+    var y=Math.round(GY(vv))+0.5;
+    c.strokeStyle=Math.abs(vv)<1e-9?tokens.grid2:tokens.grid;c.beginPath();c.moveTo(l,y);c.lineTo(l+pw,y);c.stroke();
+    c.fillStyle=tokens.ink2;c.fillText(vv.toFixed(dec),l-6,y);
+  });
+  c.textAlign='center';c.textBaseline='top';
+  for(var k=Math.ceil(t0/P.tau);k<=Math.floor(tNow/P.tau);k++){
+    var x=Math.round(GX(k*P.tau))+0.5;
+    c.strokeStyle=tokens.grid;c.beginPath();c.moveTo(x,tp);c.lineTo(x,tp+ph);c.stroke();
+    c.fillStyle=tokens.ink2;c.fillText(handOf(k)===0?'R':'L',x,tp+ph+6);
+  }
+  c.save();c.beginPath();c.rect(l,tp-2,pw,ph+4);c.clip();c.lineJoin='round';
+  function line(a,col,w,dash){
+    c.strokeStyle=col;c.lineWidth=w;c.setLineDash(dash||[]);c.beginPath();
+    for(var m=0;m<=N;m++){var px=l+pw*m/N,py=GY(a[m]);if(m===0)c.moveTo(px,py);else c.lineTo(px,py);}
+    c.stroke();
+  }
+  if(gmode==='e'){
+    line(series[0][0],tokens.vec,1.8);line(series[0][1],tokens.balls[6],1.8);line(series[0][2],tokens.ink,2.4);
+  }else{
+    for(i=0;i<series.length;i++)line(series[i][0],tokens.balls[i%9],2);
+  }
+  c.restore();
+  c.setLineDash([]);
+  c.strokeStyle=tokens.accent;c.lineWidth=1.5;c.beginPath();c.moveTo(l+pw,tp);c.lineTo(l+pw,tp+ph);c.stroke();
+  c.font='500 10px '+F_MONO;c.textBaseline='top';c.textAlign='left';c.fillStyle=tokens.ink2;
+  c.fillText(gmode==='h'?'height above hands (m)':gmode==='v'?'vertical velocity (m/s)':'energy of one ball (J), m = '+MASS.toFixed(3)+' kg',l+6,2);
+  c.textAlign='right';c.fillStyle=tokens.accent;c.fillText('now',l+pw-5,tp+ph-14);
+  if(gmode==='e'){
+    c.textAlign='right';var lx=gw-r-6,ly=2;
+    c.fillStyle=tokens.ink;c.fillText('total',lx,ly);
+    c.fillStyle=tokens.balls[6];c.fillText('potential  ',lx-38,ly);
+    c.fillStyle=tokens.vec;c.fillText('kinetic  ',lx-38-72,ly);
+  }
+}
+
+/* ---------- readouts ---------- */
+function fmt(x,d){return x.toFixed(d);}
+function refresh(){
+  var maxH=0;
+  beatList().forEach(function(k){var s=S(k);if(s===0||s===2)return;var tp=tparams(s,k);maxH=Math.max(maxH,tp.yr+tp.vy*tp.vy/(2*P.g));});
+  P.maxH=maxH;
+  $('gravOut').textContent=fmt(P.g,2)+' m/s²';
+  $('tauOut').textContent=Math.round(P.tau*1000)+' ms';
+  $('tauHint').textContent=fmt(1/P.tau,1)+' throws per second, '+fmt(0.5/P.tau,1)+' per hand';
+  $('dwellOut').textContent=fmt(P.D,2)+' beats';
+  $('dwellHint').textContent='Each hand holds a ball for '+Math.round(P.D*P.tau*1000)+' ms of its '+Math.round(2*P.tau*1000)+' ms cycle.'+(P.S.indexOf(1)>=0?' A 1-throw needs D below 1.':'');
+  $('widthOut').textContent=Math.round(P.wOut*100)+' cm';
+  Array.prototype.forEach.call($('gravChips').children,function(b){b.setAttribute('aria-pressed',Math.abs(+b.dataset.g-P.g)<0.005?'true':'false');});
+  Array.prototype.forEach.call(document.querySelectorAll('#presets .chip'),function(b){b.setAttribute('aria-pressed',(b.dataset.p===P.str&&(b.dataset.c||'')===(P.choreoKey||''))?'true':'false');});
+  var vals=[];
+  P.S.forEach(function(s){if(s>0&&vals.indexOf(s)<0)vals.push(s);});
+  vals.sort(function(a,b){return a-b;});
+  var rows='',bl=beatList();
+  vals.forEach(function(s){
+    if(s===2){rows+='<tr><td>2</td><td>held</td><td colspan="5" class="mut">The ball stays in the same hand. No flight.</td></tr>';return;}
+    var best=null;
+    bl.forEach(function(k){
+      if(S(k)!==s)return;
+      var q=tparams(s,k),spd=Math.hypot(q.vx,q.vy);
+      if(!best||spd>best.spd)best={tp:q,spd:spd};
+    });
+    if(!best)return;
+    var tp=best.tp,H=tp.yr+tp.vy*tp.vy/(2*P.g),ang=Math.atan2(tp.vy,Math.abs(tp.vx))*180/Math.PI,F=s/P.D;
+    rows+='<tr><td>'+s.toString(16)+'</td><td>'+(P.choreo?'crossed arms':(s%2===1?'cross':'same hand'))+'</td><td>'+fmt(tp.tf,2)+' s</td><td>'+fmt(H,2)+' m</td><td>'+fmt(best.spd,1)+' m/s</td><td>'+fmt(ang,0)+'°</td><td>'+fmt(F,1)+' × weight</td></tr>';
+  });
+  $('tbody').innerHTML=rows;
+  $('tableNote').textContent='Hand force assumes each ball arrives at the speed it leaves. One ball weighs '+fmt(MASS*P.g,2)+' N here (m = '+fmt(MASS*1000,0)+' g), so a 3 at this dwell needs '+fmt(3/P.D*MASS*P.g,1)+' N on average.';
+  var st=$('patStatus');
+  st.classList.remove('err');
+  var land={},state='',jj,bb;
+  for(jj=-P.maxS;jj<0;jj++){var sj=S(jj);if(sj>0&&jj+sj>=0)land[jj+sj]=1;}
+  for(bb=0;bb<P.maxS;bb++)state+=land[bb]?'1':'0';
+  st.textContent=(nameOf()||'Siteswap')+(P.choreo?' · siteswap '+P.str+' with crossing arms':'')+' · '+P.balls+(P.balls===1?' ball':' balls')+' · repeats every '+P.L+(P.L===1?' beat':' beats')+' · state '+state;
+  gr.init=false;dirty=true;
+}
+function setGraphCaption(){
+  var t={
+    h:'Each coloured line is one ball. Arcs are parabolas, y = v₀t − ½gt², starting and ending at the hands. The dip before each arc is the scoop while the hand holds the ball. R and L mark which hand throws on each beat.',
+    v:'In the air, vertical velocity falls along a straight line with slope −g. In the hand it is reversed from falling to rising within the dwell time, which is where the large hand force comes from.',
+    e:'Kinetic plus potential energy (measured from hand level) is flat in flight. In the hand it dips as the catch is absorbed, then recovers as the hand pushes the ball up. In patterns with unequal throws, such as 531, the total steps between throws.'
+  };
+  $('graphCaption').textContent=t[gmode];
+}
+function buildChips(){
+  var pc=$('presets');
+  GROUPS.forEach(function(g){
+    var wrap=document.createElement('div'),lab=document.createElement('div'),row=document.createElement('div');
+    wrap.className='grp';lab.className='gl';lab.textContent=g[0];row.className='chips';
+    g[1].forEach(function(pp){
+      var p=pp[0],ck=pp[2]||'',b=document.createElement('button');b.type='button';b.className='chip';b.textContent=ck?pp[1]:p;b.dataset.p=p;b.dataset.c=ck;b.title=ck?pp[1]+' (siteswap '+p+')':pp[1];
+      b.addEventListener('click',function(){$('pattern').value=p;onPattern(ck);});
+      row.appendChild(b);
+    });
+    wrap.appendChild(lab);wrap.appendChild(row);pc.appendChild(wrap);
+  });
+  $('random').addEventListener('click',function(){$('pattern').value=randomPattern();onPattern();});
+  var gc=$('gravChips');
+  GRAV.forEach(function(g){
+    var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=g[0];b.dataset.g=g[1];b.title=g[1]+' m/s²';
+    b.addEventListener('click',function(){P.g=g[1];$('grav').value=g[1];refresh();});
+    gc.appendChild(b);
+  });
+}
+
+/* ---------- pattern + controls ---------- */
+function applyPattern(p,key){
+  var prev=P.balls;
+  P.choreoKey=key||null;P.choreo=key?buildChoreo(key):null;
+  P.S=p.S;P.L=p.L;P.balls=p.balls;P.str=p.str;P.maxS=Math.max.apply(null,p.S);
+  var dmax=p.S.indexOf(1)>=0?0.95:1.9, dw=$('dwell');
+  dw.max=dmax;if(P.D>dmax)P.D=dmax;dw.value=P.D;
+  if(p.balls!==prev){P.tau=autoTempo(p.balls);$('tau').value=Math.round(P.tau*1000);}
+  evCache=[null,null];initChains();beat=0;
+}
+function onPattern(key){
+  var inp=$('pattern'),p=parsePattern(inp.value),st=$('patStatus');
+  if(!p.ok){inp.setAttribute('aria-invalid','true');st.classList.add('err');st.textContent=p.msg;return;}
+  inp.setAttribute('aria-invalid','false');
+  applyPattern(p,typeof key==='string'&&key?key:null);refresh();
+}
+function bind(){
+  $('pattern').addEventListener('input',onPattern);
+  $('grav').addEventListener('input',function(){P.g=+this.value;refresh();});
+  $('tau').addEventListener('input',function(){P.tau=this.value/1000;evCache=[null,null];refresh();});
+  $('dwell').addEventListener('input',function(){P.D=+this.value;evCache=[null,null];refresh();});
+  $('width').addEventListener('input',function(){P.wOut=+this.value;evCache=[null,null];refresh();});
+  ['optPaths','optTrails','optVec'].forEach(function(id){$(id).addEventListener('change',function(){dirty=true;});});
+  $('speed').addEventListener('input',function(){speed=+this.value;$('speedOut').textContent=speed.toFixed(2)+'×';});
+  function setPlay(v){playing=v;$('play').textContent=v?'Pause':'Play';dirty=true;}
+  $('play').addEventListener('click',function(){setPlay(!playing);});
+  $('restart').addEventListener('click',function(){beat=0;dirty=true;});
+  document.addEventListener('keydown',function(e){
+    if(e.code==='Space'&&!/^(INPUT|TEXTAREA|BUTTON|SELECT)$/.test(e.target.tagName)){e.preventDefault();setPlay(!playing);}
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=gmode]'),function(r){
+    r.addEventListener('change',function(){gmode=this.value;gr.init=false;setGraphCaption();dirty=true;});
+  });
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)setPlay(false);
+  if(window.ResizeObserver){var ro=new ResizeObserver(fit);ro.observe(cv);ro.observe(gv);}else{window.addEventListener('resize',fit);}
+  if(window.matchMedia){try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',readTokens);}catch(err){}}
+  new MutationObserver(readTokens).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true;});
+}
+
+var lastT=performance.now(),lastClock='';
+function frame(now){
+  var dt=Math.min(0.05,(now-lastT)/1000);lastT=now;
+  if(playing){
+    beat+=dt*speed/P.tau;dirty=true;
+    if(beat*P.tau>3600){beat=0;initChains();}
+  }
+  if(dirty){
+    dirty=false;render();drawGraph();
+    var s='t = '+(beat*P.tau).toFixed(2)+' s · beat '+Math.floor(beat);
+    if(s!==lastClock){$('clock').textContent=s;lastClock=s;}
+  }
+  requestAnimationFrame(frame);
+}
+
+buildChips();
+readTokens();
+fit();
+bind();
+setGraphCaption();
+P.tau=autoTempo(3);$('tau').value=Math.round(P.tau*1000);
+applyPattern(parsePattern('3'));
+refresh();
+requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,582 @@
+---
+title: "Web Quest: How the Periodic Table Was Built"
+description: "Mendeleev left gaps, then the elements turned up. Tell the story on one poster."
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Web quest: how the periodic table was built</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F6FA;
+    --surface: #FFFFFF;
+    --ink: #14213D;
+    --muted: #4A5670;
+    --rule: #D3DAE6;
+    --teal: #0E7C86;
+    --teal-soft: #DDF1F2;
+    --amber: #F0B429;
+    --amber-soft: #FCF1D2;
+    --plum: #7A2E6E;
+    --focus: #1C5FD6;
+    --head: "Familjen Grotesk", "Segoe UI", Helvetica, Arial, sans-serif;
+    --body: "Literata", Georgia, "Times New Roman", serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F1626; --surface: #182036; --ink: #E8ECF5; --muted: #A3AEC6;
+      --rule: #2C3654; --teal: #5ACBD4; --teal-soft: #14343B;
+      --amber: #F5C445; --amber-soft: #3A3117; --plum: #D796CD; --focus: #8DB4FF;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F1626; --surface: #182036; --ink: #E8ECF5; --muted: #A3AEC6;
+    --rule: #2C3654; --teal: #5ACBD4; --teal-soft: #14343B;
+    --amber: #F5C445; --amber-soft: #3A3117; --plum: #D796CD; --focus: #8DB4FF;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--body); font-size: 1.0625rem; line-height: 1.65;
+  }
+  a { color: var(--teal); text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
+  h1, h2, h3 { font-family: var(--head); line-height: 1.12; margin: 0; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); margin-bottom: .6rem; }
+  h3 { font-size: 1.25rem; }
+  p { margin: 0 0 1rem; max-width: 68ch; }
+  section { padding: 3.5rem 0 1rem; }
+  .lede { font-size: 1.15rem; color: var(--muted); }
+
+  /* top bar */
+  .bar { border-bottom: 1px solid var(--rule); background: var(--surface); }
+  .bar .wrap { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; justify-content: space-between; padding-top: .8rem; padding-bottom: .8rem; }
+  .bar strong { font-family: var(--head); font-weight: 700; }
+  .bar nav { display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; font-family: var(--head); font-weight: 500; font-size: .98rem; }
+  .bar nav a { color: var(--ink); text-decoration: none; padding: .2rem 0; border-bottom: 2px solid transparent; }
+  .bar nav a:hover { border-color: var(--teal); }
+
+  /* hero */
+  .hero { padding: 3.5rem 0 2rem; }
+  .hero .wrap { display: grid; gap: 2.5rem; grid-template-columns: 1.15fr 1fr; align-items: center; }
+  .hero h1 { font-size: clamp(2.4rem, 5.6vw, 4rem); font-weight: 700; margin-bottom: 1.1rem; }
+  .hero .lede { max-width: 34ch; }
+  .meta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.4rem; padding: 0; list-style: none; }
+  .meta li { font-family: var(--head); font-weight: 500; font-size: .95rem; border: 1px solid var(--rule); background: var(--surface); padding: .3rem .7rem; border-radius: 3px; }
+
+  /* gap-table (hero interactive) */
+  .gaps { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 1.1rem 1.1rem 1.2rem; }
+  .gaps h2 { font-size: 1.1rem; margin-bottom: .2rem; }
+  .gaps p.cap { font-size: .95rem; color: var(--muted); margin-bottom: .9rem; }
+  .grid { display: grid; grid-template-columns: 2.6rem 1fr 1fr; gap: .5rem; align-items: stretch; }
+  .grid .h { font-family: var(--head); font-weight: 500; font-size: .9rem; color: var(--muted); display: flex; align-items: center; justify-content: center; text-align: center; }
+  .tile {
+    font: inherit; color: inherit; text-align: left; cursor: default;
+    border: 1.5px solid var(--ink); border-radius: 4px; background: var(--bg);
+    padding: .45rem .6rem .5rem; min-height: 5.6rem; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .tile .mass { font-family: var(--head); font-size: .85rem; color: var(--muted); }
+  .tile .sym { font-family: var(--head); font-weight: 700; font-size: 2rem; line-height: 1; }
+  .tile .note { font-size: .8rem; color: var(--muted); line-height: 1.25; }
+  button.tile.gap { cursor: pointer; border-style: dashed; border-color: var(--plum); background: var(--amber-soft); }
+  button.tile.gap .sym { color: var(--plum); }
+  button.tile.gap[aria-pressed="true"] { border-style: solid; border-color: var(--teal); background: var(--teal-soft); }
+  button.tile.gap[aria-pressed="true"] .sym { color: var(--teal); }
+  .gaps .actions { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+  .btn {
+    font-family: var(--head); font-weight: 700; font-size: .98rem; cursor: pointer;
+    background: var(--ink); color: var(--bg); border: 0; border-radius: 4px; padding: .55rem 1rem;
+  }
+  .btn:hover { filter: brightness(1.15); }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  #gapMsg { font-size: .95rem; color: var(--muted); margin: 0; }
+
+  /* task */
+  .task { display: grid; gap: 2rem; grid-template-columns: 1fr 1fr; align-items: start; }
+  .brief { background: var(--surface); border: 1px solid var(--rule); border-left: 6px solid var(--amber); padding: 1.2rem 1.4rem; border-radius: 4px; }
+  .brief dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: .45rem 1.1rem; }
+  .brief dt { font-family: var(--head); font-weight: 700; }
+  .brief dd { margin: 0; }
+
+  /* steps */
+  ol.steps { list-style: none; counter-reset: s; margin: 1.2rem 0 0; padding: 0; display: grid; gap: 1rem; }
+  ol.steps li { counter-increment: s; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--rule); }
+  ol.steps li::before { content: counter(s); font-family: var(--head); font-weight: 700; font-size: 2rem; line-height: 1; color: var(--teal); }
+  ol.steps h3 { margin-bottom: .25rem; }
+  ol.steps p { margin: 0; }
+
+  /* case files: a real timeline */
+  .files { margin-top: 1.5rem; border-left: 2px solid var(--rule); }
+  .file { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1.2rem; padding: 0 0 2.4rem 1.4rem; position: relative; }
+  .file::before { content: ""; position: absolute; left: -7px; top: .55rem; width: 12px; height: 12px; background: var(--amber); border: 2px solid var(--ink); border-radius: 50%; }
+  .file .yr { font-family: var(--head); font-weight: 700; font-size: 2.1rem; line-height: 1.05; }
+  .file .yr small { display: block; font-size: .85rem; font-weight: 500; color: var(--muted); margin-top: .3rem; line-height: 1.3; }
+  .file h3 { margin-bottom: .35rem; }
+  .file ul { margin: .2rem 0 .8rem; padding-left: 1.2rem; }
+  .file li { margin-bottom: .35rem; max-width: 66ch; }
+  .file .try { background: var(--teal-soft); border-radius: 4px; padding: .7rem .9rem; margin: .4rem 0 .8rem; max-width: 66ch; font-size: 1rem; }
+  .file .try strong { font-family: var(--head); }
+  .links { font-family: var(--head); font-weight: 500; font-size: .98rem; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; }
+  .callout { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 1rem 1.2rem; max-width: 70ch; }
+
+  /* checklist */
+  .check { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 1.3rem 1.4rem; }
+  .prog { height: 10px; background: var(--rule); border-radius: 5px; overflow: hidden; margin: .4rem 0 1.1rem; }
+  .prog > div { height: 100%; width: 0; background: var(--teal); transition: width .25s ease; }
+  .check label { display: flex; gap: .7rem; align-items: flex-start; padding: .5rem 0; border-top: 1px solid var(--rule); cursor: pointer; }
+  .check label:first-of-type { border-top: 0; }
+  .check input { width: 1.2rem; height: 1.2rem; margin-top: .3rem; accent-color: var(--teal); flex: none; }
+  .check input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--teal); }
+  #progText { font-family: var(--head); font-weight: 700; margin: 0; }
+
+  /* rubric */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .98rem; }
+  th, td { text-align: left; vertical-align: top; padding: .75rem .9rem; border-bottom: 1px solid var(--rule); }
+  th { font-family: var(--head); font-weight: 700; }
+  thead th { background: var(--ink); color: var(--bg); }
+  tbody th { width: 22%; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+
+  footer { margin-top: 3rem; border-top: 1px solid var(--rule); padding: 1.5rem 0 2.5rem; color: var(--muted); font-size: .95rem; }
+
+  @media (max-width: 820px) {
+    .hero .wrap, .task { grid-template-columns: 1fr; }
+    .file { grid-template-columns: 1fr; gap: .3rem; }
+    .file .yr small { display: inline; margin-left: .5rem; }
+    .brief dl { grid-template-columns: 1fr; gap: 0; }
+    .brief dd { margin-bottom: .6rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .prog > div { transition: none; }
+  }
+  @media print {
+    .bar, .gaps .actions, .btn { display: none; }
+    body { background: #fff; color: #000; font-size: 11pt; }
+    section { padding-top: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <strong>Web quest: the periodic table</strong>
+    <nav aria-label="Page sections">
+      <a href="#task">The task</a>
+      <a href="#process">Process</a>
+      <a href="#files">Case files</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#judging">Judging</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Mendeleev left gaps. Then the elements turned up.</h1>
+      <p class="lede">Your quest: find out how the periodic table was built, and tell the story on one poster.</p>
+      <ul class="meta">
+        <li>IGCSE Co-ordinated Sciences 0654</li>
+        <li>Solo work on one or two key points</li>
+      </ul>
+    </div>
+
+    <div class="gaps" aria-labelledby="gapsTitle">
+      <h2 id="gapsTitle">A table with holes in it (1871)</h2>
+      <p class="cap">Mendeleev arranged elements by atomic mass and properties. When a pattern broke, he left a gap and predicted what would fill it. Tap a gap.</p>
+      <div class="grid" role="group" aria-label="Part of Mendeleev's table, Groups III and IV, periods 2 to 4">
+        <div class="h"></div><div class="h">Group III</div><div class="h">Group IV</div>
+
+        <div class="h">2</div>
+        <div class="tile"><span class="mass">11</span><span class="sym">B</span></div>
+        <div class="tile"><span class="mass">12</span><span class="sym">C</span></div>
+
+        <div class="h">3</div>
+        <div class="tile"><span class="mass">27</span><span class="sym">Al</span></div>
+        <div class="tile"><span class="mass">28</span><span class="sym">Si</span></div>
+
+        <div class="h">4</div>
+        <button class="tile gap" type="button" aria-pressed="false" data-hidden="?" data-shown="Ga"
+                data-note-hidden="Predicted mass about 68. He called it eka-aluminium." data-note-shown="Found 1875. Mass 69.7.">
+          <span class="mass">gap</span><span class="sym">?</span><span class="note">Predicted mass about 68. He called it eka-aluminium.</span>
+        </button>
+        <button class="tile gap" type="button" aria-pressed="false" data-hidden="?" data-shown="Ge"
+                data-note-hidden="Predicted mass about 72. He called it eka-silicon." data-note-shown="Found 1886. Mass 72.6.">
+          <span class="mass">gap</span><span class="sym">?</span><span class="note">Predicted mass about 72. He called it eka-silicon.</span>
+        </button>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" id="revealAll">Reveal both</button>
+        <button class="btn ghost" type="button" id="resetGaps">Cover them again</button>
+        <p id="gapMsg" role="status"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="task">
+  <div class="wrap">
+    <h2>The task</h2>
+    <div class="task">
+      <div>
+        <p class="lede">Chemists did not wake up one day with a periodic table. It took about a century of noticing patterns, arguing, being wrong and being proved right.</p>
+        <p>You are the exhibit designers. Produce a poster for a school science corridor that shows <strong>how the table was built and why it looks the way it does today</strong>. A Year 9 student should be able to read it and come away understanding how the table lets chemists predict the properties of elements.</p>
+        <p>This connects directly to what 0654 asks you to know: that the table classifies elements, that groups and periods tell you about properties, and that it can be used to predict. The history is the story that makes those ideas stick.</p>
+      </div>
+      <div class="brief">
+        <h3 style="margin-bottom:.7rem">Poster brief</h3>
+        <dl>
+          <dt>Format</dt><dd>A3 paper, or one digital slide at A3 proportions.</dd>
+          <dt>Audience</dt><dd>Students one year younger than you.</dd>
+          <dt>Must show</dt><dd>A timeline, one gap-and-prediction case study, the switch from mass to proton number, and a labelled piece of the modern table.</dd>
+          <dt>Words</dt><dd>Around 250 in total. Use labels, diagrams and short captions, not paragraphs.</dd>
+          <dt>Hand in</dt><dd>The poster and a source list on the back or in the notes.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <h2>Process</h2>
+    <p>Follow these in order. Each step ends with something you can show your teacher.</p>
+    <ol class="steps">
+      <li>
+        <div>
+          <h3>Choose your case files</h3>
+          <p>Pick one or two case files below and become the expert on them. Show your teacher which ones you have chosen.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Investigate your files</h3>
+          <p>Answer every question in your chosen files in your own words. Use at least two sources, and make sure one is not Wikipedia. Keep a note of each source as you go.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Explain it in two minutes</h3>
+          <p>Explain each scientist's idea to a partner or your teacher: what it got right and where it failed. Ask them to say "what problem did this solve?" until your answer is clear.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Sketch, then check the science</h3>
+          <p>Draw a rough layout on paper first. Then check every claim against the case files and the checklist further down. Ask a classmate to find one thing that is unclear.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Make the poster and list your sources</h3>
+          <p>Credit every image. Use the judging table to review your own work before you hand it in.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="files">
+  <div class="wrap">
+    <h2>Case files</h2>
+    <p class="lede">Seven turning points, in date order. Research one or two of them in depth. Your poster timeline needs to show at least three.</p>
+
+    <div class="files">
+
+      <article class="file">
+        <div class="yr">1829<small>Döbereiner</small></div>
+        <div>
+          <h3>Elements in threes</h3>
+          <p>Johann Döbereiner noticed that some elements with similar properties came in groups of three, with the middle one sitting between the other two in mass.</p>
+          <ul>
+            <li>What is a triad? Name at least two examples.</li>
+            <li>Why did this idea only take chemists so far?</li>
+            <li>Which modern group does the chlorine, bromine, iodine triad belong to?</li>
+          </ul>
+          <div class="try"><strong>Test it yourself.</strong> Find the relative atomic masses of chlorine and iodine, and average them. How close is that to bromine? Put your result on the poster.</div>
+          <div class="links">
+            <a href="https://en.wikipedia.org/wiki/Johann_Wolfgang_D%C3%B6bereiner" target="_blank" rel="noopener">Döbereiner (Wikipedia)</a>
+            <a href="https://en.wikipedia.org/wiki/History_of_the_periodic_table" target="_blank" rel="noopener">History of the periodic table (Wikipedia)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="file">
+        <div class="yr">1864<small>Newlands</small></div>
+        <div>
+          <h3>The law of octaves</h3>
+          <p>John Newlands listed the elements in order of atomic mass and spotted that every eighth element seemed to repeat the properties of the first. He compared it to notes in a musical scale.</p>
+          <ul>
+            <li>What was the pattern, and for roughly how many elements did it work?</li>
+            <li>Why was the idea laughed at when he presented it?</li>
+            <li>What did he do wrong that Mendeleev later did right?</li>
+          </ul>
+          <div class="links">
+            <a href="https://en.wikipedia.org/wiki/John_Newlands_(chemist)" target="_blank" rel="noopener">Newlands (Wikipedia)</a>
+            <a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">RSC Periodic Table</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="file">
+        <div class="yr">1869<small>Mendeleev, with Meyer working alongside</small></div>
+        <div>
+          <h3>The table that left gaps</h3>
+          <p>Dmitri Mendeleev arranged the known elements by atomic mass and by similar properties. His key move was to trust the pattern over the data.</p>
+          <ul>
+            <li>What two rules did he use to place an element?</li>
+            <li>Where did he leave gaps, and why was that a bold choice?</li>
+            <li>Pick <strong>one</strong> gap. What did he predict? What was found, by whom, and when? Show predicted against real values in a small table on the poster.</li>
+            <li>Where did his table look wrong, and what did he think was the reason?</li>
+          </ul>
+          <div class="try"><strong>Poster requirement.</strong> The gap-and-prediction case study is a must. The hero tiles at the top of this page show two examples. Choose a different one if you can, such as eka-boron.</div>
+          <div class="links">
+            <a href="https://en.wikipedia.org/wiki/Dmitri_Mendeleev" target="_blank" rel="noopener">Mendeleev (Wikipedia)</a>
+            <a href="https://www.britannica.com/science/periodic-table" target="_blank" rel="noopener">Periodic table (Britannica)</a>
+            <a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">RSC Periodic Table</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="file">
+        <div class="yr">1894<small>Rayleigh and Ramsay</small></div>
+        <div>
+          <h3>A whole new column</h3>
+          <p>A tiny difference in the density of nitrogen led to the discovery of argon. Over the following years William Ramsay and colleagues found more inert gases that nobody had predicted.</p>
+          <ul>
+            <li>How did chemists first realise there was something new in air?</li>
+            <li>Why was it hard to find a place for these gases at first?</li>
+            <li>How did the table cope? Call the new group Group VIII or Group 0, and explain why the number is used.</li>
+          </ul>
+          <div class="links">
+            <a href="https://en.wikipedia.org/wiki/William_Ramsay" target="_blank" rel="noopener">Ramsay (Wikipedia)</a>
+            <a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">RSC Periodic Table</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="file">
+        <div class="yr">1913<small>Moseley</small></div>
+        <div>
+          <h3>Mass is out, proton number is in</h3>
+          <p>Henry Moseley studied the X-rays given off by different elements and found a number that increased in steps of exactly one from element to element.</p>
+          <ul>
+            <li>What did he measure and how did it lead to atomic number?</li>
+            <li>Some pairs of elements, such as argon and potassium, were in the "wrong" order by mass. How did his work fix this?</li>
+            <li>Why does ordering by proton number make sense for the modern definition of an element?</li>
+          </ul>
+          <div class="try"><strong>Poster requirement.</strong> Include a box called "Why proton number?" that a Year 9 student could follow in under a minute.</div>
+          <div class="links">
+            <a href="https://en.wikipedia.org/wiki/Henry_Moseley" target="_blank" rel="noopener">Moseley (Wikipedia)</a>
+            <a href="https://en.wikipedia.org/wiki/History_of_the_periodic_table" target="_blank" rel="noopener">History of the periodic table (Wikipedia)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="file">
+        <div class="yr">1940s<small>Seaborg</small></div>
+        <div>
+          <h3>Why two rows hang below the table</h3>
+          <p>Glenn Seaborg worked on the heavy, man-made elements and argued that they did not belong where the table then placed them.</p>
+          <ul>
+            <li>What was his proposal, and what does it explain about the shape of the table?</li>
+            <li>How are these elements made, and why are they so unstable?</li>
+            <li>An element was later named in his honour while he was alive. Which one, and why is that unusual?</li>
+          </ul>
+          <div class="links">
+            <a href="https://en.wikipedia.org/wiki/Glenn_T._Seaborg" target="_blank" rel="noopener">Seaborg (Wikipedia)</a>
+            <a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">RSC Periodic Table</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="file">
+        <div class="yr">2016<small>IUPAC</small></div>
+        <div>
+          <h3>Row seven is full</h3>
+          <p>Four new elements were confirmed and named, completing the seventh period of the table.</p>
+          <ul>
+            <li>Which four elements, and what are their atomic numbers?</li>
+            <li>Who decides when a new element is real and what it is called?</li>
+            <li>Sketch where an element 119 would go. What group would you expect it to be in, and why?</li>
+          </ul>
+          <div class="links">
+            <a href="https://iupac.org/what-we-do/periodic-table-of-elements/" target="_blank" rel="noopener">IUPAC periodic table</a>
+            <a href="https://www.rsc.org/periodic-table" target="_blank" rel="noopener">RSC Periodic Table</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="callout">
+      <strong style="font-family:var(--head)">Check your sources.</strong> Wikipedia is a good place to start, but it is not where you stop. For every claim on your poster, find a second source that agrees, and write down who wrote it and why you trust them.
+    </div>
+  </div>
+</section>
+
+<section id="checklist">
+  <div class="wrap">
+    <h2>Poster checklist</h2>
+    <p>Tick items as you finish them. Your ticks are saved in this browser, so you can come back to the page.</p>
+    <div class="check">
+      <p id="progText">0 of 8 done</p>
+      <div class="prog" aria-hidden="true"><div id="progBar"></div></div>
+      <div id="items"></div>
+      <div style="margin-top:1rem"><button class="btn ghost" type="button" id="resetChecks">Clear all ticks</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="judging">
+  <div class="wrap">
+    <h2>How your poster will be judged</h2>
+    <p>Use this table to review your work before you hand it in. It is a class rubric, not a Cambridge mark scheme.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th scope="col">What we look at</th><th scope="col">Getting started</th><th scope="col">Secure</th><th scope="col">Excellent</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Science is correct</th>
+            <td>Some facts are right; some are muddled.</td>
+            <td>All key facts are right, and terms like group, period and proton number are used correctly.</td>
+            <td>Uses correct science to explain <em>why</em>, not only what.</td>
+          </tr>
+          <tr>
+            <th scope="row">Story and order</th>
+            <td>Events are listed with dates.</td>
+            <td>Events are in order and link to each other.</td>
+            <td>Shows how each idea solved the last one's problem.</td>
+          </tr>
+          <tr>
+            <th scope="row">Prediction case study</th>
+            <td>Says that Mendeleev left gaps.</td>
+            <td>Compares predicted and real values for one element.</td>
+            <td>Explains why the match made chemists trust the table.</td>
+          </tr>
+          <tr>
+            <th scope="row">Links to the modern table</th>
+            <td>Shows the modern table.</td>
+            <td>Labels group, period and outer electrons on an extract.</td>
+            <td>Uses the extract to predict properties of an element.</td>
+          </tr>
+          <tr>
+            <th scope="row">Design and readability</th>
+            <td>Hard to read from a metre away.</td>
+            <td>Clear headings, readable text, diagrams help.</td>
+            <td>A reader can follow it without help.</td>
+          </tr>
+          <tr>
+            <th scope="row">Sources</th>
+            <td>Listed but incomplete.</td>
+            <td>Two sources for each key point, images credited.</td>
+            <td>Sources are compared, with one reliable primary or specialist source.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">Web quest for IGCSE Co-ordinated Sciences 0654. External links open in a new tab and may change over time.</div>
+</footer>
+
+<script>
+(function () {
+  /* ---- gap tiles ---- */
+  var tiles = Array.prototype.slice.call(document.querySelectorAll('button.tile.gap'));
+  var msg = document.getElementById('gapMsg');
+
+  function setTile(t, open) {
+    t.setAttribute('aria-pressed', open ? 'true' : 'false');
+    t.querySelector('.sym').textContent = open ? t.dataset.shown : t.dataset.hidden;
+    t.querySelector('.mass').textContent = open ? 'found' : 'gap';
+    t.querySelector('.note').textContent = open ? t.dataset.noteShown : t.dataset.noteHidden;
+  }
+  function update() {
+    var n = tiles.filter(function (t) { return t.getAttribute('aria-pressed') === 'true'; }).length;
+    msg.textContent = n === 0 ? '' :
+      n === 1 ? 'One prediction was close. Now check the other.' :
+      'Both predictions were close. That is why chemists began to trust the table.';
+  }
+  tiles.forEach(function (t) {
+    t.addEventListener('click', function () {
+      setTile(t, t.getAttribute('aria-pressed') !== 'true');
+      update();
+    });
+  });
+  document.getElementById('revealAll').addEventListener('click', function () {
+    tiles.forEach(function (t) { setTile(t, true); }); update();
+  });
+  document.getElementById('resetGaps').addEventListener('click', function () {
+    tiles.forEach(function (t) { setTile(t, false); }); update();
+  });
+
+  /* ---- checklist with guarded localStorage ---- */
+  var ITEMS = [
+    'A title that asks a question or makes a claim',
+    'A timeline with at least three named contributors and dates',
+    'One gap-and-prediction case study, with predicted and real values side by side',
+    'A box explaining why proton number replaced atomic mass',
+    'A labelled extract of the modern table showing group, period and outer electrons',
+    'A "then and now" panel comparing an early classification with the modern table',
+    'A source list with at least two sources for each key point',
+    'Every image credited'
+  ];
+  var KEY = 'webquest-periodic-table-checks';
+  var state = [];
+  try {
+    var raw = window.localStorage.getItem(KEY);
+    if (raw) state = JSON.parse(raw);
+  } catch (e) { state = []; }
+  if (!Array.isArray(state)) state = [];
+
+  var host = document.getElementById('items');
+  var bar = document.getElementById('progBar');
+  var txt = document.getElementById('progText');
+
+  function save() { try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function refresh() {
+    var n = state.filter(Boolean).length;
+    txt.textContent = n + ' of ' + ITEMS.length + ' done';
+    bar.style.width = (n / ITEMS.length * 100) + '%';
+  }
+  ITEMS.forEach(function (label, i) {
+    var l = document.createElement('label');
+    var c = document.createElement('input');
+    c.type = 'checkbox'; c.checked = !!state[i];
+    var s = document.createElement('span'); s.textContent = label;
+    c.addEventListener('change', function () { state[i] = c.checked; save(); refresh(); });
+    l.appendChild(c); l.appendChild(s); host.appendChild(l);
+  });
+  document.getElementById('resetChecks').addEventListener('click', function () {
+    state = [];
+    Array.prototype.forEach.call(host.querySelectorAll('input'), function (c) { c.checked = false; });
+    save(); refresh();
+  });
+  refresh();
+})();
+</script>
+</body>
+</html>
