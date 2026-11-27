@@ -1,0 +1,61 @@
+{% comment %}
+  Scans the /classes/ folder and builds:
+    class_entries  – one string per resource: "title|||url|||description|||tag|||folder", sorted by title
+    class_folders  – folder names, ordered by _data/sections.yml first, then alphabetically
+  A resource is either:
+    classes/<folder>/<file>.<ext>        (any extension listed in _config.yml → listed_extensions)
+    classes/<folder>/<subfolder>/index.html   (a multi-file mini-site; listed under the subfolder's name)
+  Files with front matter can set title, description, and `hidden: true` to stay unlisted.
+{% endcomment %}
+{% assign SEP = "|||" %}
+{% assign class_entries = "" | split: "" %}
+{% assign _found = "" | split: "" %}
+
+{% for f in site.pages %}
+  {% if f.hidden %}{% continue %}{% endif %}
+  {% assign _p = f.path | prepend: "/" | replace: "//", "/" %}
+  {% assign _parts = _p | split: "/" %}
+  {% if _parts[1] != "classes" %}{% continue %}{% endif %}
+  {% assign _fname = _parts.last %}
+  {% assign _ext = _fname | split: "." | last | downcase %}
+  {% if _parts.size == 4 and _fname != "index.html" %}
+    {% assign _raw = _fname | split: "." | pop | join: "." %}
+    {% assign _tag = _ext | upcase %}{% if _ext == "html" or _ext == "htm" or _ext == "md" %}{% assign _tag = "" %}{% endif %}
+  {% elsif _parts.size == 5 and _fname == "index.html" %}
+    {% assign _raw = _parts[3] %}{% assign _tag = "" %}
+  {% else %}{% continue %}{% endif %}
+  {% unless site.listed_extensions contains _ext %}{% continue %}{% endunless %}
+  {% assign _h = _raw | replace: "-", " " | replace: "_", " " %}
+  {% assign _auto = _h | slice: 0 | upcase %}{% assign _rest = _h | slice: 1, 500 %}{% assign _auto = _auto | append: _rest %}
+  {% assign _title = f.title | default: _auto | replace: SEP, " " %}
+  {% assign _desc = f.description | default: "" | strip_newlines | replace: SEP, " " %}
+  {% assign _e = _title | append: SEP | append: f.url | append: SEP | append: _desc | append: SEP | append: _tag | append: SEP | append: _parts[2] %}
+  {% assign class_entries = class_entries | push: _e %}
+  {% assign _found = _found | push: _parts[2] %}
+{% endfor %}
+
+{% for f in site.static_files %}
+  {% assign _parts = f.path | split: "/" %}
+  {% if _parts[1] != "classes" %}{% continue %}{% endif %}
+  {% assign _fname = _parts.last %}
+  {% assign _ext = _fname | split: "." | last | downcase %}
+  {% assign _url = f.path %}
+  {% if _parts.size == 4 and _fname != "index.html" %}
+    {% assign _raw = _fname | split: "." | pop | join: "." %}
+    {% assign _tag = _ext | upcase %}{% if _ext == "html" or _ext == "htm" %}{% assign _tag = "" %}{% endif %}
+  {% elsif _parts.size == 5 and _fname == "index.html" %}
+    {% assign _raw = _parts[3] %}{% assign _tag = "" %}{% assign _url = _url | remove: "index.html" %}
+  {% else %}{% continue %}{% endif %}
+  {% unless site.listed_extensions contains _ext %}{% continue %}{% endunless %}
+  {% assign _h = _raw | replace: "-", " " | replace: "_", " " %}
+  {% assign _auto = _h | slice: 0 | upcase %}{% assign _rest = _h | slice: 1, 500 %}{% assign _auto = _auto | append: _rest | replace: SEP, " " %}
+  {% assign _e = _auto | append: SEP | append: _url | append: SEP | append: "" | append: SEP | append: _tag | append: SEP | append: _parts[2] %}
+  {% assign class_entries = class_entries | push: _e %}
+  {% assign _found = _found | push: _parts[2] %}
+{% endfor %}
+
+{% assign class_entries = class_entries | sort_natural %}
+{% assign _found = _found | uniq | sort_natural %}
+{% assign class_folders = "" | split: "" %}
+{% for s in site.data.sections %}{% if _found contains s.folder %}{% assign class_folders = class_folders | push: s.folder %}{% endif %}{% endfor %}
+{% for x in _found %}{% unless class_folders contains x %}{% assign class_folders = class_folders | push: x %}{% endunless %}{% endfor %}

@@ -1,0 +1,12 @@
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="{{ '/' | relative_url }}?skip" aria-label="Liniver home"><span class="brand-dot" aria-hidden="true"></span>Liniver</a>
+    <nav class="nav" aria-label="Classes">
+      <a href="{{ '/' | relative_url }}#all" data-focus="all">All</a>
+      {% for folder in class_folders %}{% include folder-label.html folder=folder %}
+        <a href="{{ '/' | relative_url }}#{{ folder }}" data-focus="{{ folder }}">{{ folder_label }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+</header>

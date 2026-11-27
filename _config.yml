@@ -2,7 +2,14 @@
 title: liniver.com Class Resources
 description: Single-page websites and resources for my classes.
 
-# Tell Jekyll to process your collection and output standalone URLs
+# Keeps old /classes/<name> links working for pages that moved into classes/<folder>/
+plugins:
+  - jekyll-redirect-from
+
+# File types dropped into classes/<folder>/ that get listed on the homepage
+listed_extensions: [html, htm, md, pdf, pptx, ppt, docx, doc, xlsx, xls, png, jpg, jpeg, gif, svg, mp4, mov, mp3, zip]
+
+# Legacy collection — anything left in _classes/ is published at /classes/<name> but NOT listed.
 collections:
   classes:
     output: true

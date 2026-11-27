@@ -1,0 +1,5 @@
+<li class="card" data-search="{{ include.title | downcase | escape }} {{ include.desc | downcase | escape }} {{ include.tag | downcase }} {{ include.label | downcase }}">
+  <a href="{{ include.url | relative_url }}">{{ include.title }}</a>
+  {% if include.desc != "" %}<p>{{ include.desc }}</p>{% endif %}
+  {% if include.tag != "" %}<span class="tag">{{ include.tag }}</span>{% endif %}
+</li>

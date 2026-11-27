@@ -7,255 +7,212 @@ layout: null
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liniver | Welcome to the Universe</title>
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+    <script>
+      // Skip the splash if it's already been seen this session, or if ?skip / #anchor is in the URL.
+      (function () {
+        var seen = false;
+        try { seen = sessionStorage.getItem('liniver-splash') === '1'; } catch (e) {}
+        if (seen || /[?&]skip/.test(location.search) || location.hash) {
+          document.documentElement.classList.add('no-splash');
+        } else {
+          document.documentElement.classList.add('splash-open');
+        }
+      })();
+    </script>
     <style>
-        :root {
-            --space-bg: #030712;
-            --text-light: #f9fafb;
-        }
+        /* --- SPLASH SCREEN --- */
+        html.no-splash #splash-screen { display: none; }
+        html.splash-open, html.splash-open body { overflow: hidden; }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            background-color: var(--space-bg);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: var(--text-light);
-        }
-
-        /* --- SPLASH SCREEN SYSTEM --- */
         #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #0b1528 0%, var(--space-bg) 80%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, #0b1528 0%, var(--bg) 80%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1000; cursor: pointer;
             transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
         }
-
-        #splash-screen.dismissed {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
+        #splash-screen.dismissed { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
         .splash-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: 4px;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
+            font-size: clamp(2.4rem, 9vw, 3.5rem); font-weight: 900; letter-spacing: 4px;
+            margin-bottom: 0.5rem; text-transform: uppercase;
             background: linear-gradient(to right, #ffffff, #60a5fa, #93c5fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .splash-subtitle {
-            font-size: 1.1rem;
-            color: #9ca3af;
-            margin-bottom: 3rem;
-            letter-spacing: 2px;
-        }
+        .splash-subtitle { font-size: 1.1rem; color: var(--muted); margin-bottom: 2rem; letter-spacing: 2px; text-align: center; }
 
         .enter-btn {
-            background: transparent;
-            color: white;
+            background: transparent; color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            border-radius: 30px;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s ease;
+            padding: 12px 30px; font-size: 1rem; font-weight: bold; letter-spacing: 1px;
+            border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
         }
-
-        .enter-btn:hover {
-            background: white;
-            color: var(--space-bg);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-            border-color: white;
+        .enter-btn:hover, .enter-btn:focus-visible {
+            background: white; color: var(--bg); box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); border-color: white;
         }
+        .splash-hint { margin-top: 1.2rem; color: #4b5563; font-size: .85rem; letter-spacing: 1px; }
 
-        /* --- CSS HTML5 SOLAR SYSTEM MODEL --- */
+        /* --- SOLAR SYSTEM MODEL --- */
         .universe-model {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative; width: min(400px, 85vw); aspect-ratio: 1;
+            margin-bottom: 2rem; display: flex; justify-content: center; align-items: center;
         }
-
         .sun {
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle, #fde047 0%, #ca8a04 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 40px #eab308;
-            position: absolute;
+            width: 50px; height: 50px; border-radius: 50%; position: absolute;
+            background: radial-gradient(circle, #fde047 0%, #ca8a04 100%); box-shadow: 0 0 40px #eab308;
         }
-
-        /* Orbit Lines */
         .orbit {
-            position: absolute;
-            border: 1px dashed rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: absolute; border: 1px dashed rgba(255, 255, 255, 0.08); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
         }
-
-        /* Planet Properties & Animations */
-        .orbit.inner  { width: 120px; height: 120px; animation: spin 6s linear infinite; }
-        .orbit.middle { width: 220px; height: 220px; animation: spin 12s linear infinite; }
-        .orbit.outer  { width: 320px; height: 320px; animation: spin 20s linear infinite; }
-
-        .planet {
-            position: absolute;
-            border-radius: 50%;
-        }
-
-        /* Inner Planet (Cyan) */
-        .orbit.inner .planet {
-            top: 10px;
-            width: 14px;
-            height: 14px;
-            background: #22d3ee;
-            box-shadow: 0 0 10px #06b6d4;
-        }
-
-        /* Middle Planet (Blue) */
-        .orbit.middle .planet {
-            top: 20px;
-            width: 22px;
-            height: 22px;
-            background: #3b82f6;
-            box-shadow: 0 0 12px #2563eb;
-        }
-
-        /* Outer Planet with Ring */
-        .orbit.outer .planet {
-            top: 30px;
-            width: 26px;
-            height: 26px;
-            background: #f97316;
-            box-shadow: 0 0 15px #ea580c;
-        }
-        /* Ring element for Outer Planet */
+        .orbit.inner  { width: 30%; height: 30%; animation: spin 6s linear infinite; }
+        .orbit.middle { width: 55%; height: 55%; animation: spin 12s linear infinite; }
+        .orbit.outer  { width: 80%; height: 80%; animation: spin 20s linear infinite; }
+        .planet { position: absolute; border-radius: 50%; }
+        .orbit.inner .planet  { top: 10px; width: 14px; height: 14px; background: #22d3ee; box-shadow: 0 0 10px #06b6d4; }
+        .orbit.middle .planet { top: 20px; width: 22px; height: 22px; background: #3b82f6; box-shadow: 0 0 12px #2563eb; }
+        .orbit.outer .planet  { top: 30px; width: 26px; height: 26px; background: #f97316; box-shadow: 0 0 15px #ea580c; }
         .orbit.outer .planet::after {
-            content: '';
-            position: absolute;
-            width: 38px;
-            height: 8px;
-            border: 2px solid rgba(249, 115, 22, 0.5);
-            border-radius: 50%;
-            left: -8px;
-            top: 7px;
-            transform: rotate(-15deg);
+            content: ''; position: absolute; width: 38px; height: 8px;
+            border: 2px solid rgba(249, 115, 22, 0.5); border-radius: 50%;
+            left: -8px; top: 7px; transform: rotate(-15deg);
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) {
+            .orbit { animation-duration: 120s; }
+            #splash-screen { transition: opacity .3s; }
+            #splash-screen.dismissed { transform: none; }
         }
 
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        /* --- MAIN HUB CARD LAYOUT --- */
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            color: #333;
-            background: #ffffff;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-        
-        main h1 { text-align: center; font-size: 2.2rem; color: #0f172a; margin-top: 0; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #64748b; margin-bottom: 40px; font-size: 1.1rem; }
-        
-        /* Grid setup for category portal tiles */
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 0;
-        }
-
-        .category-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            transition: all 0.25s ease;
-        }
-
-        .category-card:hover {
-            transform: translateY(-4px);
-            background: #0f172a;
-            border-color: #0f172a;
-            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
-        }
-
-        .category-card a {
-            color: #1e3a8a;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.4rem;
-            display: block;
-            width: 100%;
-            height: 100%;
-            transition: color 0.2s ease;
-        }
-
-        .category-card:hover a {
-            color: #3b82f6;
-        }
+        .hub-head { text-align: center; padding-top: 12px; }
+        .hub-head h1 { font-size: 2rem; margin: 0 0 4px; }
+        .hub-head p { color: var(--muted); margin: 0; }
+        .hub-tools { max-width: 720px; margin: 0 auto; }
+        .chips { justify-content: center; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
+    <div id="splash-screen" role="dialog" aria-label="Welcome to Liniver">
         <div class="splash-title">Liniver</div>
         <div class="splash-subtitle">Explore the Scientific Universe</div>
 
-        <div class="universe-model">
+        <div class="universe-model" aria-hidden="true">
             <div class="sun"></div>
             <div class="orbit inner"><div class="planet"></div></div>
             <div class="orbit middle"><div class="planet"></div></div>
             <div class="orbit outer"><div class="planet"></div></div>
         </div>
 
-        <button class="enter-btn" onclick="dismissSplash()">Enter Dashboard</button>
+        <button class="enter-btn" id="enter-btn" type="button">Enter Dashboard</button>
+        <div class="splash-hint">click, scroll or press any key</div>
     </div>
 
-    <main>
-        <h1>Class Resource Directory</h1>
-        <div class="subtitle">Select a space station category to access course materials.</div>
+    {% include scan-classes.html %}
+    {% include topbar.html %}
 
-        <div class="category-grid">
-            <div class="category-card"><a href="{{ '/y9/' | relative_url }}">Year 9 &rarr;</a></div>
-            <div class="category-card"><a href="{{ '/y10/' | relative_url }}">Year 10 &rarr;</a></div>
-            <div class="category-card"><a href="{{ '/y11/' | relative_url }}">Year 11 &rarr;</a></div>
-            <div class="category-card"><a href="{{ '/y12/' | relative_url }}">Year 12 &rarr;</a></div>
-            <div class="category-card"><a href="{{ '/y13/' | relative_url }}">Year 13 &rarr;</a></div>
-            <div class="category-card"><a href="{{ '/general/' | relative_url }}">General &rarr;</a></div>
+    <main id="content" class="page">
+        <div class="hub-head">
+            <h1 id="hub-title">Class Resource Directory</h1>
+            <p id="hub-sub">{{ class_entries.size }} resources — search, or pick a class.</p>
         </div>
+
+        <div class="hub-tools">
+            <div class="search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input id="search" class="search" type="search" placeholder="Search all resources… e.g. stars, alloys, carbon" aria-label="Search all resources" autocomplete="off">
+                <span class="kbd" aria-hidden="true">/</span>
+            </div>
+            <div class="search-status" id="search-status" aria-live="polite"></div>
+
+            <nav class="chips" aria-label="Pick a class">
+                <a class="chip" href="#all" data-focus="all">All <span class="count">{{ class_entries.size }}</span></a>
+                {% for folder in class_folders %}{% include folder-label.html folder=folder %}
+                    {% assign n = 0 %}{% for e in class_entries %}{% assign x = e | split: SEP %}{% if x[4] == folder %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}
+                    <a class="chip" href="#{{ folder }}" data-focus="{{ folder }}">{{ folder_label }} <span class="count">{{ n }}</span></a>
+                {% endfor %}
+            </nav>
+        </div>
+
+        {% for folder in class_folders %}{% include folder-label.html folder=folder %}
+            <section class="section" id="{{ folder }}" data-section data-label="{{ folder_label }}">
+                <div class="section-head">
+                    <h2>{{ folder_label }}</h2>
+                    <a href="#{{ folder }}" class="open-link">Show only {{ folder_label }} &rarr;</a>
+                </div>
+                <ul class="cards">
+                    {% for e in class_entries %}{% assign x = e | split: SEP %}{% if x[4] == folder %}
+                        {% include card.html title=x[0] url=x[1] desc=x[2] tag=x[3] label=folder_label %}
+                    {% endif %}{% endfor %}
+                </ul>
+            </section>
+        {% endfor %}
+        {% if class_folders.size == 0 %}<p class="empty" style="text-align:center;margin-top:40px">No classes yet — add a folder inside <code>classes/</code>.</p>{% endif %}
+
+        <p class="no-results" id="no-results">No resources match that search.</p>
     </main>
 
     <script>
-        function dismissSplash() {
-            document.getElementById('splash-screen').classList.add('dismissed');
-        }
+        (function () {
+            var splash = document.getElementById('splash-screen');
+            var root = document.documentElement;
+            if (!root.classList.contains('splash-open')) return;
+
+            var done = false;
+            function dismissSplash() {
+                if (done) return; done = true;
+                splash.classList.add('dismissed');
+                root.classList.remove('splash-open');
+                try { sessionStorage.setItem('liniver-splash', '1'); } catch (e) {}
+                setTimeout(function () { var s = document.getElementById('search'); if (s) s.focus({ preventScroll: true }); }, 400);
+                window.removeEventListener('wheel', dismissSplash);
+                window.removeEventListener('touchmove', dismissSplash);
+                document.removeEventListener('keydown', onKey);
+            }
+            function onKey(e) {
+                if (e.metaKey || e.ctrlKey || e.altKey) return;
+                e.preventDefault(); dismissSplash();
+            }
+            splash.addEventListener('click', dismissSplash);
+            window.addEventListener('wheel', dismissSplash, { passive: true });
+            window.addEventListener('touchmove', dismissSplash, { passive: true });
+            document.addEventListener('keydown', onKey);
+            document.getElementById('enter-btn').focus();
+        })();
     </script>
+    <script>
+        // Class view: liniver.com/#y10 shows only that class; #all (or no hash) shows everything.
+        (function () {
+            var sections = Array.prototype.slice.call(document.querySelectorAll('[data-section]'));
+            var title = document.getElementById('hub-title'), sub = document.getElementById('hub-sub');
+            var defTitle = title.textContent, defSub = sub.textContent;
+            function apply() {
+                var id = decodeURIComponent(location.hash.slice(1));
+                var target = sections.filter(function (s) { return s.id === id; })[0];
+                sections.forEach(function (s) { s.classList.toggle('out-of-focus', !!target && s !== target); });
+                document.querySelectorAll('[data-focus]').forEach(function (a) {
+                    var on = target ? a.getAttribute('data-focus') === id : a.getAttribute('data-focus') === 'all';
+                    if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+                });
+                document.body.classList.toggle('focused', !!target);
+                if (target) {
+                    var n = target.querySelectorAll('.card').length;
+                    title.textContent = target.getAttribute('data-label');
+                    sub.textContent = n + ' resource' + (n === 1 ? '' : 's');
+                    document.title = target.getAttribute('data-label') + ' | Liniver';
+                    document.getElementById('search').placeholder = 'Search ' + target.getAttribute('data-label') + '…';
+                } else {
+                    title.textContent = defTitle; sub.textContent = defSub; document.title = 'Liniver | Welcome to the Universe';
+                    document.getElementById('search').placeholder = 'Search all resources… e.g. stars, alloys, carbon';
+                }
+                window.scrollTo(0, 0);
+                if (window.liniverSearch) window.liniverSearch();
+            }
+            window.addEventListener('hashchange', apply);
+            apply();
+        })();
+    </script>
+    <script src="{{ '/assets/js/search.js' | relative_url }}"></script>
 </body>
 </html>
